@@ -1,0 +1,25 @@
+spring:
+  profiles:
+    active: production
+
+server:
+  port: 8080
+  servlet:
+    contextPath: null
+---
+spring:
+  profiles: production
+  datasource:
+    driverClassName: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    url: jdbc:sqlserver://localhost\SQLEXPRESS;database=upo
+    username: upo
+    password: J2edTHyq
+    hikari:
+      maximum-pool-size: 20
+  jpa:
+    database-platform: org.hibernate.dialect.SQLServer2012Dialect
+    database: sql_server
+    show_sql: false
+
+  liquibase:
+    contexts: production
