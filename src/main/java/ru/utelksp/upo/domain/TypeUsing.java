@@ -9,15 +9,15 @@ import javax.persistence.*;
 
 /**
  * Created by ZotovES on 18.03.2019
- * Справочник компьютеров
+ * Справочник видов использования
  */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "s_computer", schema = "upo")
-public class Computer {
+@Table(name = "s_type_using", schema = "upo")
+public class TypeUsing {
 
     @Id
     @Column(name = "id")
@@ -31,7 +31,7 @@ public class Computer {
     private String name;
 
     /**
-     *Описание
+     * Описание
      */
     @Column(name = "description")
     private String description;

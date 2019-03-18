@@ -1,6 +1,6 @@
 package ru.utelksp.upo.service;
 
-import lombok.NonNull;
+import org.springframework.lang.NonNull;
 import ru.utelksp.upo.domain.Computer;
 
 import java.util.Collection;
@@ -8,7 +8,7 @@ import java.util.Optional;
 
 /**
  * @author Created by ZotovES on 18.03.2019
- * Реализация сервиса для справочника компьютеров {@link Computer}
+ * Cервис для справочника компьютеров {@link Computer}
  */
 public interface ComputerService {
     /**
@@ -16,6 +16,7 @@ public interface ComputerService {
      *
      * @return список компьютеров.
      */
+    @NonNull
     Collection<Computer> findAll();
 
     /**

@@ -4,9 +4,9 @@
         xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
-    <changeSet id="2019-03-18-01-add-table-s-computer" author="ZotovES" context="production">
+    <changeSet id="2019-03-18-02-add-table-s-type-using" author="ZotovES" context="production">
 
-        <createTable tableName="s_computer" remarks="Справочник компьютеров">
+        <createTable tableName="s_type_using" remarks="Справочник видов использования">
             <column name="id" type="bigint" autoIncrement="true" remarks="Уникальный идентификатор">
                 <constraints primaryKey="true" nullable="false"/>
             </column>

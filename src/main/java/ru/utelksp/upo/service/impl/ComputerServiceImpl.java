@@ -1,7 +1,7 @@
 package ru.utelksp.upo.service.impl;
 
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.utelksp.upo.domain.Computer;
@@ -25,6 +25,7 @@ public class ComputerServiceImpl implements ComputerService {
      *
      * @return список компьютеров.
      */
+    @NonNull
     @Override
     @Transactional(readOnly = true)
     public Collection<Computer> findAll() {

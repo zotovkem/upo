@@ -6,4 +6,5 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
     <include file="2019-03-18-01-add-table-s-computer.xml" relativeToChangelogFile="true"/>
+    <include file="2019-03-18-02-add-table-s-type-using.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>
