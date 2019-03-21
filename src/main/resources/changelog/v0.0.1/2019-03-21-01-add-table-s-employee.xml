@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="2019-03-21-01-add-table-s-employee" author="ZotovES" context="production">
+
+        <createTable tableName="s_employee" remarks="Справочник пользователей">
+            <column name="id" type="bigint" autoIncrement="true" remarks="Уникальный идентификатор">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="first_name" type="varchar(255)" remarks="Имя"/>
+            <column name="last_name" type="varchar(255)" remarks="Фамилия"/>
+            <column name="patronymic" type="varchar(255)" remarks="Отчество"/>
+            <column name="department" type="varchar(255)" remarks="Отдел"/>
+            <column name="description" type="varchar(4000)" remarks="Описание"/>
+        </createTable>
+
+    </changeSet>
+
+</databaseChangeLog>

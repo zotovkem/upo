@@ -8,4 +8,5 @@
     <include file="2019-03-18-01-add-table-s-computer.xml" relativeToChangelogFile="true"/>
     <include file="2019-03-18-02-add-table-s-type-using.xml" relativeToChangelogFile="true"/>
     <include file="2019-03-18-03-add-table-s-organization.xml" relativeToChangelogFile="true"/>
+    <include file="2019-03-21-01-add-table-s-employee.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

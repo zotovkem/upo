@@ -8,5 +8,6 @@
     <include file="changelog/testdata/s_computer.xml"/>
     <include file="changelog/testdata/s_type_using.xml"/>
     <include file="changelog/testdata/s_organization.xml"/>
+    <include file="changelog/testdata/s_employee.xml"/>
 
 </databaseChangeLog>

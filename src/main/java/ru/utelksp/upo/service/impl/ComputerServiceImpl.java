@@ -52,6 +52,7 @@ public class ComputerServiceImpl implements ComputerService {
      */
     @NonNull
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Computer save(@NonNull Computer computer) {
         return computerRepository.save(computer);
     }
@@ -62,6 +63,7 @@ public class ComputerServiceImpl implements ComputerService {
      * @param id идентификатор компьютер
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void deleteById(@NonNull Long id) {
         computerRepository.deleteById(id);
     }
