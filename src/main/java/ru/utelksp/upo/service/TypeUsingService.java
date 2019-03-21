@@ -26,4 +26,22 @@ public interface TypeUsingService {
      * @return вид использования.
      */
     Optional<TypeUsing> findById(@NonNull Long id);
+
+    /**
+     * Сохраняет вид использования
+     *
+     * @param typeUsing вид использования
+     * @return сохраненый вид использования
+     */
+    @NonNull
+    TypeUsing save(@NonNull TypeUsing typeUsing);
+
+    /**
+     * Удаляет вид использования по идентификатору
+     *
+     * @param id идентификатор вида использования
+     */
+    @NonNull
+    void deleteById(@NonNull Long id);
+
 }

@@ -3,6 +3,7 @@ package ru.utelksp.upo.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.utelksp.upo.domain.TypeUsing;
 import ru.utelksp.upo.repository.TypeUsingRepository;
 import ru.utelksp.upo.service.TypeUsingService;
@@ -39,5 +40,29 @@ public class TypeUsingServiceImpl implements TypeUsingService {
     @Override
     public Optional<TypeUsing> findById(@NonNull Long id) {
         return typeUsingRepository.findById(id);
+    }
+
+    /**
+     * Сохраняет вид использования
+     *
+     * @param typeUsing вид использования
+     * @return сохраненый вид использования
+     */
+    @NonNull
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public TypeUsing save(@NonNull TypeUsing typeUsing) {
+        return typeUsingRepository.save(typeUsing);
+    }
+
+    /**
+     * Удаляет вид использования по идентификатору
+     *
+     * @param id идентификатор вида использования
+     */
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteById(@NonNull Long id) {
+        typeUsingRepository.deleteById(id);
     }
 }
