@@ -26,4 +26,21 @@ public interface OrganizationService {
      * @return организация.
      */
     Optional<Organization> findById(@NonNull Long id);
+
+    /**
+     * Сохраняет организацию
+     *
+     * @param organization организация
+     * @return сохраненая организация
+     */
+    @NonNull
+    Organization save(@NonNull Organization organization);
+
+    /**
+     * Удаляет организацию по идентификатору
+     *
+     * @param id идентификатор организации
+     */
+    @NonNull
+    void deleteById(@NonNull Long id);
 }
