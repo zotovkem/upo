@@ -43,4 +43,26 @@ public class ComputerServiceImpl implements ComputerService {
     public Optional<Computer> findById(@NonNull Long id) {
         return computerRepository.findById(id);
     }
+
+    /**
+     * Сохраняет компьютер
+     *
+     * @param computer компьютер
+     * @return сохраненый компьютер
+     */
+    @NonNull
+    @Override
+    public Computer save(@NonNull Computer computer) {
+        return computerRepository.save(computer);
+    }
+
+    /**
+     * Удаляет компьютер по идентификатору
+     *
+     * @param id идентификатор компьютер
+     */
+    @Override
+    public void deleteById(@NonNull Long id) {
+        computerRepository.deleteById(id);
+    }
 }

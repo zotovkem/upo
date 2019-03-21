@@ -26,4 +26,22 @@ public interface ComputerService {
      * @return компьютер.
      */
     Optional<Computer> findById(@NonNull Long id);
+
+    /**
+     * Сохраняет компьютер
+     *
+     * @param computer компьютер
+     * @return сохраненый компьютер
+     */
+
+    @NonNull
+    Computer save(@NonNull Computer computer);
+
+    /**
+     * Удаляет компьютер по идентификатору
+     *
+     * @param id идентификатор компьютер
+     */
+    @NonNull
+    void deleteById(@NonNull Long id);
 }
