@@ -3,6 +3,7 @@ package ru.utelksp.upo.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.utelksp.upo.domain.Certificate;
 import ru.utelksp.upo.repository.CertificateRepository;
 import ru.utelksp.upo.service.CertificateService;
@@ -26,6 +27,7 @@ public class CertificateServiceImpl implements CertificateService {
      */
     @NonNull
     @Override
+    @Transactional(readOnly = true)
     public Collection<Certificate> findALL() {
         return certificateRepository.findAll();
     }
@@ -38,6 +40,7 @@ public class CertificateServiceImpl implements CertificateService {
      */
     @NonNull
     @Override
+    @Transactional(readOnly = true)
     public Optional<Certificate> findById(@NonNull Long id) {
         return certificateRepository.findById(id);
     }
@@ -50,6 +53,7 @@ public class CertificateServiceImpl implements CertificateService {
      */
     @NonNull
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public Certificate save(@NonNull Certificate certificate) {
         return certificateRepository.save(certificate);
     }
@@ -60,6 +64,7 @@ public class CertificateServiceImpl implements CertificateService {
      * @param id идентификатор сертификата
      */
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void deleteById(@NonNull Long id) {
         certificateRepository.deleteById(id);
     }

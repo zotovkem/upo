@@ -10,5 +10,6 @@
     <include file="changelog/testdata/s_organization.xml"/>
     <include file="changelog/testdata/s_employee.xml"/>
     <include file="changelog/testdata/certificate.xml"/>
+    <include file="changelog/testdata/account_order.xml"/>
 
 </databaseChangeLog>
