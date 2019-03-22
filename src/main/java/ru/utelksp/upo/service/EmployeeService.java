@@ -41,6 +41,5 @@ public interface EmployeeService {
      *
      * @param id идентификатор пользователя
      */
-    @NonNull
     void deleteById(@NonNull Long id);
 }

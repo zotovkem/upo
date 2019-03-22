@@ -41,7 +41,6 @@ public interface TypeUsingService {
      *
      * @param id идентификатор вида использования
      */
-    @NonNull
     void deleteById(@NonNull Long id);
 
 }

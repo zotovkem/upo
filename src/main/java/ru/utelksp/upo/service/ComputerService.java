@@ -33,7 +33,6 @@ public interface ComputerService {
      * @param computer компьютер
      * @return сохраненый компьютер
      */
-
     @NonNull
     Computer save(@NonNull Computer computer);
 
@@ -42,6 +41,5 @@ public interface ComputerService {
      *
      * @param id идентификатор компьютер
      */
-    @NonNull
     void deleteById(@NonNull Long id);
 }

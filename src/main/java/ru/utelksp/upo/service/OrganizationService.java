@@ -41,6 +41,5 @@ public interface OrganizationService {
      *
      * @param id идентификатор организации
      */
-    @NonNull
     void deleteById(@NonNull Long id);
 }

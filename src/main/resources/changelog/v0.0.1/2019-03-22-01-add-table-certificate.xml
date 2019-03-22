@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="2019-03-22-01-add-table-certificate" author="ZotovES" context="production">
+
+        <createTable tableName="certificate" remarks="Сертификаты">
+            <column name="id" type="bigint" autoIncrement="true" remarks="Уникальный идентификатор">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)" remarks="Наименование"/>
+            <column name="employee_id" type="bigint" remarks="Идентификатор пользователя"/>
+            <column name="date_end" type="timestamp with time zone" remarks="Дата окончания действия сертификата"/>
+            <column name="computer_id" type="bigint" remarks="Идентификатор компьютера">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(4000)" remarks="Описание"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="certificate" baseColumnNames="employee_id" baseTableSchemaName="upo"
+                                 constraintName="certificate_s_employee_fk"
+                                 referencedTableName="s_employee" referencedColumnNames="id"
+                                 referencedTableSchemaName="upo"/>
+        <addForeignKeyConstraint baseTableName="certificate" baseColumnNames="computer_id" baseTableSchemaName="upo"
+                                 constraintName="certificate_s_computer_fk"
+                                 referencedTableName="s_computer" referencedColumnNames="id"
+                                 referencedTableSchemaName="upo"/>
+
+        <createIndex tableName="certificate" indexName="certificate_employee_id_idx">
+            <column name="employee_id"/>
+        </createIndex>
+        <createIndex tableName="certificate" indexName="certificate_computer_id_idx">
+            <column name="computer_id"/>
+        </createIndex>
+
+    </changeSet>
+
+</databaseChangeLog>
