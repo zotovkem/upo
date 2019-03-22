@@ -1,7 +1,7 @@
 package ru.utelksp.upo.service;
 
 import org.springframework.lang.NonNull;
-import ru.utelksp.upo.domain.Employee;
+import ru.utelksp.upo.domain.dictionary.Employee;
 
 import java.util.Collection;
 import java.util.Optional;

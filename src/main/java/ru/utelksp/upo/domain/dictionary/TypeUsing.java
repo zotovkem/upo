@@ -1,4 +1,4 @@
-package ru.utelksp.upo.domain;
+package ru.utelksp.upo.domain.dictionary;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

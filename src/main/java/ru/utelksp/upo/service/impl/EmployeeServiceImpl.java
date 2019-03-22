@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.utelksp.upo.domain.Employee;
+import ru.utelksp.upo.domain.dictionary.Employee;
 import ru.utelksp.upo.repository.EmployeeRepository;
 import ru.utelksp.upo.service.EmployeeService;
 

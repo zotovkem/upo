@@ -10,4 +10,5 @@
     <include file="2019-03-18-03-add-table-s-organization.xml" relativeToChangelogFile="true"/>
     <include file="2019-03-21-01-add-table-s-employee.xml" relativeToChangelogFile="true"/>
     <include file="2019-03-22-01-add-table-certificate.xml" relativeToChangelogFile="true"/>
+    <include file="2019-03-22-02-add-table-order.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

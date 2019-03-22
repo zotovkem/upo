@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.utelksp.upo.domain.dictionary.Computer;
+import ru.utelksp.upo.domain.dictionary.Employee;
 
 import javax.persistence.*;
 import java.time.ZonedDateTime;

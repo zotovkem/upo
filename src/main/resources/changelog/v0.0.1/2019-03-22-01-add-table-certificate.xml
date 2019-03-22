@@ -6,7 +6,7 @@
 
     <changeSet id="2019-03-22-01-add-table-certificate" author="ZotovES" context="production">
 
-        <createTable tableName="certificate" remarks="Сертификаты">
+        <createTable tableName="certificate" remarks="Сертификаты" schemaName="upo">
             <column name="id" type="bigint" autoIncrement="true" remarks="Уникальный идентификатор">
                 <constraints primaryKey="true" nullable="false"/>
             </column>

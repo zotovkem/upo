@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.utelksp.upo.domain.Computer;
+import ru.utelksp.upo.domain.dictionary.Computer;
 import ru.utelksp.upo.repository.ComputerRepository;
 import ru.utelksp.upo.service.ComputerService;
 

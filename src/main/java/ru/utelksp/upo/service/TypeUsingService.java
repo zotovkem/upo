@@ -1,7 +1,7 @@
 package ru.utelksp.upo.service;
 
 import org.springframework.lang.NonNull;
-import ru.utelksp.upo.domain.TypeUsing;
+import ru.utelksp.upo.domain.dictionary.TypeUsing;
 
 import java.util.Collection;
 import java.util.Optional;
