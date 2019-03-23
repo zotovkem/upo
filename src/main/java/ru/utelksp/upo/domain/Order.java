@@ -1,9 +1,6 @@
 package ru.utelksp.upo.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ru.utelksp.upo.domain.dictionary.Organization;
 
 import javax.persistence.*;
@@ -18,6 +15,8 @@ import java.time.ZonedDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@EqualsAndHashCode(exclude = {"organization"})
+@ToString(exclude = {"organization"})
 @Table(name = "account_order", schema = "upo")
 public class Order {
     @Id

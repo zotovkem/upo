@@ -1,9 +1,6 @@
 package ru.utelksp.upo.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ru.utelksp.upo.domain.dictionary.Computer;
 import ru.utelksp.upo.domain.dictionary.Employee;
 
@@ -19,6 +16,8 @@ import java.time.ZonedDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@EqualsAndHashCode(exclude = {"employee","computer"})
+@ToString(exclude = {"employee","computer"})
 @Table(name = "certificate", schema = "upo")
 public class Certificate {
     @Id
@@ -35,7 +34,7 @@ public class Certificate {
     /**
      * Пользователь
      */
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id", referencedColumnName = "id")
     private Employee employee;
 
@@ -48,7 +47,7 @@ public class Certificate {
     /**
      * Компьютер
      */
-    @OneToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "computer_id", referencedColumnName = "id")
     private Computer computer;
     /**

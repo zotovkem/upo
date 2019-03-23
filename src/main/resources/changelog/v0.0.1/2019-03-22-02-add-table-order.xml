@@ -22,7 +22,7 @@
                                  baseTableSchemaName="upo"
                                  constraintName="account_order_s_organization_fk"
                                  referencedTableName="s_organization" referencedColumnNames="id"
-                                 referencedTableSchemaName="upo"/>
+                                 referencedTableSchemaName="upo" onDelete="RESTRICT"/>
 
         <createIndex tableName="account_order" indexName="account_order_organization_id_idx">
             <column name="organization_id"/>

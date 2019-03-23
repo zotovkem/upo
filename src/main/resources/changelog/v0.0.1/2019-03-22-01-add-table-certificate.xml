@@ -22,11 +22,11 @@
         <addForeignKeyConstraint baseTableName="certificate" baseColumnNames="employee_id" baseTableSchemaName="upo"
                                  constraintName="certificate_s_employee_fk"
                                  referencedTableName="s_employee" referencedColumnNames="id"
-                                 referencedTableSchemaName="upo"/>
+                                 referencedTableSchemaName="upo" onDelete="RESTRICT"/>
         <addForeignKeyConstraint baseTableName="certificate" baseColumnNames="computer_id" baseTableSchemaName="upo"
                                  constraintName="certificate_s_computer_fk"
                                  referencedTableName="s_computer" referencedColumnNames="id"
-                                 referencedTableSchemaName="upo"/>
+                                 referencedTableSchemaName="upo" onDelete="RESTRICT"/>
 
         <createIndex tableName="certificate" indexName="certificate_employee_id_idx">
             <column name="employee_id"/>
