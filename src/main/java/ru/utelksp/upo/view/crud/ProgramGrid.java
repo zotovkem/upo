@@ -9,11 +9,16 @@ public class ProgramGrid extends Grid<Program> {
         setSizeFull();
 
         addColumn(Program::getName)
+                .setHeader("Код")
+                .setFlexGrow(5)
+                .setSortable(true);
+
+        addColumn(Program::getName)
                 .setHeader("Наименование")
                 .setFlexGrow(20)
                 .setSortable(true);
 
-        addColumn(p -> p.getTypeUsing().getName())
+        addColumn(p -> p.getTypeUsing().getId())
                 .setHeader("Вид использования")
                 .setFlexGrow(12);
 
@@ -26,8 +31,8 @@ public class ProgramGrid extends Grid<Program> {
         return asSingleSelect().getValue();
     }
 
-    public void refresh(Program product) {
-        getDataCommunicator().refresh(product);
+    public void refresh(Program program) {
+        getDataCommunicator().refresh(program);
     }
 
 }

@@ -16,8 +16,8 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@EqualsAndHashCode(exclude = {"orders","computers"})
-@ToString(exclude = {"orders","computers"})
+@EqualsAndHashCode(exclude = {"orders", "computers", "typeUsing"})
+@ToString(exclude = {"orders", "computers", "typeUsing"})
 @Table(name = "program", schema = "upo")
 public class Program {
     @Id

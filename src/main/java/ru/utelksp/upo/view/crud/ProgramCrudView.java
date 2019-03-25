@@ -20,13 +20,13 @@ import ru.utelksp.upo.view.MainLayout;
 import javax.annotation.PostConstruct;
 
 
-@Route(value = "Program", layout = MainLayout.class)
+@Route(value = "program", layout = MainLayout.class)
 @RouteAlias(value = "", layout = MainLayout.class)
 @Component
 @RequiredArgsConstructor
-public class ProgramCrudView extends HorizontalLayout  {
+public class ProgramCrudView extends HorizontalLayout {
 
-    public static final String VIEW_NAME = "Програмное обеспечение";
+    public static final String VIEW_NAME = "ПО";
     private final ProgramService programService;
     private ProgramGrid grid;
     private ProgramForm form;

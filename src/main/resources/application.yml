@@ -6,6 +6,8 @@ spring:
   servlet:
     multipart:
       enabled: false
+  vaadin:
+    productionMode: false
 
 server:
   port: 42022
@@ -85,3 +87,6 @@ spring:
 
   liquibase:
     contexts: production
+
+  vaadin:
+    productionMode: true

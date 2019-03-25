@@ -20,6 +20,7 @@ import ru.utelksp.upo.domain.dictionary.TypeUsing;
 /**
  * A form for editing a single product.
  */
+
 public class ProgramForm extends Div {
 
     private VerticalLayout content;
