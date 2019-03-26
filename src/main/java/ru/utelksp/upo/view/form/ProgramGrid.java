@@ -1,4 +1,4 @@
-package ru.utelksp.upo.view.crud;
+package ru.utelksp.upo.view.form;
 
 import com.vaadin.flow.component.grid.Grid;
 import ru.utelksp.upo.domain.Program;

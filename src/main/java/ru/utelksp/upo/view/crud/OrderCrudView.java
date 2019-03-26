@@ -15,6 +15,8 @@ import com.vaadin.flow.router.OptionalParameter;
 import com.vaadin.flow.router.Route;
 import ru.utelksp.upo.domain.Program;
 import ru.utelksp.upo.view.MainLayout;
+import ru.utelksp.upo.view.form.DictionaryEditForm;
+import ru.utelksp.upo.view.form.ProgramGrid;
 
 /**
  *
@@ -25,7 +27,7 @@ public class OrderCrudView extends HorizontalLayout
 
     public static final String VIEW_NAME = "Приказы";
     private ProgramGrid grid;
-    private DictionaryForm form;
+    private DictionaryEditForm form;
     private TextField filter;
 
     private Button newProduct;
@@ -39,7 +41,7 @@ public class OrderCrudView extends HorizontalLayout
 //        grid.asSingleSelect().addValueChangeListener(
 //                event -> viewLogic.rowSelected(event.getValue()));
 
-        form = DictionaryForm.builder().build();
+        form = DictionaryEditForm.builder().build();
         form.show();
 //        form.setCategories(DataService.get().getAllCategories());
 

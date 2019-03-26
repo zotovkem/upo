@@ -1,4 +1,4 @@
-package ru.utelksp.upo.view.crud;
+package ru.utelksp.upo.view.form;
 
 import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.ComponentEventListener;
@@ -24,7 +24,7 @@ import java.util.Objects;
 @Builder
 @Getter
 @Setter
-public class DictionaryForm extends Div {
+public class DictionaryEditForm extends Div {
 
     private VerticalLayout content;
 

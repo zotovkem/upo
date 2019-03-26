@@ -16,6 +16,8 @@ import org.springframework.stereotype.Component;
 import ru.utelksp.upo.domain.Program;
 import ru.utelksp.upo.service.ProgramService;
 import ru.utelksp.upo.view.MainLayout;
+import ru.utelksp.upo.view.form.DictionaryEditForm;
+import ru.utelksp.upo.view.form.ProgramGrid;
 
 import javax.annotation.PostConstruct;
 
@@ -29,7 +31,7 @@ public class ProgramCrudView extends HorizontalLayout {
     public static final String VIEW_NAME = "ПО";
     private final ProgramService programService;
     private ProgramGrid grid;
-    private DictionaryForm form;
+    private DictionaryEditForm form;
     private TextField filter;
 
     private Button newProgram;
@@ -42,7 +44,7 @@ public class ProgramCrudView extends HorizontalLayout {
         grid = new ProgramGrid();
         grid.setItems(programService.findAll());
 
-        form = DictionaryForm.builder().build();
+        form = DictionaryEditForm.builder().build();
         form.show();
 
         VerticalLayout barAndGridLayout = new VerticalLayout();
