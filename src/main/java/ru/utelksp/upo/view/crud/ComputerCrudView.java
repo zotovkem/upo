@@ -25,7 +25,7 @@ public class ComputerCrudView extends HorizontalLayout
 
     public static final String VIEW_NAME = "Компьютеры";
     private ProgramGrid grid;
-    private ProgramForm form;
+    private DictionaryForm form;
     private TextField filter;
 
     private Button newProduct;
@@ -39,7 +39,8 @@ public class ComputerCrudView extends HorizontalLayout
 //        grid.asSingleSelect().addValueChangeListener(
 //                event -> viewLogic.rowSelected(event.getValue()));
 
-        form = new ProgramForm();
+        form = DictionaryForm.builder().build();
+        form.show();
 //        form.setCategories(DataService.get().getAllCategories());
 
         VerticalLayout barAndGridLayout = new VerticalLayout();
@@ -113,7 +114,7 @@ public class ComputerCrudView extends HorizontalLayout
 
     public void editProduct(Program product) {
         showForm(product != null);
-        form.editProgram(product);
+//        form.editProgram(product);
     }
 
     public void showForm(boolean show) {

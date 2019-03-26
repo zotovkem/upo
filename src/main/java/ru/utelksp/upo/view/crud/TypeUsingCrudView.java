@@ -1,14 +1,11 @@
 package ru.utelksp.upo.view.crud;
 
-import com.vaadin.flow.component.Key;
-import com.vaadin.flow.component.KeyModifier;
+import com.vaadin.flow.component.ClickEvent;
+import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.grid.ItemDoubleClickEvent;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.OptionalParameter;
@@ -16,72 +13,51 @@ import com.vaadin.flow.router.Route;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.utelksp.upo.domain.dictionary.TypeUsing;
+import ru.utelksp.upo.service.TypeUsingService;
+import ru.utelksp.upo.view.BuilderDictionaryForm;
 import ru.utelksp.upo.view.MainLayout;
 
 import javax.annotation.PostConstruct;
+import java.util.Optional;
 
 /**
- *
+ * Форма для справочника видов использования
  */
 @Route(value = "typeUsing", layout = MainLayout.class)
 @Component
 @RequiredArgsConstructor
 public class TypeUsingCrudView extends HorizontalLayout implements HasUrlParameter<String> {
+    private final TypeUsingService typeUsingService;
+    private final BuilderDictionaryForm builderDictionaryForm;
 
     public static final String VIEW_NAME = "Виды использования";
     private TypeUsingGrid grid;
-    private ProgramForm form;
-    private TextField filter;
-
-    private Button newProduct;
+    private DictionaryForm form;
 
     @PostConstruct
     private void init() {
         setSizeFull();
-        HorizontalLayout topLayout = createTopBar();
-
         grid = new TypeUsingGrid();
-//        grid.setDataProvider(dataProvider);
+        grid.setItems(typeUsingService.findAll());
+        form = DictionaryForm.builder()
+                .deleteListener(getListenerDelete(form))
+                .build();
+        form.show();
+        grid.addItemDoubleClickListener(getFillFormListener(form));
+
+        builderDictionaryForm.addGrid(grid, this);
+        builderDictionaryForm.addForm(this, form);
 //        grid.asSingleSelect().addValueChangeListener(
 //                event -> viewLogic.rowSelected(event.getValue()));
-
-        form = new ProgramForm();
-//        form.setCategories(DataService.get().getAllCategories());
-
-        VerticalLayout barAndGridLayout = new VerticalLayout();
-        barAndGridLayout.add(topLayout);
-        barAndGridLayout.add(grid);
-        barAndGridLayout.setFlexGrow(1, grid);
-        barAndGridLayout.setFlexGrow(0, topLayout);
-        barAndGridLayout.setSizeFull();
-        barAndGridLayout.expand(grid);
-
-        add(barAndGridLayout);
-        add(form);
-
     }
 
-    private HorizontalLayout createTopBar() {
-        filter = new TextField();
-        filter.setPlaceholder("Поиск по имени");
-        // Apply the filter to grid's data provider. TextField value is never null
-//        filter.addValueChangeListener(event -> dataProvider.setFilter(event.getValue()));
-        filter.addFocusShortcut(Key.KEY_F, KeyModifier.CONTROL);
-
-        newProduct = new Button("Добавить ПО");
-        newProduct.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        newProduct.setIcon(VaadinIcon.PLUS_CIRCLE.create());
-//        newProduct.addClickListener(click -> viewLogic.newProduct());
-        // CTRL+N will create a new window which is unavoidable
-        newProduct.addClickShortcut(Key.KEY_N, KeyModifier.ALT);
-
-        HorizontalLayout topLayout = new HorizontalLayout();
-        topLayout.setWidth("100%");
-        topLayout.add(filter);
-        topLayout.add(newProduct);
-        topLayout.setVerticalComponentAlignment(Alignment.START, filter);
-        topLayout.expand(filter);
-        return topLayout;
+    private ComponentEventListener<ItemDoubleClickEvent<TypeUsing>> getFillFormListener(DictionaryForm form) {
+        return event -> grid.getSelectedRow().ifPresent(typeUsing -> {
+            form.setValIdTextField(typeUsing.getId().toString());
+            form.setValNameTextField(typeUsing.getName());
+            form.setValDescriptionTextField(typeUsing.getDescription());
+            form.setVisible(true);
+        });
     }
 
     public void showError(String msg) {
@@ -93,7 +69,7 @@ public class TypeUsingCrudView extends HorizontalLayout implements HasUrlParamet
     }
 
     public void setNewProductEnabled(boolean enabled) {
-        newProduct.setEnabled(enabled);
+//        newProduct.setEnabled(enabled);
     }
 
     public void clearSelection() {
@@ -104,7 +80,7 @@ public class TypeUsingCrudView extends HorizontalLayout implements HasUrlParamet
         grid.getSelectionModel().select(row);
     }
 
-    public TypeUsing getSelectedRow() {
+    public Optional<TypeUsing> getSelectedRow() {
         return grid.getSelectedRow();
     }
 
@@ -124,17 +100,23 @@ public class TypeUsingCrudView extends HorizontalLayout implements HasUrlParamet
 
     public void showForm(boolean show) {
         form.setVisible(show);
-
-        /* FIXME The following line should be uncommented when the CheckboxGroup
-         * issue is resolved. The category CheckboxGroup throws an
-         * IllegalArgumentException when the form is disabled.
-         */
-        //form.setEnabled(show);
     }
 
     @Override
     public void setParameter(BeforeEvent event,
                              @OptionalParameter String parameter) {
 //        viewLogic.enter(parameter);
+    }
+
+    private ComponentEventListener<ClickEvent<Button>> getListenerDelete(DictionaryForm form) {
+        return event -> {
+//            if (currentProgram != null) {
+//                viewLogic.deleteProgram(currentProgram.getId());
+//            }
+        };
+    }
+
+    private ComponentEventListener<ClickEvent<Button>> getListenerCancel(DictionaryForm form) {
+        return event -> this.setVisible(false);
     }
 }

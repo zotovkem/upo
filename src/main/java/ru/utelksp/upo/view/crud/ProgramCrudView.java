@@ -29,7 +29,7 @@ public class ProgramCrudView extends HorizontalLayout {
     public static final String VIEW_NAME = "ПО";
     private final ProgramService programService;
     private ProgramGrid grid;
-    private ProgramForm form;
+    private DictionaryForm form;
     private TextField filter;
 
     private Button newProgram;
@@ -42,7 +42,8 @@ public class ProgramCrudView extends HorizontalLayout {
         grid = new ProgramGrid();
         grid.setItems(programService.findAll());
 
-        form = new ProgramForm();
+        form = DictionaryForm.builder().build();
+        form.show();
 
         VerticalLayout barAndGridLayout = new VerticalLayout();
         barAndGridLayout.add(topLayout);
@@ -110,7 +111,7 @@ public class ProgramCrudView extends HorizontalLayout {
 
     public void editProgram(Program product) {
         showForm(product != null);
-        form.editProgram(product);
+//        form.editProgram(product);
     }
 
     private void showForm(boolean show) {

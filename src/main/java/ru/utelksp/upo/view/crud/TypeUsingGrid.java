@@ -3,12 +3,16 @@ package ru.utelksp.upo.view.crud;
 import com.vaadin.flow.component.grid.Grid;
 import ru.utelksp.upo.domain.dictionary.TypeUsing;
 
+import java.util.Optional;
+
 public class TypeUsingGrid extends Grid<TypeUsing> {
+
+    private Optional<TypeUsing> currentRow;
 
     public TypeUsingGrid() {
         setSizeFull();
 
-        addColumn(TypeUsing::getName)
+        addColumn(TypeUsing::getId)
                 .setHeader("Код")
                 .setFlexGrow(5)
                 .setSortable(true);
@@ -21,10 +25,12 @@ public class TypeUsingGrid extends Grid<TypeUsing> {
         addColumn(TypeUsing::getDescription)
                 .setHeader("Коментарии")
                 .setFlexGrow(50);
+
+        this.addSelectionListener(e -> currentRow = asSingleSelect().getOptionalValue());
     }
 
-    public TypeUsing getSelectedRow() {
-        return asSingleSelect().getValue();
+    public Optional<TypeUsing> getSelectedRow() {
+        return currentRow;
     }
 
     public void refresh(TypeUsing typeUsing) {
