@@ -11,19 +11,21 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
+import com.vaadin.flow.spring.annotation.UIScope;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.utelksp.upo.domain.Program;
 import ru.utelksp.upo.service.ProgramService;
 import ru.utelksp.upo.view.MainLayout;
 import ru.utelksp.upo.view.form.DictionaryEditForm;
-import ru.utelksp.upo.view.form.ProgramGrid;
+import ru.utelksp.upo.view.form.grid.ProgramGrid;
 
 import javax.annotation.PostConstruct;
 
 
 @Route(value = "program", layout = MainLayout.class)
 @RouteAlias(value = "", layout = MainLayout.class)
+@UIScope
 @Component
 @RequiredArgsConstructor
 public class ProgramCrudView extends HorizontalLayout {

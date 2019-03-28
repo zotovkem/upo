@@ -16,7 +16,7 @@ import com.vaadin.flow.router.Route;
 import ru.utelksp.upo.domain.Program;
 import ru.utelksp.upo.view.MainLayout;
 import ru.utelksp.upo.view.form.DictionaryEditForm;
-import ru.utelksp.upo.view.form.ProgramGrid;
+import ru.utelksp.upo.view.form.grid.ProgramGrid;
 
 /**
  *

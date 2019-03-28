@@ -1,13 +1,16 @@
-package ru.utelksp.upo.view.crud;
+package ru.utelksp.upo.view.form.grid;
 
 import com.vaadin.flow.component.grid.Grid;
 import ru.utelksp.upo.domain.dictionary.TypeUsing;
 
 import java.util.Optional;
 
+/**
+ * Грид для справочника Виды использования
+ */
 public class TypeUsingGrid extends Grid<TypeUsing> {
 
-    private Optional<TypeUsing> currentRow;
+    private TypeUsing currentRow;
 
     public TypeUsingGrid() {
         setSizeFull();
@@ -23,18 +26,18 @@ public class TypeUsingGrid extends Grid<TypeUsing> {
                 .setSortable(true);
 
         addColumn(TypeUsing::getDescription)
-                .setHeader("Коментарии")
+                .setHeader("Комментарии")
                 .setFlexGrow(50);
 
-        this.addSelectionListener(e -> currentRow = asSingleSelect().getOptionalValue());
+        this.addSelectionListener(e -> currentRow = asSingleSelect().getOptionalValue().orElse(null));
     }
 
+    /**
+     * Получить выделеную в гриде сущность
+     *
+     * @return объект
+     */
     public Optional<TypeUsing> getSelectedRow() {
-        return currentRow;
+        return Optional.ofNullable(currentRow);
     }
-
-    public void refresh(TypeUsing typeUsing) {
-        getDataCommunicator().refresh(typeUsing);
-    }
-
 }

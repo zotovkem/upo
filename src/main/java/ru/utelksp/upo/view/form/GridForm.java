@@ -17,12 +17,12 @@ import java.util.Objects;
 
 /**
  * @author Created by ZotovES on 26.03.2019
- * Конструктор форм для справочников
+ * Форма в центре экрана с гридом.
  */
-@SuppressWarnings("Duplicates")
 @Builder
 @Getter
 @Setter
+@SuppressWarnings("Duplicates")
 public class GridForm extends VerticalLayout {
     private TextField filter;
     private Button btnAdd;
@@ -31,6 +31,9 @@ public class GridForm extends VerticalLayout {
     private HasValue.ValueChangeListener<AbstractField.ComponentValueChangeEvent<TextField, String>> filterListener;
     private ComponentEventListener<ClickEvent<Button>> addListener;
 
+    /**
+     * Отрисовывает форму
+     */
     public void show() {
         HorizontalLayout topLayout = createTopBar();
 
@@ -42,6 +45,11 @@ public class GridForm extends VerticalLayout {
         expand(grid);
     }
 
+    /**
+     * Создает верхнюю панель с полем поиска и кнопкой добавить.
+     *
+     * @return объект панели.
+     */
     private HorizontalLayout createTopBar() {
         createFieldFilter();
         createAddButton();
@@ -55,8 +63,11 @@ public class GridForm extends VerticalLayout {
         return topLayout;
     }
 
+    /**
+     * Добавляет на форму кнопку Добавить
+     */
     private void createAddButton() {
-        btnAdd = new Button("Добавить ПО");
+        btnAdd = new Button("Добавить");
         btnAdd.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
         btnAdd.setIcon(VaadinIcon.PLUS_CIRCLE.create());
         btnAdd.addClickListener(event -> {
@@ -67,9 +78,12 @@ public class GridForm extends VerticalLayout {
         btnAdd.addClickShortcut(Key.KEY_N, KeyModifier.ALT);
     }
 
+    /**
+     * Добавляет на форму поле поиска наименованию
+     */
     private void createFieldFilter() {
         filter = new TextField();
-        filter.setPlaceholder("Поиск по имени");
+        filter.setPlaceholder("Поиск по наименованию");
         filter.addValueChangeListener(event -> {
             if (!Objects.isNull(filterListener)) {
                 filterListener.valueChanged(event);

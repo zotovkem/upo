@@ -1,4 +1,4 @@
-package ru.utelksp.upo.view.form;
+package ru.utelksp.upo.view.form.grid;
 
 import com.vaadin.flow.component.grid.Grid;
 import ru.utelksp.upo.domain.Program;
@@ -23,7 +23,7 @@ public class ProgramGrid extends Grid<Program> {
                 .setFlexGrow(12);
 
         addColumn(Program::getDescription)
-                .setHeader("Коментарии")
+                .setHeader("Комментарии")
                 .setFlexGrow(50);
     }
 
