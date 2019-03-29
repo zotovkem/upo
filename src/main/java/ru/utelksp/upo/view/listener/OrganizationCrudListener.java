@@ -37,10 +37,4 @@ public class OrganizationCrudListener implements CrudListener<Organization>, Fin
     public void delete(Organization domainObjectToDelete) {
         organizationService.deleteById(domainObjectToDelete.getId());
     }
-
-
-    public Collection<Organization> findByFilter(String string, int offset, int limit) {
-        return findAll();
-    }
-
 }

@@ -1,4 +1,4 @@
-package ru.utelksp.upo.view;
+package ru.utelksp.upo.view.component;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;

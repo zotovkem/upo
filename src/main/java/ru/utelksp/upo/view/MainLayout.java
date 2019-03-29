@@ -7,6 +7,7 @@ import com.vaadin.flow.router.RouterLayout;
 import com.vaadin.flow.server.PWA;
 import com.vaadin.flow.theme.Theme;
 import com.vaadin.flow.theme.lumo.Lumo;
+import ru.utelksp.upo.view.component.Menu;
 import ru.utelksp.upo.view.crud.*;
 
 import javax.annotation.PostConstruct;
