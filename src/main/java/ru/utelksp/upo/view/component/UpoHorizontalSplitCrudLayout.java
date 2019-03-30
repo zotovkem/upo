@@ -2,6 +2,7 @@ package ru.utelksp.upo.view.component;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
+import org.vaadin.crudui.crud.CrudOperation;
 import org.vaadin.crudui.layout.impl.HorizontalSplitCrudLayout;
 
 /**
@@ -11,6 +12,7 @@ import org.vaadin.crudui.layout.impl.HorizontalSplitCrudLayout;
 public class UpoHorizontalSplitCrudLayout extends HorizontalSplitCrudLayout {
     public UpoHorizontalSplitCrudLayout() {
         super();
+        setFormCaption(CrudOperation.DELETE, "Запись будет удалена, вы уверены?");
         filterLayout.setPadding(false);
         filterLayout.setMargin(false);
         firstComponentHeaderLayout.setMargin(true);

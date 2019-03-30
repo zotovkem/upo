@@ -1,9 +1,8 @@
 package ru.utelksp.upo.common;
 
 import com.vaadin.flow.component.notification.Notification;
-import org.vaadin.crudui.crud.impl.GridCrud;
-import ru.utelksp.upo.domain.dictionary.Organization;
 
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -27,16 +26,11 @@ public class Util {
     }
 
     /**
-     * Переводит кнопки и сообщения в гриде
+     * Собирает из двух листов мапу по соответвию индексов
      */
-    public static GridCrud<Organization> getTranslateGrid(GridCrud<Organization> crud) {
-        crud.setDeletedMessage("Запись удалена");
-        crud.setSavedMessage("Запись сохранена");
-        crud.setRowCountCaption("%d записей найдено");
-        crud.getDeleteButton().getElement().setAttribute("title", "Удалить");
-        crud.getAddButton().getElement().setAttribute("title", "Добавить");
-        crud.getUpdateButton().getElement().setAttribute("title", "Редактировать");
-        crud.getFindAllButton().getElement().setAttribute("title", "Обновить");
-        return crud;
+    public static Map<String, String> getCollectMap(List<String> list1, List<String> list2) {
+        return IntStream.range(0, list1.size())
+                .boxed()
+                .collect(Collectors.toMap(list1::get, list2::get));
     }
 }
