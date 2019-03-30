@@ -28,7 +28,7 @@ public class CertificateServiceImpl implements CertificateService {
     @NonNull
     @Override
     @Transactional(readOnly = true)
-    public Collection<Certificate> findALL() {
+    public Collection<Certificate> findAll() {
         return certificateRepository.findAll();
     }
 
@@ -67,5 +67,10 @@ public class CertificateServiceImpl implements CertificateService {
     @Transactional(rollbackFor = Exception.class)
     public void deleteById(@NonNull Long id) {
         certificateRepository.deleteById(id);
+    }
+
+    @Override
+    public Collection<Certificate> findByAllEager() {
+        return certificateRepository.findByAllEager();
     }
 }

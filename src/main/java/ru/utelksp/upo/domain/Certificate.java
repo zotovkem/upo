@@ -5,7 +5,7 @@ import ru.utelksp.upo.domain.dictionary.Computer;
 import ru.utelksp.upo.domain.dictionary.Employee;
 
 import javax.persistence.*;
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 
 /**
  * @author Created by ZotovES on 22.03.2019
@@ -34,7 +34,7 @@ public class Certificate {
     /**
      * Пользователь
      */
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "employee_id", referencedColumnName = "id")
     private Employee employee;
 
@@ -42,12 +42,12 @@ public class Certificate {
      * Дата окончания
      */
     @Column(name = "date_end")
-    private ZonedDateTime dateEnd;
+    private LocalDate dateEnd;
 
     /**
      * Компьютер
      */
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "computer_id", referencedColumnName = "id")
     private Computer computer;
     /**

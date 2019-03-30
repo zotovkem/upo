@@ -11,7 +11,7 @@
             <column name="id" value="1"/>
             <column name="name" value="Сертификат 1"/>
             <column name="employee_id" value="1"/>
-            <column name="date_end" value="2019-12-19 00:00:00.0"/>
+            <column name="date_end" value="2019-12-19"/>
             <column name="computer_id" value="1"/>
         </insert>
 
@@ -19,7 +19,7 @@
             <column name="id" value="2"/>
             <column name="name" value="Сертификат 2"/>
             <column name="employee_id" value="2"/>
-            <column name="date_end" value="2019-10-19 00:00:00.0"/>
+            <column name="date_end" value="2019-10-19"/>
             <column name="computer_id" value="2"/>
         </insert>
 

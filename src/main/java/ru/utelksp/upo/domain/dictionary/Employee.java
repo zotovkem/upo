@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import static java.lang.String.format;
+import static ru.utelksp.upo.common.Util.getFirstSymbolWithDot;
+
 /**
  * Created by ZotovES on 21.03.2019
  * Справочник пользователей
@@ -53,4 +56,8 @@ public class Employee {
      */
     @Column(name = "description")
     private String description;
+
+    public String getShortFio() {
+        return format("%s %s%s", lastName, getFirstSymbolWithDot(firstName), getFirstSymbolWithDot(patronymic));
+    }
 }

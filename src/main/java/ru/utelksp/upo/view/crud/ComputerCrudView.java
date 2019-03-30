@@ -19,7 +19,8 @@ import java.util.Map;
 import static ru.utelksp.upo.common.Util.getCollectMap;
 
 /**
- *Форма для редактирования справочника компьютеров
+ * @author Created by ZotovES on 30.03.2019
+ * Форма для редактирования справочника компьютеров
  */
 @Route(value = "computer", layout = MainLayout.class)
 @UIScope
@@ -28,12 +29,12 @@ import static ru.utelksp.upo.common.Util.getCollectMap;
 public class ComputerCrudView extends VerticalLayout {
     private final ComputerCrudListener computerCrudListener;
 
-    private static final String[] CRUD_FORM_FIELD = {"id", "name","description"};
-    private static final String[] CRUD_FORM_FIELD_CAPTION = {"Код", "Наименование","Комментарии"};
+    private static final String[] CRUD_FORM_FIELD = {"id", "name", "description"};
+    private static final String[] CRUD_FORM_FIELD_CAPTION = {"Код", "Наименование", "Комментарии"};
     private static final List<String> GRID_COLUMNS = List.of("id", "name");
     private static final List<String> GRID_COLUMNS_CAPTION = List.of("Код", "Наименование");
     private static final Map<String, String> MAP_COLUMN_PROP = getCollectMap(GRID_COLUMNS, GRID_COLUMNS_CAPTION);
-    public static final String VIEW_NAME = "Классификатор компьютеров";
+    public static final String VIEW_NAME = "Компьютеры";
 
     @PostConstruct
     public void init() {

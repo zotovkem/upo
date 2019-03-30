@@ -3,7 +3,6 @@ package ru.utelksp.upo.view.component;
 import com.vaadin.flow.component.textfield.TextArea;
 import org.vaadin.crudui.crud.CrudOperation;
 import org.vaadin.crudui.form.impl.form.factory.DefaultCrudFormFactory;
-import ru.utelksp.upo.common.Util;
 
 import javax.validation.constraints.NotNull;
 
@@ -25,7 +24,5 @@ public class UpoCrudFormFactory<T> extends DefaultCrudFormFactory<T> {
         formFactory.setButtonCaption(CrudOperation.READ, "Закрыть");
         formFactory.setButtonCaption(CrudOperation.UPDATE, "Сохранить");
         formFactory.setCancelButtonCaption("Отмена");
-
-        formFactory.setErrorListener(e -> Util.showError("Ошибка удаления"));
     }
 }

@@ -16,7 +16,7 @@ public interface CertificateService {
      *
      * @return список сертификатов
      */
-    Collection<Certificate> findALL();
+    Collection<Certificate> findAll();
 
     /**
      * Получить сертификат по идентификатору
@@ -41,4 +41,11 @@ public interface CertificateService {
      * @param id идентификатор сертификата
      */
     void deleteById(@NonNull Long id);
+
+    /**
+     * Жадное получение всех сертификатов
+     *
+     * @return список сертификатов
+     */
+    Collection<Certificate> findByAllEager();
 }
