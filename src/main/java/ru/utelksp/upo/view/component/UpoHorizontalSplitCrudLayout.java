@@ -23,7 +23,7 @@ public class UpoHorizontalSplitCrudLayout extends HorizontalSplitCrudLayout {
     protected SplitLayout buildMainLayout() {
         SplitLayout mainLayout = new SplitLayout(firstComponent, secondComponent);
         mainLayout.setSizeFull();
-        mainLayout.setSplitterPosition(85);
+        mainLayout.setSplitterPosition(80);
         return mainLayout;
     }
 
