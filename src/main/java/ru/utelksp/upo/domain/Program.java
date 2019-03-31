@@ -34,14 +34,14 @@ public class Program {
     /**
      * Вид использования
      */
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "type_using_id", referencedColumnName = "id" )
     private TypeUsing typeUsing;
 
     /**
      * Список приказов
      */
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "mtm_program_order", schema = "upo",
             joinColumns = {@JoinColumn(name = "program_id")},
             inverseJoinColumns = {@JoinColumn(name = "order_id")})
@@ -50,7 +50,7 @@ public class Program {
     /**
      * Список компьютеров
      */
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "s_ref_program_computer", schema = "upo",
             joinColumns = {@JoinColumn(name = "program_id")},
             inverseJoinColumns = {@JoinColumn(name = "computer_id")})

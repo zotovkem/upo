@@ -1,126 +1,72 @@
 package ru.utelksp.upo.view.crud;
 
-import com.vaadin.flow.component.Key;
-import com.vaadin.flow.component.KeyModifier;
-import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.renderer.TextRenderer;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.spring.annotation.UIScope;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.vaadin.crudui.form.impl.field.provider.CheckBoxGroupProvider;
+import org.vaadin.crudui.form.impl.field.provider.ComboBoxProvider;
+import ru.utelksp.upo.domain.Order;
 import ru.utelksp.upo.domain.Program;
-import ru.utelksp.upo.service.ProgramService;
+import ru.utelksp.upo.domain.dictionary.Computer;
+import ru.utelksp.upo.domain.dictionary.TypeUsing;
 import ru.utelksp.upo.view.MainLayout;
-import ru.utelksp.upo.view.form.DictionaryEditForm;
-import ru.utelksp.upo.view.form.grid.ProgramGrid;
+import ru.utelksp.upo.view.component.UpoCrudFormFactory;
+import ru.utelksp.upo.view.component.UpoGridCrud;
+import ru.utelksp.upo.view.component.UpoHorizontalSplitCrudLayout;
+import ru.utelksp.upo.view.listener.ComputerCrudListener;
+import ru.utelksp.upo.view.listener.OrderCrudListener;
+import ru.utelksp.upo.view.listener.ProgramCrudListener;
+import ru.utelksp.upo.view.listener.TypeUsingCrudListener;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
+import java.util.Map;
+
+import static ru.utelksp.upo.common.Util.getCollectMap;
 
 
 @Route(value = "program", layout = MainLayout.class)
 @RouteAlias(value = "", layout = MainLayout.class)
+@PageTitle("Программное обеспечение")
 @UIScope
 @Component
 @RequiredArgsConstructor
 public class ProgramCrudView extends HorizontalLayout {
+    private final ProgramCrudListener programCrudListener;
+    private final TypeUsingCrudListener typeUsingCrudListener;
+    private final OrderCrudListener orderCrudListener;
+    private final ComputerCrudListener computerCrudListener;
 
-    public static final String VIEW_NAME = "ПО";
-    private final ProgramService programService;
-    private ProgramGrid grid;
-    private DictionaryEditForm form;
-    private TextField filter;
-
-    private Button newProgram;
+    public static final String VIEW_NAME = "Программное обеспечение";
+    private static final String[] CRUD_FORM_FIELD = {"id", "name", "typeUsing", "orders", "computers", "description"};
+    private static final String[] CRUD_FORM_FIELD_CAPTION = {"Код", "Наименование", "Вид использования", "Приказы", "Компьютеры", "Комментарии"};
+    private static final List<String> GRID_COLUMNS = List.of("id", "name");
+    private static final List<String> GRID_COLUMNS_CAPTION = List.of("Код", "Наименование");
+    private static final Map<String, String> MAP_COLUMN_PROP = getCollectMap(GRID_COLUMNS, GRID_COLUMNS_CAPTION);
 
     @PostConstruct
     void init() {
         setSizeFull();
-        HorizontalLayout topLayout = createTopBar();
 
-        grid = new ProgramGrid();
-        grid.setItems(programService.findAll());
+        UpoCrudFormFactory<Program> formFactory = new UpoCrudFormFactory<>(Program.class);
+        formFactory.setVisibleProperties(CRUD_FORM_FIELD);
+        formFactory.setFieldCaptions(CRUD_FORM_FIELD_CAPTION);
+        formFactory.setFieldProvider("typeUsing",
+                new ComboBoxProvider<>("Вид использования", typeUsingCrudListener.findAll(), new TextRenderer<>(TypeUsing::getName), TypeUsing::getName));
+        formFactory.setFieldProvider("orders",
+                new CheckBoxGroupProvider<>("Приказы", orderCrudListener.findAll(), Order::getOrderNumber));
+        formFactory.setFieldProvider("computers",
+                new CheckBoxGroupProvider<>("Компьютеры", computerCrudListener.findAll(), Computer::getName));
 
-        form = DictionaryEditForm.builder().build();
-        form.show();
-
-        VerticalLayout barAndGridLayout = new VerticalLayout();
-        barAndGridLayout.add(topLayout);
-        barAndGridLayout.add(grid);
-        barAndGridLayout.setFlexGrow(1, grid);
-        barAndGridLayout.setFlexGrow(0, topLayout);
-        barAndGridLayout.setSizeFull();
-        barAndGridLayout.expand(grid);
-
-        add(barAndGridLayout);
-        add(form);
-
-    }
-
-    private HorizontalLayout createTopBar() {
-        filter = new TextField();
-        filter.setPlaceholder("Filter name, availability or category");
-
-        newProgram = new Button("New product");
-        newProgram.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        newProgram.setIcon(VaadinIcon.PLUS_CIRCLE.create());
-//        newProgram.addClickListener(click -> viewLogic.newProgram());
-        newProgram.addClickShortcut(Key.KEY_N, KeyModifier.ALT);
-
-        HorizontalLayout topLayout = new HorizontalLayout();
-        topLayout.setWidth("100%");
-        topLayout.add(filter);
-        topLayout.add(newProgram);
-        topLayout.setVerticalComponentAlignment(Alignment.START, filter);
-        topLayout.expand(filter);
-        return topLayout;
-    }
-
-    public void showError(String msg) {
-        Notification.show(msg);
-    }
-
-    public void showSaveNotification(String msg) {
-        Notification.show(msg);
-    }
-
-    public void setNewProgramEnabled(boolean enabled) {
-        newProgram.setEnabled(enabled);
-    }
-
-    public void clearSelection() {
-        grid.getSelectionModel().deselectAll();
-    }
-
-    public void selectRow(Program row) {
-        grid.getSelectionModel().select(row);
-    }
-
-    public Program getSelectedRow() {
-        return grid.getSelectedRow();
-    }
-
-    public void updateProgram(Program product) {
-        programService.save(product);
-    }
-
-    public void removeProgram(Program product) {
-        programService.deleteById(product.getId());
-    }
-
-    public void editProgram(Program product) {
-        showForm(product != null);
-//        form.editProgram(product);
-    }
-
-    private void showForm(boolean show) {
-        form.setVisible(show);
-      form.setEnabled(show);
+        UpoGridCrud<Program> crud = new UpoGridCrud<>(Program.class, new UpoHorizontalSplitCrudLayout(), formFactory, programCrudListener);
+        crud.setGridColumn(GRID_COLUMNS);
+        crud.setGridCaptionColumn(MAP_COLUMN_PROP);
+        add(crud);
     }
 
 }
