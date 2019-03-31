@@ -2,6 +2,7 @@ package ru.utelksp.upo.view.crud;
 
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.renderer.TextRenderer;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.UIScope;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,7 @@ import static ru.utelksp.upo.common.Util.getCollectMap;
  * Форма для редактирования справочника Сертификатов
  */
 @Route(value = "certificate", layout = MainLayout.class)
+@PageTitle("Сертификаты")
 @UIScope
 @Component
 @RequiredArgsConstructor
