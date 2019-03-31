@@ -3,7 +3,6 @@ package ru.utelksp.upo.view.listener;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.vaadin.crudui.crud.CrudListener;
-import org.vaadin.crudui.crud.FindAllCrudOperationListener;
 import ru.utelksp.upo.domain.dictionary.Organization;
 import ru.utelksp.upo.service.OrganizationService;
 
@@ -15,7 +14,7 @@ import java.util.Collection;
  */
 @Component
 @RequiredArgsConstructor
-public class OrganizationCrudListener implements CrudListener<Organization>, FindAllCrudOperationListener {
+public class OrganizationCrudListener implements CrudListener<Organization> {
     private final OrganizationService organizationService;
 
     @Override
