@@ -11,7 +11,7 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="order_number" type="varchar(20)" remarks="Номер приказа"/>
-            <column name="order_date" type="timestamp with time zone" remarks="Дата приказа"/>
+            <column name="order_date" type="date" remarks="Дата приказа"/>
             <column name="organization_id" type="bigint" remarks="Идентификатор организации">
                 <constraints nullable="false"/>
             </column>

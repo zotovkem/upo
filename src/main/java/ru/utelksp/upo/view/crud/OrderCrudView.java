@@ -1,137 +1,59 @@
 package ru.utelksp.upo.view.crud;
 
-import com.vaadin.flow.component.Key;
-import com.vaadin.flow.component.KeyModifier;
-import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
-import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.flow.router.BeforeEvent;
-import com.vaadin.flow.router.HasUrlParameter;
-import com.vaadin.flow.router.OptionalParameter;
+import com.vaadin.flow.data.renderer.TextRenderer;
 import com.vaadin.flow.router.Route;
-import ru.utelksp.upo.domain.Program;
+import com.vaadin.flow.spring.annotation.UIScope;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+import org.vaadin.crudui.form.impl.field.provider.ComboBoxProvider;
+import ru.utelksp.upo.domain.Order;
+import ru.utelksp.upo.domain.dictionary.Organization;
+import ru.utelksp.upo.service.OrganizationService;
 import ru.utelksp.upo.view.MainLayout;
-import ru.utelksp.upo.view.form.DictionaryEditForm;
-import ru.utelksp.upo.view.form.grid.ProgramGrid;
+import ru.utelksp.upo.view.component.UpoCrudFormFactory;
+import ru.utelksp.upo.view.component.UpoGridCrud;
+import ru.utelksp.upo.view.component.UpoHorizontalSplitCrudLayout;
+import ru.utelksp.upo.view.listener.OrderCrudListener;
+
+import javax.annotation.PostConstruct;
+import java.util.List;
+import java.util.Map;
+
+import static ru.utelksp.upo.common.Util.getCollectMap;
 
 /**
- *
+ * Форма редактирования Приказов
  */
 @Route(value = "order", layout = MainLayout.class)
-public class OrderCrudView extends HorizontalLayout
-        implements HasUrlParameter<String> {
+@UIScope
+@Component
+@RequiredArgsConstructor
+public class OrderCrudView extends VerticalLayout {
+    private final OrderCrudListener orderCrudListener;
+    private final OrganizationService organizationService;
 
     public static final String VIEW_NAME = "Приказы";
-    private ProgramGrid grid;
-    private DictionaryEditForm form;
-    private TextField filter;
+    private static final String[] CRUD_FORM_FIELD = {"id", "orderNumber", "orderDate", "organization", "description"};
+    private static final String[] CRUD_FORM_FIELD_CAPTION = {"Код", "Номер приказа", "Дата приказа", "Организация", "Комментарии"};
+    private static final List<String> GRID_COLUMNS = List.of("id", "orderNumber");
+    private static final List<String> GRID_COLUMNS_CAPTION = List.of("Код", "Номер приказа");
+    private static final Map<String, String> MAP_COLUMN_PROP = getCollectMap(GRID_COLUMNS, GRID_COLUMNS_CAPTION);
 
-    private Button newProduct;
-
-    public OrderCrudView() {
+    @PostConstruct
+    public void init() {
         setSizeFull();
-        HorizontalLayout topLayout = createTopBar();
 
-        grid = new ProgramGrid();
-//        grid.setDataProvider(dataProvider);
-//        grid.asSingleSelect().addValueChangeListener(
-//                event -> viewLogic.rowSelected(event.getValue()));
+        UpoCrudFormFactory<Order> formFactory = new UpoCrudFormFactory<>(Order.class);
+        formFactory.setVisibleProperties(CRUD_FORM_FIELD);
+        formFactory.setFieldCaptions(CRUD_FORM_FIELD_CAPTION);
+        formFactory.setFieldProvider("organization",
+                new ComboBoxProvider<>("Пользователь", organizationService.findAll(), new TextRenderer<>(Organization::getName), Organization::getName));
 
-        form = DictionaryEditForm.builder().build();
-        form.show();
-//        form.setCategories(DataService.get().getAllCategories());
-
-        VerticalLayout barAndGridLayout = new VerticalLayout();
-        barAndGridLayout.add(topLayout);
-        barAndGridLayout.add(grid);
-        barAndGridLayout.setFlexGrow(1, grid);
-        barAndGridLayout.setFlexGrow(0, topLayout);
-        barAndGridLayout.setSizeFull();
-        barAndGridLayout.expand(grid);
-
-        add(barAndGridLayout);
-        add(form);
-
+        UpoGridCrud<Order> crud = new UpoGridCrud<>(Order.class, new UpoHorizontalSplitCrudLayout(), formFactory, orderCrudListener);
+        crud.setGridColumn(GRID_COLUMNS);
+        crud.setGridCaptionColumn(MAP_COLUMN_PROP);
+        add(crud);
     }
 
-    public HorizontalLayout createTopBar() {
-        filter = new TextField();
-        filter.setPlaceholder("Поиск по имени");
-        // Apply the filter to grid's data provider. TextField value is never null
-//        filter.addValueChangeListener(event -> dataProvider.setFilter(event.getValue()));
-        filter.addFocusShortcut(Key.KEY_F, KeyModifier.CONTROL);
-
-        newProduct = new Button("Добавить ПО");
-        newProduct.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        newProduct.setIcon(VaadinIcon.PLUS_CIRCLE.create());
-//        newProduct.addClickListener(click -> viewLogic.newProduct());
-        // CTRL+N will create a new window which is unavoidable
-        newProduct.addClickShortcut(Key.KEY_N, KeyModifier.ALT);
-
-        HorizontalLayout topLayout = new HorizontalLayout();
-        topLayout.setWidth("100%");
-        topLayout.add(filter);
-        topLayout.add(newProduct);
-        topLayout.setVerticalComponentAlignment(Alignment.START, filter);
-        topLayout.expand(filter);
-        return topLayout;
-    }
-
-    public void showError(String msg) {
-        Notification.show(msg);
-    }
-
-    public void showSaveNotification(String msg) {
-        Notification.show(msg);
-    }
-
-    public void setNewProductEnabled(boolean enabled) {
-        newProduct.setEnabled(enabled);
-    }
-
-    public void clearSelection() {
-        grid.getSelectionModel().deselectAll();
-    }
-
-    public void selectRow(Program row) {
-        grid.getSelectionModel().select(row);
-    }
-
-    public Program getSelectedRow() {
-        return grid.getSelectedRow();
-    }
-
-    public void updateProduct(Program product) {
-
-//        dataProvider.save(product);
-    }
-
-    public void removeProduct(Program product) {
-//        dataProvider.delete(product);
-    }
-
-    public void editProduct(Program product) {
-        showForm(product != null);
-//        form.editProgram(product);
-    }
-
-    public void showForm(boolean show) {
-        form.setVisible(show);
-
-        /* FIXME The following line should be uncommented when the CheckboxGroup
-         * issue is resolved. The category CheckboxGroup throws an
-         * IllegalArgumentException when the form is disabled.
-         */
-        //form.setEnabled(show);
-    }
-
-    @Override
-    public void setParameter(BeforeEvent event,
-                             @OptionalParameter String parameter) {
-//        viewLogic.enter(parameter);
-    }
 }

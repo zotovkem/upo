@@ -4,7 +4,7 @@ import lombok.*;
 import ru.utelksp.upo.domain.dictionary.Organization;
 
 import javax.persistence.*;
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 
 /**
  * @author Created by ZotovES on 22.03.2019
@@ -34,12 +34,12 @@ public class Order {
      * Дата приказа
      */
     @Column(name = "order_date")
-    private ZonedDateTime orderDate;
+    private LocalDate orderDate;
 
     /**
      * Организация
      */
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "organization_id", referencedColumnName = "id")
     private Organization organization;
 
