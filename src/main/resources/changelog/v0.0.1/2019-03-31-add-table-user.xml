@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="2019-03-31-add-table-user" author="ZotovES" context="production">
+
+        <createTable tableName="user" remarks="Пользователи" schemaName="upo">
+            <column name="id" type="bigint" autoIncrement="true" remarks="Уникальный идентификатор">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="username" type="varchar(20)" remarks="Имя пользователя">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="bigint" remarks="Пароль">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <insert tableName="user">
+            <column name="id" value="1"/>
+            <column name="username" value="root"/>
+            <column name="password" value=""/>
+        </insert>
+
+    </changeSet>
+
+</databaseChangeLog>
