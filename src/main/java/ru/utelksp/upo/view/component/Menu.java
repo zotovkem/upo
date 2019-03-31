@@ -1,6 +1,7 @@
 package ru.utelksp.upo.view.component;
 
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.Image;
@@ -48,7 +49,6 @@ public class Menu extends FlexLayout {
         String resolvedImage = VaadinServletService.getCurrent()
                 .resolveResource("frontend://img/table-logo.png",
                         VaadinSession.getCurrent().getBrowser());
-
         Image image = new Image(resolvedImage, "");
         top.add(image);
         top.add(title);
@@ -62,20 +62,18 @@ public class Menu extends FlexLayout {
         // Кнопка выйти
         Button logoutButton = new Button("Выйти",
                 VaadinIcon.SIGN_OUT.create());
+        logoutButton.addClickListener(event -> {
+            UI.getCurrent().getPage().executeJavaScript(
+                    "window.location.href='/logout'");
+            UI.getCurrent().getSession().close();
+        });
 
         logoutButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE);
         add(logoutButton);
     }
 
     /**
-     * Add a view to the navigation menu
-     *
-     * @param viewClass
-     *         that has a {@code Route} annotation
-     * @param caption
-     *         view caption in the menu
-     * @param icon
-     *         view icon in the menu
+     * Добавляет пункт меню на панель
      */
     public void addView(Class<? extends Component> viewClass, String caption, Icon icon) {
         Tab tab = new Tab();

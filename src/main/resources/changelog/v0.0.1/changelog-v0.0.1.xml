@@ -14,4 +14,7 @@
     <include file="2019-03-23-01-add-table-program.xml" relativeToChangelogFile="true"/>
     <include file="2019-03-23-02-add-table-s-ref-program-computer.xml" relativeToChangelogFile="true"/>
     <include file="2019-03-23-03-add-table-mtm_program_order.xml" relativeToChangelogFile="true"/>
+    <include file="2019-03-31-add-table-user.xml" relativeToChangelogFile="true"/>
+    <include file="2019-03-31-02-add-table-role.xml" relativeToChangelogFile="true"/>
+    <include file="2019-03-31-02-add-table-mtm-user-role.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

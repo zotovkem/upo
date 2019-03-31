@@ -18,12 +18,27 @@
             </column>
         </createTable>
 
+        <addForeignKeyConstraint baseTableName="mtm_user_role" baseColumnNames="user_id"
+                                 baseTableSchemaName="upo" constraintName="mtm_user_role_user_fk"
+                                 referencedTableName="user" referencedColumnNames="id"
+                                 referencedTableSchemaName="upo" onDelete="RESTRICT"/>
+        <addForeignKeyConstraint baseTableName="mtm_user_role" baseColumnNames="role_id"
+                                 baseTableSchemaName="upo" constraintName="mtm_user_role_fk"
+                                 referencedTableName="role" referencedColumnNames="id"
+                                 referencedTableSchemaName="upo" onDelete="RESTRICT"/>
+
         <createIndex tableName="mtm_user_role" indexName="mtm_user_role_user_id_ind">
             <column name="user_id"/>
         </createIndex>
         <createIndex tableName="mtm_user_role" indexName="mtm_user_role_role_id_ind">
-            <column name="order_id"/>
+            <column name="role_id"/>
         </createIndex>
+
+        <insert tableName="mtm_user_role">
+            <column name="id" value="1"/>
+            <column name="user_id" value="1"/>
+            <column name="role_id" value="1"/>
+        </insert>
 
     </changeSet>
 
