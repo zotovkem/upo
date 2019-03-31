@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="2019-03-31-add-table-mtm-user-role" author="ZotovES" context="production">
+
+        <createTable tableName="mtm_user_role" remarks="Таблица для связи ролей и полезователей" schemaName="upo">
+            <column name="id" type="bigint" autoIncrement="true" remarks="Уникальный идентификатор">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="bigint" remarks="Идентификатор пользователя">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role_id" type="bigint" remarks="Идентификатор роли">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createIndex tableName="mtm_user_role" indexName="mtm_user_role_user_id_ind">
+            <column name="user_id"/>
+        </createIndex>
+        <createIndex tableName="mtm_user_role" indexName="mtm_user_role_role_id_ind">
+            <column name="order_id"/>
+        </createIndex>
+
+    </changeSet>
+
+</databaseChangeLog>
