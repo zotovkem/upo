@@ -41,20 +41,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().cors().and()
+                .authorizeRequests()
+                .antMatchers("/VAADIN/**").permitAll()
+                .anyRequest().authenticated().and();
 
-                .logout().permitAll()
+        http.logout().permitAll()
                 .logoutUrl("/logout")
                 .invalidateHttpSession(true)
                 .clearAuthentication(true)
                 .deleteCookies("JSESSIONID")
                 .and()
-                .formLogin().permitAll()
-                .and()
-                .authorizeRequests()
-                .anyRequest()
-                .authenticated()
-                .and().httpBasic()
-        ;
+                .formLogin().permitAll();
     }
 
     /**
