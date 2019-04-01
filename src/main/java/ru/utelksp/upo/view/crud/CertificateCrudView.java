@@ -49,6 +49,7 @@ public class CertificateCrudView extends VerticalLayout {
     @PostConstruct
     public void init() {
         setSizeFull();
+        setClassName("product-form");
 
         UpoCrudFormFactory<Certificate> formFactory = new UpoCrudFormFactory<>(Certificate.class);
         formFactory.setVisibleProperties(CRUD_FORM_FIELD);

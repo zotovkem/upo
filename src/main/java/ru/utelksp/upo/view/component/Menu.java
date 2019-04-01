@@ -25,19 +25,6 @@ public class Menu extends FlexLayout {
     public Menu() {
         setClassName("menu-bar");
 
-        // Button for toggling the menu visibility on small screens
-//        final Button showMenu = new Button("Menu", event -> {
-//            if (tabs.getClassNames().contains(SHOW_TABS)) {
-//                tabs.removeClassName(SHOW_TABS);
-//            } else {
-//                tabs.addClassName(SHOW_TABS);
-//            }
-//        });
-//        showMenu.setClassName("menu-button");
-//        showMenu.addThemeVariants(ButtonVariant.LUMO_SMALL);
-//        showMenu.setIcon(new Icon(VaadinIcon.MENU));
-//        add(showMenu);
-
         // Заголовок меню
         final HorizontalLayout top = new HorizontalLayout();
         top.setDefaultVerticalComponentAlignment(Alignment.CENTER);

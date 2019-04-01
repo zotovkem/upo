@@ -17,7 +17,8 @@ import javax.annotation.PostConstruct;
  */
 @HtmlImport("css/shared-styles.html")
 @Theme(value = Lumo.class, variant = Lumo.DARK)
-@PWA(name = "Учет Програмного обеспечения", shortName = "UPO")
+@PWA(name = "Учет Програмного обеспечения", shortName = "UPO", startPath = "login",
+        manifestPath = "manifest.json", offlinePath = "offline-page.html", enableInstallPrompt = false)
 public class MainLayout extends FlexLayout implements RouterLayout {
     private Menu menu;
 
@@ -34,6 +35,7 @@ public class MainLayout extends FlexLayout implements RouterLayout {
         menu.addView(ComputerCrudView.class, ComputerCrudView.VIEW_NAME, VaadinIcon.DESKTOP.create());
         menu.addView(OrganizationCrudView.class, OrganizationCrudView.VIEW_NAME, VaadinIcon.BUILDING.create());
         menu.addView(TypeUsingCrudView.class, TypeUsingCrudView.VIEW_NAME, VaadinIcon.ACCORDION_MENU.create());
+        menu.addView(CertificateReportView.class, CertificateReportView.VIEW_NAME, VaadinIcon.SPLINE_CHART.create());
         add(menu);
 
     }

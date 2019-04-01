@@ -42,7 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().cors().and()
                 .authorizeRequests()
-                .antMatchers("/VAADIN/**").permitAll()
+                .antMatchers("/VAADIN/**", "/manifest.json", "/sw.js", "/offline-page.html").permitAll()
                 .anyRequest().authenticated().and();
 
         http.logout().permitAll()
