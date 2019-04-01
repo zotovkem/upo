@@ -1,6 +1,5 @@
-package ru.utelksp.upo.view.crud;
+package ru.utelksp.upo.view.report;
 
-import ar.com.fdvs.dj.domain.ExpressionHelper;
 import ar.com.fdvs.dj.domain.builders.ColumnBuilder;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
@@ -21,10 +20,11 @@ import ru.utelksp.upo.repository.CertificateRepository;
 import ru.utelksp.upo.view.MainLayout;
 
 import javax.annotation.PostConstruct;
-import java.util.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
-
-import static ru.utelksp.upo.common.Util.getCollectMap;
 
 /**
  * Форма для отчета по сертификатам
@@ -41,28 +41,27 @@ public class CertificateReportView extends VerticalLayout {
     private HorizontalLayout reportContainer = new HorizontalLayout();
 
     public static final String VIEW_NAME = "Отчет по сертификатам";
-    private static final List<String> GRID_COLUMNS = List.of("id", "name");
-    private static final List<String> GRID_COLUMNS_CAPTION = List.of("Код", "Наименование");
-    private static final Map<String, String> MAP_COLUMN_PROP = getCollectMap(GRID_COLUMNS, GRID_COLUMNS_CAPTION);
+    private static final List<String> FORMAT_REPORT = List.of("PDF", "XLS", "DOCX");
 
     @PostConstruct
     private void init() {
         setSizeFull();
         Button buildReportButton = new Button("Сформировать", e -> {
             reportContainer.removeAll();
-            reportContainer.add(buildSimpleReport());
-        });
-
-        Button downloadButton = new Button("Печать", e -> {
-            reportContainer.removeAll();
+//            reportContainer.add(buildSimpleReport());
             reportContainer.add(buildDownloadableReport());
         });
 
-        reportContainer.getElement().setAttribute("theme", "");
+//        Button downloadButton = new Button("Печать", e -> {
+//            reportContainer.removeAll();
+//            reportContainer.add(buildDownloadableReport());
+//        });
+
+//        reportContainer.getElement().setAttribute("theme", "");
         Div div = new Div(reportContainer);
         div.setSizeFull();
 
-        menuLayout.add(buildReportButton, downloadButton);
+        menuLayout.add(buildReportButton);
         add(menuLayout);
         add(div);
 
@@ -72,10 +71,10 @@ public class CertificateReportView extends VerticalLayout {
      * Формирует отчет
      */
     private Component buildSimpleReport() {
-        PrintPreviewReport<CertificateReportDto> report = new PrintPreviewReport<>(CertificateReportDto.class);
+        PrintPreviewReport<CertificateReportDto> report = new PrintPreviewReport<>();
         getReportBuilder(report);
 
-        report.setItems(new ArrayList<>(certificateRepository.findWithParam(null, null, null)));
+        report.setItems(certificateRepository.findWithParam(null, null, null));
         return report;
     }
 
@@ -97,14 +96,14 @@ public class CertificateReportView extends VerticalLayout {
      */
     private void getReportBuilder(PrintPreviewReport<CertificateReportDto> report) {
         report.getReportBuilder()
-                .setMargins(20, 20, 40, 40)
+//                .setMargins(20, 20, 40, 40)
                 .setTitle(VIEW_NAME)
                 .setPrintBackgroundOnOddRows(true)
-                .setUseFullPageWidth(true)
-                .addColumn(ColumnBuilder.getNew()
-                        .setCustomExpression(ExpressionHelper.getRecordsInReport())
-                        .setTitle("Порядковый номер")
-                        .build())
+//                .setUseFullPageWidth(true)
+//                .addColumn(ColumnBuilder.getNew()
+//                        .setCustomExpression(ExpressionHelper.getRecordsInReport())
+//                        .setTitle("Порядковый номер")
+//                        .build())
                 .addColumn(ColumnBuilder.getNew()
                         .setColumnProperty("employeeFio", String.class)
                         .setTitle("ФИО пользователя")
@@ -114,8 +113,9 @@ public class CertificateReportView extends VerticalLayout {
                         .setTitle("Наименование сертификата")
                         .build())
                 .addColumn(ColumnBuilder.getNew()
-                        .setColumnProperty("dateEnd", String.class)
+                        .setColumnProperty("dateEnd", LocalDate.class)
                         .setTitle("Срок действия сертификата")
+                        .setTextFormatter(DateTimeFormatter.ISO_LOCAL_DATE.toFormat())
                         .build())
                 .addColumn(ColumnBuilder.getNew()
                         .setColumnProperty("computer", String.class)
@@ -124,20 +124,22 @@ public class CertificateReportView extends VerticalLayout {
     }
 
     /**
-     * Скачивание отчета
+     * Сформировать отчет
      */
     private Component buildDownloadableReport() {
-        PrintPreviewReport<CertificateReportDto> report = new PrintPreviewReport<>(CertificateReportDto.class);
-        SerializableSupplier<List<? extends CertificateReportDto>> itemsSupplier = () -> new ArrayList<>(certificateRepository.findWithParam(null, null, null));
+        PrintPreviewReport<CertificateReportDto> report = new PrintPreviewReport<>();
+        getReportBuilder(report);
+        SerializableSupplier<List<? extends CertificateReportDto>> itemsSupplier = () -> certificateRepository.findWithParam(null, null, null);
         report.setItems(itemsSupplier.get());
 
         HorizontalLayout anchors = new HorizontalLayout();
 
-        for (PrintPreviewReport.Format format : Arrays.asList(PrintPreviewReport.Format.values())) {
+        FORMAT_REPORT.forEach(f -> {
+            var format = PrintPreviewReport.Format.valueOf(f);
             Anchor anchor = new Anchor(report.getStreamResource("certificate-report." + format.name().toLowerCase(), itemsSupplier, format), format.name());
             anchor.getElement().setAttribute("скачать", true);
             anchors.add(anchor);
-        }
+        });
 
         VerticalLayout layout = new VerticalLayout(anchors, report);
         layout.getElement().setAttribute("theme", "spacing");

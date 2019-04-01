@@ -9,6 +9,7 @@ import com.vaadin.flow.theme.Theme;
 import com.vaadin.flow.theme.lumo.Lumo;
 import ru.utelksp.upo.view.component.Menu;
 import ru.utelksp.upo.view.crud.*;
+import ru.utelksp.upo.view.report.CertificateReportView;
 
 import javax.annotation.PostConstruct;
 
@@ -37,6 +38,5 @@ public class MainLayout extends FlexLayout implements RouterLayout {
         menu.addView(TypeUsingCrudView.class, TypeUsingCrudView.VIEW_NAME, VaadinIcon.ACCORDION_MENU.create());
         menu.addView(CertificateReportView.class, CertificateReportView.VIEW_NAME, VaadinIcon.SPLINE_CHART.create());
         add(menu);
-
     }
 }
