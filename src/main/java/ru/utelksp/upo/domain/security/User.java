@@ -17,7 +17,7 @@ import java.util.Set;
 @Entity
 @EqualsAndHashCode(exclude = "roles")
 @ToString(exclude = "roles")
-@Table(name = "user", schema = "upo")
+@Table(name = "upo_user", schema = "upo")
 public class User {
 
     @Id

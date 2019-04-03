@@ -8,13 +8,11 @@
     <changeSet id="testdata-account-order" author="ZotovES" context="test">
 
         <insert tableName="account_order" schemaName="upo">
-            <column name="id" value="1"/>
             <column name="order_number" value="1"/>
             <column name="order_date" value="2019-12-19"/>
             <column name="organization_id" value="1"/>
         </insert>
         <insert tableName="account_order" schemaName="upo">
-            <column name="id" value="2"/>
             <column name="order_number" value="2"/>
             <column name="order_date" value="2019-10-19"/>
             <column name="organization_id" value="2"/>

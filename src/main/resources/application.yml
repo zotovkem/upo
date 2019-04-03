@@ -61,6 +61,7 @@ spring:
     password: upo
     hikari:
       maximum-pool-size: 10
+      schema: upo
   jpa:
     database-platform: org.hibernate.dialect.SQLServer2012Dialect
     database: sql_server
@@ -68,6 +69,8 @@ spring:
 
   liquibase:
     contexts: production,test
+    default-schema: upo
+    liquibase-schema: upo
 
 ---
 
