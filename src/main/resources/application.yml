@@ -10,9 +10,9 @@ spring:
     productionMode: false
 
 server:
-  port: 42022
+  port: 8081
   servlet:
-    contextPath: null
+    contextPath: /upo
 
 logging:
   file: logs/upo.log
