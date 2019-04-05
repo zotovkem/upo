@@ -19,7 +19,6 @@
         </createTable>
 
         <insert tableName="user">
-            <column name="id" value="1"/>
             <column name="username" value="root"/>
             <column name="password" value="$2a$09$AUdSX4vKoFaYS.gyEcfGGO/lOxjHSDltxd..wYvOrwYMxMlufV0Qe"/>
         </insert>

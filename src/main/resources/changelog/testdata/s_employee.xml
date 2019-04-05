@@ -8,28 +8,24 @@
     <changeSet id="testdata-s-employee" author="ZotovES" context="test">
 
         <insert tableName="s_employee" schemaName="upo">
-            <column name="id" value="1"/>
             <column name="first_name" value="Иван"/>
             <column name="last_name" value="Иванов"/>
             <column name="patronymic" value="Иванович"/>
             <column name="department" value="Бухгалтерия"/>
         </insert>
         <insert tableName="s_employee" schemaName="upo">
-            <column name="id" value="2"/>
             <column name="first_name" value="Петр"/>
             <column name="last_name" value="Петров"/>
             <column name="patronymic" value="Семенович"/>
             <column name="department" value="Отдел информационных технологий"/>
         </insert>
         <insert tableName="s_employee" schemaName="upo">
-            <column name="id" value="3"/>
             <column name="first_name" value="Сигизмунд"/>
             <column name="last_name" value="Сидоров"/>
             <column name="patronymic" value="Леонидович"/>
             <column name="department" value="Приемная"/>
         </insert>
         <insert tableName="s_employee" schemaName="upo">
-            <column name="id" value="4"/>
             <column name="first_name" value="Федор"/>
             <column name="patronymic" value="Исакиевич"/>
             <column name="last_name" value="Мирчинский"/>

@@ -16,11 +16,9 @@
         </createTable>
 
         <insert tableName="role">
-            <column name="id" value="1"/>
             <column name="name" value="admin"/>
         </insert>
         <insert tableName="role">
-            <column name="id" value="2"/>
             <column name="name" value="user"/>
         </insert>
 
