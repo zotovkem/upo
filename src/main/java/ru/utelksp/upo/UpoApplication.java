@@ -8,7 +8,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
  * @author Created by ZotovES on 17.03.2019
  * Стартующее приложение
  */
-@SpringBootApplication()
+@SpringBootApplication
 public class UpoApplication extends SpringBootServletInitializer {
     public static void main(String[] args) {SpringApplication.run(UpoApplication.class, args);}
 }
