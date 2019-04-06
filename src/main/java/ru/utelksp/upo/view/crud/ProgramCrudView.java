@@ -15,6 +15,7 @@ import ru.utelksp.upo.domain.Program;
 import ru.utelksp.upo.domain.dictionary.Computer;
 import ru.utelksp.upo.domain.dictionary.TypeUsing;
 import ru.utelksp.upo.view.MainLayout;
+import ru.utelksp.upo.view.component.CustomGrid;
 import ru.utelksp.upo.view.component.UpoCrudFormFactory;
 import ru.utelksp.upo.view.component.UpoGridCrud;
 import ru.utelksp.upo.view.component.UpoHorizontalSplitCrudLayout;
@@ -44,10 +45,11 @@ public class ProgramCrudView extends HorizontalLayout {
 
     public static final String VIEW_NAME = "Программное обеспечение";
     private static final String[] CRUD_FORM_FIELD = {"id", "name", "typeUsing", "orders", "computers", "description"};
-    private static final String[] CRUD_FORM_FIELD_CAPTION = {"Код", "Наименование", "Вид использования", "Приказы", "Компьютеры", "Комментарии"};
+    private static final String[] CRUD_FORM_FIELD_CAPTION = {"Код", "Наименование", "Вид использования", "Приказы", "", "Комментарии"};
     private static final List<String> GRID_COLUMNS = List.of("id", "name");
     private static final List<String> GRID_COLUMNS_CAPTION = List.of("Код", "Наименование");
     private static final Map<String, String> MAP_COLUMN_PROP = getCollectMap(GRID_COLUMNS, GRID_COLUMNS_CAPTION);
+    private static final Map<String, String> MAP_COLUMN_COMPUTER = Map.of("name", "Компьютеры");
 
     @PostConstruct
     void init() {
@@ -60,10 +62,15 @@ public class ProgramCrudView extends HorizontalLayout {
                 new ComboBoxProvider<>("Вид использования", typeUsingCrudListener.findAll(), new TextRenderer<>(TypeUsing::getName), TypeUsing::getName));
         formFactory.setFieldProvider("orders",
                 new CheckBoxGroupProvider<>("Приказы", orderCrudListener.findAll(), Order::getOrderNumber));
-        formFactory.setFieldProvider("computers",
-                new CheckBoxGroupProvider<>("Компьютеры", computerCrudListener.findAll(), Computer::getName));
+        formFactory.setFieldProvider("computers", () -> {
+            var grid = new CustomGrid<>(Computer.class, computerCrudListener.findAll(), MAP_COLUMN_COMPUTER);
+            grid.setValue(computerCrudListener.findAll());
+            return grid;
+        });
 
-        UpoGridCrud<Program> crud = new UpoGridCrud<>(Program.class, new UpoHorizontalSplitCrudLayout(), formFactory, programCrudListener);
+        var splitLayout = new UpoHorizontalSplitCrudLayout();
+        splitLayout.getMainLayout().setSplitterPosition(60);
+        UpoGridCrud<Program> crud = new UpoGridCrud<>(Program.class, splitLayout, formFactory, programCrudListener);
         crud.setGridColumn(GRID_COLUMNS);
         crud.setGridCaptionColumn(MAP_COLUMN_PROP);
         add(crud);
