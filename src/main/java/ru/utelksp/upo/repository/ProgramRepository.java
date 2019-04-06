@@ -24,12 +24,14 @@ public interface ProgramRepository extends JpaRepository<Program, Long> {
     @Query(value = "" +
             "select new ru.utelksp.upo.common.dto.ProgramReportDto ( " +
             " program.id, " +
-            " cert.name, cert.dateEnd, pc.name ) " +
+            " program.name, " +
+            "concat(emp.lastName,' ' , emp.firstName,' ' , emp.patronymic) , " +
+            "ord.orderDate, " +
+            "ord.orderNumber ) " +
             "from Program program " +
-            "left join order.employee employee on cert.employee.id = employee.id " +
-            "left join cert.computer pc on cert.computer.id = pc.id " +
-            "where (:employeeId is null or employee.id = :employeeId) " +
-            "and (:certificateId is null or cert.id = :certificateId) " +
-            "and (:pcId is null or pc.id = :pcId)")
+            "left join program.orders ord " +
+            "left join ord.employees emp " +
+            "where (:employeeId is null or emp.id = :employeeId) " +
+            "and (:orderId is null or ord.id = :orderId)")
     List<ProgramReportDto> findWithParam(Long employeeId, Long orderId);
 }

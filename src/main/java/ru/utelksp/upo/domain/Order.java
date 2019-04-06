@@ -49,7 +49,7 @@ public class Order {
      * Список пользователей
      */
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "s_ref_program_employee", schema = "upo",
+    @JoinTable(name = "s_ref_order_employee", schema = "upo",
             joinColumns = {@JoinColumn(name = "order_id")},
             inverseJoinColumns = {@JoinColumn(name = "employee_id")})
     private Set<Employee> employees;

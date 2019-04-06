@@ -30,8 +30,8 @@ import java.time.format.DateTimeFormatter;
  * Форма для отчета по прогрманому обеспечению
  */
 @SuppressWarnings("Duplicates")
-@Route(value = "certificateReport", layout = MainLayout.class)
-@PageTitle("Отчет по прогрманому обеспечению")
+@Route(value = "programReport", layout = MainLayout.class)
+@PageTitle("Отчет по программному обеспечению")
 @UIScope
 @org.springframework.stereotype.Component
 @RequiredArgsConstructor
@@ -45,7 +45,7 @@ public class ProgramReportView extends VerticalLayout {
     private ComboBox<Employee> employeeCombobox = new ComboBox<>();
     private ComboBox<Order> orderCombobox = new ComboBox<>();
 
-    public static final String VIEW_NAME = "Отчет по прогрманому обеспечению";
+    public static final String VIEW_NAME = "Отчет по программному обеспечению";
 
     @PostConstruct
     private void init() {
@@ -114,7 +114,7 @@ public class ProgramReportView extends VerticalLayout {
                         .setTitle("ФИО пользователя")
                         .build())
                 .addColumn(ColumnBuilder.getNew()
-                        .setColumnProperty("namber", String.class)
+                        .setColumnProperty("number", String.class)
                         .setTitle("Номер приказа")
                         .build())
                 .addColumn(ColumnBuilder.getNew()

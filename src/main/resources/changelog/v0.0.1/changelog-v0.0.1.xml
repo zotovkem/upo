@@ -18,4 +18,5 @@
     <include file="2019-03-31-02-add-table-role.xml" relativeToChangelogFile="true"/>
     <include file="2019-03-31-02-add-table-mtm-user-role.xml" relativeToChangelogFile="true"/>
     <include file="2019-04-03-01-rename-table-user.xml" relativeToChangelogFile="true"/>
+    <include file="2019-04-05-01-add-table-s-ref-order-employee.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>
