@@ -45,7 +45,7 @@ public class ProgramReportView extends VerticalLayout {
     private ComboBox<Employee> employeeCombobox = new ComboBox<>();
     private ComboBox<Order> orderCombobox = new ComboBox<>();
 
-    public static final String VIEW_NAME = "Отчет по программному обеспечению";
+    public static final String VIEW_NAME = "Отчет по ПО";
 
     @PostConstruct
     private void init() {

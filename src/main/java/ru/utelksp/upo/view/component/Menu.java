@@ -19,7 +19,6 @@ import com.vaadin.flow.server.VaadinSession;
 
 public class Menu extends FlexLayout {
 
-    private static final String SHOW_TABS = "show-tabs";
     private Tabs tabs;
 
     public Menu() {

@@ -93,6 +93,7 @@ public class CertificateReportView extends VerticalLayout {
     /**
      * Формирует отчет
      */
+    @SuppressWarnings("Duplicates")
     private Component buildSimpleReport() {
         var employeeId = employeeCombobox.getOptionalValue().map(Employee::getId).orElse(null);
         var certificateId = certificateCombobox.getOptionalValue().map(Certificate::getId).orElse(null);
