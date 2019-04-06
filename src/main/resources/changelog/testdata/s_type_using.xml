@@ -8,16 +8,13 @@
     <changeSet id="testdata-s-type-using" author="ZotovES" context="test">
 
         <insert tableName="s_type_using" schemaName="upo">
-            <column name="id" value="1"/>
             <column name="name" value="Вид 1 "/>
             <column name="description" value="Описание"/>
         </insert>
         <insert tableName="s_type_using" schemaName="upo">
-            <column name="id" value="2"/>
             <column name="name" value="Вид 2"/>
         </insert>
         <insert tableName="s_type_using" schemaName="upo">
-            <column name="id" value="3"/>
             <column name="name" value="Вид 3"/>
             <column name="description" value="тестовое описание "/>
         </insert>

@@ -2,6 +2,8 @@ package ru.utelksp.upo.view.component;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
+import lombok.Getter;
+import lombok.Setter;
 import org.vaadin.crudui.crud.CrudOperation;
 import org.vaadin.crudui.layout.impl.HorizontalSplitCrudLayout;
 
@@ -10,6 +12,12 @@ import org.vaadin.crudui.layout.impl.HorizontalSplitCrudLayout;
  * Компонент расположения окна редактирования
  */
 public class UpoHorizontalSplitCrudLayout extends HorizontalSplitCrudLayout {
+    private static final int SPLIT_POSITION = 80;
+
+    @Getter
+    @Setter
+    private SplitLayout mainLayout;
+
     public UpoHorizontalSplitCrudLayout() {
         super();
         setFormCaption(CrudOperation.DELETE, "Запись будет удалена, вы уверены?");
@@ -21,9 +29,9 @@ public class UpoHorizontalSplitCrudLayout extends HorizontalSplitCrudLayout {
 
     @Override
     protected SplitLayout buildMainLayout() {
-        SplitLayout mainLayout = new SplitLayout(firstComponent, secondComponent);
+        mainLayout = new SplitLayout(firstComponent, secondComponent);
         mainLayout.setSizeFull();
-        mainLayout.setSplitterPosition(80);
+        mainLayout.setSplitterPosition(SPLIT_POSITION);
         return mainLayout;
     }
 

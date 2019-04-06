@@ -8,7 +8,6 @@
     <changeSet id="testdata-certificate" author="ZotovES" context="test">
 
         <insert tableName="certificate" schemaName="upo">
-            <column name="id" value="1"/>
             <column name="name" value="Сертификат 1"/>
             <column name="employee_id" value="1"/>
             <column name="date_end" value="2019-12-19"/>
@@ -16,7 +15,6 @@
         </insert>
 
         <insert tableName="certificate" schemaName="upo">
-            <column name="id" value="2"/>
             <column name="name" value="Сертификат 2"/>
             <column name="employee_id" value="2"/>
             <column name="date_end" value="2019-10-19"/>

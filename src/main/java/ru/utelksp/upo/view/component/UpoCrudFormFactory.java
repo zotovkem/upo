@@ -19,7 +19,7 @@ public class UpoCrudFormFactory<T> extends DefaultCrudFormFactory<T> {
     }
 
     private void getTranslateFormFactory(@NotNull DefaultCrudFormFactory<T> formFactory) {
-        formFactory.setButtonCaption(CrudOperation.ADD, "Добавить новую запись");
+        formFactory.setButtonCaption(CrudOperation.ADD, "Добавить");
         formFactory.setButtonCaption(CrudOperation.DELETE, "Удалить");
         formFactory.setButtonCaption(CrudOperation.READ, "Закрыть");
         formFactory.setButtonCaption(CrudOperation.UPDATE, "Сохранить");

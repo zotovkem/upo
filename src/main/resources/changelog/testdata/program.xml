@@ -7,12 +7,10 @@
 
     <changeSet id="testdata-program" author="ZotovES" context="test">
         <insert tableName="program" schemaName="upo">
-            <column name="id" value="1"/>
             <column name="name" value="Microsoft Office"/>
             <column name="type_using_id" value="1"/>
         </insert>
         <insert tableName="program" schemaName="upo">
-            <column name="id" value="2"/>
             <column name="name" value="Autocad 9.0"/>
             <column name="type_using_id" value="2"/>
         </insert>

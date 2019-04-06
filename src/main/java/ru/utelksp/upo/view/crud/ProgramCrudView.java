@@ -8,13 +8,13 @@ import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.spring.annotation.UIScope;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.vaadin.crudui.form.impl.field.provider.CheckBoxGroupProvider;
 import org.vaadin.crudui.form.impl.field.provider.ComboBoxProvider;
 import ru.utelksp.upo.domain.Order;
 import ru.utelksp.upo.domain.Program;
 import ru.utelksp.upo.domain.dictionary.Computer;
 import ru.utelksp.upo.domain.dictionary.TypeUsing;
 import ru.utelksp.upo.view.MainLayout;
+import ru.utelksp.upo.view.component.CustomGrid;
 import ru.utelksp.upo.view.component.UpoCrudFormFactory;
 import ru.utelksp.upo.view.component.UpoGridCrud;
 import ru.utelksp.upo.view.component.UpoHorizontalSplitCrudLayout;
@@ -43,27 +43,39 @@ public class ProgramCrudView extends HorizontalLayout {
     private final ComputerCrudListener computerCrudListener;
 
     public static final String VIEW_NAME = "Программное обеспечение";
-    private static final String[] CRUD_FORM_FIELD = {"id", "name", "typeUsing", "orders", "computers", "description"};
-    private static final String[] CRUD_FORM_FIELD_CAPTION = {"Код", "Наименование", "Вид использования", "Приказы", "Компьютеры", "Комментарии"};
+    private static final String[] CRUD_FORM_FIELD = {"orders", "computers", "id", "name", "typeUsing", "description"};
+    private static final String[] CRUD_FORM_FIELD_CAPTION = {"Приказы", "Компьютеры", "Код", "Наименование", "Вид использования", "Комментарии"};
     private static final List<String> GRID_COLUMNS = List.of("id", "name");
+    private static final List<String> GRID_ORDER_COLUMNS = List.of("orderNumber", "orderDate");
+    private static final List<String> GRID_COMPUTER_COLUMNS = List.of("name");
     private static final List<String> GRID_COLUMNS_CAPTION = List.of("Код", "Наименование");
     private static final Map<String, String> MAP_COLUMN_PROP = getCollectMap(GRID_COLUMNS, GRID_COLUMNS_CAPTION);
+    private static final Map<String, String> MAP_COLUMN_COMPUTER = Map.of("name", "Компьютеры");
+    private static final Map<String, String> MAP_COLUMN_ORDER = Map.of("orderNumber", "Приказ", "orderDate", "Дата");
 
     @PostConstruct
     void init() {
         setSizeFull();
 
         UpoCrudFormFactory<Program> formFactory = new UpoCrudFormFactory<>(Program.class);
+        formFactory.setFieldProvider("orders", () -> {
+            var grid = new CustomGrid<>(Order.class, orderCrudListener.findAll(), GRID_ORDER_COLUMNS, MAP_COLUMN_ORDER);
+            grid.setValue(orderCrudListener.findAll());
+            return grid;
+        });
+        formFactory.setFieldProvider("computers", () -> {
+            var grid = new CustomGrid<>(Computer.class, computerCrudListener.findAll(), GRID_COMPUTER_COLUMNS, MAP_COLUMN_COMPUTER);
+            grid.setValue(computerCrudListener.findAll());
+            return grid;
+        });
         formFactory.setVisibleProperties(CRUD_FORM_FIELD);
         formFactory.setFieldCaptions(CRUD_FORM_FIELD_CAPTION);
         formFactory.setFieldProvider("typeUsing",
                 new ComboBoxProvider<>("Вид использования", typeUsingCrudListener.findAll(), new TextRenderer<>(TypeUsing::getName), TypeUsing::getName));
-        formFactory.setFieldProvider("orders",
-                new CheckBoxGroupProvider<>("Приказы", orderCrudListener.findAll(), Order::getOrderNumber));
-        formFactory.setFieldProvider("computers",
-                new CheckBoxGroupProvider<>("Компьютеры", computerCrudListener.findAll(), Computer::getName));
 
-        UpoGridCrud<Program> crud = new UpoGridCrud<>(Program.class, new UpoHorizontalSplitCrudLayout(), formFactory, programCrudListener);
+        var splitLayout = new UpoHorizontalSplitCrudLayout();
+        splitLayout.getMainLayout().setSplitterPosition(60);
+        UpoGridCrud<Program> crud = new UpoGridCrud<>(Program.class, splitLayout, formFactory, programCrudListener);
         crud.setGridColumn(GRID_COLUMNS);
         crud.setGridCaptionColumn(MAP_COLUMN_PROP);
         add(crud);
