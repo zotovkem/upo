@@ -5,6 +5,7 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -14,14 +15,18 @@ import java.util.Map;
 public class CustomGrid<T> extends CustomField<Collection<T>> {
     private Grid<T> grid;
 
-    public CustomGrid(Class<T> domainType, Collection<T> defaultValue, Map<String, String> mapColumn) {
+    public CustomGrid(Class<T> domainType, Collection<T> defaultValue, List<String> columns, Map<String, String> mapColumn) {
         grid = new Grid<>(domainType);
         grid.setItems(defaultValue);
         grid.setSelectionMode(Grid.SelectionMode.MULTI);
-        grid.setColumns(mapColumn.keySet().toArray(String[]::new));
-        grid.getColumns().forEach(column -> column.setHeader(mapColumn.get(column.getKey())));
+        grid.setColumns(columns.toArray(String[]::new));
+        grid.getColumns().forEach(column -> {
+            column.setWidth("100%");
+            column.setHeader(mapColumn.get(column.getKey()));
+        });
         grid.setColumnReorderingAllowed(true);
         grid.setWidth("100%");
+        grid.getColumns().get(0).setFlexGrow(1);
         setWidth("100%");
         VerticalLayout layout = new VerticalLayout();
         layout.add(grid);
