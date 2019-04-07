@@ -7,6 +7,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.UIScope;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.vaadin.crudui.crud.CrudOperation;
 import org.vaadin.crudui.form.impl.field.provider.ComboBoxProvider;
 import ru.utelksp.upo.domain.Certificate;
 import ru.utelksp.upo.domain.dictionary.Computer;
@@ -46,6 +47,9 @@ public class CertificateCrudView extends VerticalLayout {
     private static final Map<String, String> MAP_COLUMN_PROP = getCollectMap(GRID_COLUMNS, GRID_COLUMNS_CAPTION);
     public static final String VIEW_NAME = "Сертификаты";
 
+    /**
+     * Заполняет форму
+     */
     @PostConstruct
     public void init() {
         setSizeFull();
@@ -53,13 +57,38 @@ public class CertificateCrudView extends VerticalLayout {
         UpoCrudFormFactory<Certificate> formFactory = new UpoCrudFormFactory<>(Certificate.class);
         formFactory.setVisibleProperties(CRUD_FORM_FIELD);
         formFactory.setFieldCaptions(CRUD_FORM_FIELD_CAPTION);
-        formFactory.setFieldProvider("employee",
-                new ComboBoxProvider<>("Пользователь", employeeService.findAll(), new TextRenderer<>(Employee::getShortFio), Employee::getShortFio));
-        formFactory.setFieldProvider("computer",
-                new ComboBoxProvider<>("Компьютер", computerService.findAll(), new TextRenderer<>(Computer::getName), Computer::getName));
+        formFactory.setFieldProvider("employee", getEmployeeProvider());
+        formFactory.setFieldProvider("computer", getComputerProvider());
         UpoGridCrud<Certificate> crud = new UpoGridCrud<>(Certificate.class, new UpoHorizontalSplitCrudLayout(), formFactory, certificateCrudListener);
         crud.setGridColumn(GRID_COLUMNS);
         crud.setGridCaptionColumn(MAP_COLUMN_PROP);
+        crud.addAttachListener(attachEvent -> refreshCombobox(crud));
         add(crud);
+    }
+
+    /**
+     * Обновляет значения справочников в выпадающих списках
+     *
+     * @param crud форма
+     */
+    @SuppressWarnings("unchecked")
+    private void refreshCombobox(UpoGridCrud crud) {
+        crud.getCrudFormFactory().setFieldProvider("employee", getEmployeeProvider());
+        crud.getCrudFormFactory().setFieldProvider("computer", getComputerProvider());
+        crud.getCrudFormFactory().buildCaption(CrudOperation.READ, null);
+    }
+
+    /**
+     * Получить провайдера для справочника компьютеров
+     */
+    private ComboBoxProvider getComputerProvider() {
+        return new ComboBoxProvider<>("Компьютер", computerService.findAll(), new TextRenderer<>(Computer::getName), Computer::getName);
+    }
+
+    /**
+     * Получить провейдера для справочника пользователей
+     */
+    private ComboBoxProvider getEmployeeProvider() {
+        return new ComboBoxProvider<>("Пользователь", employeeService.findAll(), new TextRenderer<>(Employee::getShortFio), Employee::getShortFio);
     }
 }

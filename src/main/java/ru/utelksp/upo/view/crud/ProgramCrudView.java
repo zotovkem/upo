@@ -8,6 +8,7 @@ import com.vaadin.flow.router.RouteAlias;
 import com.vaadin.flow.spring.annotation.UIScope;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.vaadin.crudui.crud.CrudOperation;
 import org.vaadin.crudui.form.impl.field.provider.ComboBoxProvider;
 import ru.utelksp.upo.domain.Order;
 import ru.utelksp.upo.domain.Program;
@@ -70,15 +71,32 @@ public class ProgramCrudView extends HorizontalLayout {
         });
         formFactory.setVisibleProperties(CRUD_FORM_FIELD);
         formFactory.setFieldCaptions(CRUD_FORM_FIELD_CAPTION);
-        formFactory.setFieldProvider("typeUsing",
-                new ComboBoxProvider<>("Вид использования", typeUsingCrudListener.findAll(), new TextRenderer<>(TypeUsing::getName), TypeUsing::getName));
+        formFactory.setFieldProvider("typeUsing", getTypeUsingProvider());
 
         var splitLayout = new UpoHorizontalSplitCrudLayout();
         splitLayout.getMainLayout().setSplitterPosition(60);
         UpoGridCrud<Program> crud = new UpoGridCrud<>(Program.class, splitLayout, formFactory, programCrudListener);
         crud.setGridColumn(GRID_COLUMNS);
         crud.setGridCaptionColumn(MAP_COLUMN_PROP);
+        crud.addAttachListener(attachEvent -> refreshCombobox(crud));
         add(crud);
     }
 
+    /**
+     * Обновляет значения справочников в выпадающих списках
+     *
+     * @param crud форма
+     */
+    @SuppressWarnings("unchecked")
+    private void refreshCombobox(UpoGridCrud crud) {
+        crud.getCrudFormFactory().setFieldProvider("organization", getTypeUsingProvider());
+        crud.getCrudFormFactory().buildCaption(CrudOperation.READ, null);
+    }
+
+    /**
+     * Получить провайдера для справочника видов использования
+     */
+    private ComboBoxProvider getTypeUsingProvider() {
+        return new ComboBoxProvider<>("Вид использования", typeUsingCrudListener.findAll(), new TextRenderer<>(TypeUsing::getName), TypeUsing::getName);
+    }
 }

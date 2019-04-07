@@ -7,6 +7,7 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.UIScope;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.vaadin.crudui.crud.CrudOperation;
 import org.vaadin.crudui.form.impl.field.provider.ComboBoxProvider;
 import ru.utelksp.upo.domain.Order;
 import ru.utelksp.upo.domain.dictionary.Employee;
@@ -55,8 +56,7 @@ public class OrderCrudView extends VerticalLayout {
         UpoCrudFormFactory<Order> formFactory = new UpoCrudFormFactory<>(Order.class);
         formFactory.setVisibleProperties(CRUD_FORM_FIELD);
         formFactory.setFieldCaptions(CRUD_FORM_FIELD_CAPTION);
-        formFactory.setFieldProvider("organization",
-                new ComboBoxProvider<>("Организация", organizationService.findAll(), new TextRenderer<>(Organization::getName), Organization::getName));
+        formFactory.setFieldProvider("organization", getOrganizationProvider());
         formFactory.setFieldProvider("employees", () -> {
             var grid = new CustomGrid<>(Employee.class, employeeCrudListener.findAll(), GRID_EMPLOYEE_COLUMNS, MAP_EMPLOYEE_COLUMNS);
             grid.setValue(employeeCrudListener.findAll());
@@ -64,11 +64,29 @@ public class OrderCrudView extends VerticalLayout {
         });
 
         var splitLayout = new UpoHorizontalSplitCrudLayout();
-        splitLayout.getMainLayout().setSplitterPosition(75);
+        splitLayout.getMainLayout().setSplitterPosition(60);
         UpoGridCrud<Order> crud = new UpoGridCrud<>(Order.class, splitLayout, formFactory, orderCrudListener);
         crud.setGridColumn(GRID_COLUMNS);
         crud.setGridCaptionColumn(MAP_COLUMN_PROP);
+        crud.addAttachListener(attachEvent -> refreshCombobox(crud));
         add(crud);
     }
 
+    /**
+     * Обновляет значения справочников в выпадающих списках
+     *
+     * @param crud форма
+     */
+    @SuppressWarnings("unchecked")
+    private void refreshCombobox(UpoGridCrud crud) {
+        crud.getCrudFormFactory().setFieldProvider("organization", getOrganizationProvider());
+        crud.getCrudFormFactory().buildCaption(CrudOperation.READ, null);
+    }
+
+    /**
+     * Получить провайдера для справочника организаций
+     */
+    private ComboBoxProvider getOrganizationProvider() {
+        return new ComboBoxProvider<>("Организация", organizationService.findAll(), new TextRenderer<>(Organization::getName), Organization::getName);
+    }
 }
