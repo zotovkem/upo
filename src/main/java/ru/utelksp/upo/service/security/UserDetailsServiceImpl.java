@@ -1,4 +1,4 @@
-package ru.utelksp.upo.service.security.Impl;
+package ru.utelksp.upo.service.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

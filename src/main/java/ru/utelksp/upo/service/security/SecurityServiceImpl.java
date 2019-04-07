@@ -1,4 +1,4 @@
-package ru.utelksp.upo.service.security.Impl;
+package ru.utelksp.upo.service.security;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;

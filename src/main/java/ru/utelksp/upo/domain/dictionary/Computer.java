@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.utelksp.upo.service.impl.CrudOperationListener;
 
 import javax.persistence.*;
 
@@ -16,6 +17,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@EntityListeners(CrudOperationListener.class)
 @Table(name = "s_computer", schema = "upo")
 public class Computer {
 

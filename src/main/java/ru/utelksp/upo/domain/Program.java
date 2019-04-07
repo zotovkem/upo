@@ -3,6 +3,7 @@ package ru.utelksp.upo.domain;
 import lombok.*;
 import ru.utelksp.upo.domain.dictionary.Computer;
 import ru.utelksp.upo.domain.dictionary.TypeUsing;
+import ru.utelksp.upo.service.impl.CrudOperationListener;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -16,6 +17,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@EntityListeners(CrudOperationListener.class)
 @EqualsAndHashCode(exclude = {"orders", "computers", "typeUsing"})
 @ToString(exclude = {"orders", "computers", "typeUsing"})
 @Table(name = "program", schema = "upo")

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ru.utelksp.upo.service.impl.CrudOperationListener;
 
 import javax.persistence.*;
 
@@ -19,6 +20,7 @@ import static ru.utelksp.upo.common.Util.getFirstSymbolWithDot;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@EntityListeners(CrudOperationListener.class)
 @Table(name = "s_employee", schema = "upo")
 public class Employee {
 

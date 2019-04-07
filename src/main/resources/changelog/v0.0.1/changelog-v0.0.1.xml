@@ -21,5 +21,6 @@
     <include file="2019-04-05-01-add-table-s-ref-order-employee.xml" relativeToChangelogFile="true"/>
     <include file="2019-04-07-01-add-table-s-type-event.xml" relativeToChangelogFile="true"/>
     <include file="2019-04-07-02-add-journal-event.xml" relativeToChangelogFile="true"/>
-    <include file="2019-04-07-add-s-type-event.xml" relativeToChangelogFile="true"/>
+    <include file="2019-04-07-03-add-s-type-event.xml" relativeToChangelogFile="true"/>
+    <include file="2019-04-07-04-add-username-journal.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

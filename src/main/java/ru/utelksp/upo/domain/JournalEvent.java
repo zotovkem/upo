@@ -46,6 +46,9 @@ public class JournalEvent {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
+    @Column(name = "username")
+    private String username;
+
     /**
      * Тип события
      */
@@ -63,5 +66,5 @@ public class JournalEvent {
      * Описание события
      */
     @Column(name = "description")
-    private String stackTrace;
+    private String description;
 }

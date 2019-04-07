@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="2019-04-07-04-add-username-journal" author="ZotovES" context="production">
+        <addColumn tableName="journal_event" schemaName="upo">
+            <column name="username" type="varchar(255)" remarks="Имя пользователя сгенерировавшего событие"/>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>
