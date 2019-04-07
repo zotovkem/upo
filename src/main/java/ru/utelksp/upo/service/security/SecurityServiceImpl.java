@@ -22,7 +22,7 @@ public class SecurityServiceImpl implements SecurityService {
      */
     @Override
     public Optional<String> currentUser() {
-        return Optional.of(SecurityContextHolder.getContext().getAuthentication().getDetails())
+        return Optional.of(SecurityContextHolder.getContext().getAuthentication().getPrincipal())
                 .filter(o -> o instanceof UserDetails)
                 .map(o -> (UserDetails) o)
                 .map(UserDetails::getUsername);

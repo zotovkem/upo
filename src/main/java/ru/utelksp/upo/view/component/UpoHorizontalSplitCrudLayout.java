@@ -1,6 +1,7 @@
 package ru.utelksp.upo.view.component;
 
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
 import lombok.Getter;
 import lombok.Setter;
@@ -50,5 +51,12 @@ public class UpoHorizontalSplitCrudLayout extends HorizontalSplitCrudLayout {
 
         toolbarLayout.setVisible(true);
         toolbarLayout.add(component);
+    }
+
+    /**
+     * Получить верхнийтулюар над гридом
+     */
+    public HorizontalLayout getToolbar() {
+        return toolbarLayout;
     }
 }
