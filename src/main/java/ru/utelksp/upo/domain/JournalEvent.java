@@ -36,7 +36,7 @@ public class JournalEvent {
     /**
      * Время события
      */
-    @Column(name = "date_event")
+    @Column(name = "time_event")
     private LocalTime timeEvent;
 
     /**
@@ -50,7 +50,7 @@ public class JournalEvent {
      * Тип события
      */
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "type_event_id", referencedColumnName = "id")
     private TypeEvent typeEvent;
 
     /**
