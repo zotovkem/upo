@@ -16,10 +16,18 @@ import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.VaadinServletService;
 import com.vaadin.flow.server.VaadinSession;
+import org.springframework.beans.factory.annotation.Value;
+
+import static java.lang.String.format;
+import static ru.utelksp.upo.common.UpoConst.LOGOUT_PAGE_URL;
+import static ru.utelksp.upo.common.UpoConst.LOGO_URL;
 
 public class Menu extends FlexLayout {
 
     private Tabs tabs;
+
+    @Value("${server.servlet.context-path}")
+    private String appUrl;
 
     public Menu() {
         setClassName("menu-bar");
@@ -32,9 +40,9 @@ public class Menu extends FlexLayout {
         Label title = new Label("Учет ПО");
 
         //Логотип
+        var url = VaadinServletService.getCurrentServletRequest().getContextPath();
         String resolvedImage = VaadinServletService.getCurrent()
-                .resolveResource("frontend://img/table-logo.png",
-                        VaadinSession.getCurrent().getBrowser());
+                .resolveResource(url + LOGO_URL, VaadinSession.getCurrent().getBrowser());
         Image image = new Image(resolvedImage, "");
         top.add(image);
         top.add(title);
@@ -49,8 +57,7 @@ public class Menu extends FlexLayout {
         Button logoutButton = new Button("Выйти",
                 VaadinIcon.SIGN_OUT.create());
         logoutButton.addClickListener(event -> {
-            UI.getCurrent().getPage().executeJavaScript(
-                    "window.location.href='/logout'");
+            UI.getCurrent().getPage().executeJavaScript(format("window.location.href='%s'", url + LOGOUT_PAGE_URL));
             UI.getCurrent().getSession().close();
         });
 

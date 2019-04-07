@@ -3,6 +3,7 @@ package ru.utelksp.upo.service;
 import org.springframework.lang.NonNull;
 import ru.utelksp.upo.domain.security.User;
 
+import java.util.Collection;
 import java.util.Optional;
 
 /**
@@ -27,4 +28,18 @@ public interface UserService {
      * @return пользователь
      */
     Optional<User> findByUsername(@NonNull String username);
+
+    /**
+     * Получить всех пользователей
+     *
+     * @return список пользователей
+     */
+    Collection<User> findAll();
+
+    /**
+     * Удаляет пользователя по идентификатору
+     *
+     * @param userId идентификатор пользователя
+     */
+    void deleteById(@NonNull Long userId) throws IllegalAccessException;
 }

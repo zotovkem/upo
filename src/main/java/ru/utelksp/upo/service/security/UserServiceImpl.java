@@ -10,6 +10,7 @@ import ru.utelksp.upo.repository.RoleRepository;
 import ru.utelksp.upo.repository.UserRepository;
 import ru.utelksp.upo.service.UserService;
 
+import java.util.Collection;
 import java.util.Optional;
 import java.util.Set;
 
@@ -42,5 +43,30 @@ public class UserServiceImpl implements UserService {
     @Override
     public Optional<User> findByUsername(@NonNull String username) {
         return userRepository.findByUsername(username);
+    }
+
+    /**
+     * Получить всех пользователей
+     *
+     * @return список пользователей
+     */
+    @Override
+    public Collection<User> findAll() {
+        return userRepository.findAll();
+    }
+
+    /**
+     * Удаляет пользователя по идентификатору
+     *
+     * @param userId идентификатор пользователя
+     */
+    @Override
+    public void deleteById(@NonNull Long userId) throws IllegalAccessException {
+        if (userRepository.count() > 1) {
+            userRepository.deleteById(userId);
+        } else {
+            throw new IllegalAccessException("Нельзя удалить единственного пользователя");
+        }
+
     }
 }
