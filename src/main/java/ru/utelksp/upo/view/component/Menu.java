@@ -23,8 +23,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import ru.utelksp.upo.domain.event.LogoutUserEvent;
 import ru.utelksp.upo.service.SecurityService;
 
-import javax.annotation.PostConstruct;
-
 import static java.lang.String.format;
 import static ru.utelksp.upo.common.UpoConst.LOGOUT_PAGE_URL;
 import static ru.utelksp.upo.common.UpoConst.LOGO_URL;
@@ -32,15 +30,14 @@ import static ru.utelksp.upo.common.UpoConst.LOGO_URL;
 @org.springframework.stereotype.Component
 @RequiredArgsConstructor
 public class Menu extends FlexLayout {
+    @Value("${server.servlet.context-path}")
+    private String appUrl;
+
     private final ApplicationEventPublisher eventPublisher;
     private final SecurityService securityService;
 
     private Tabs tabs;
 
-    @Value("${server.servlet.context-path}")
-    private String appUrl;
-
-    @PostConstruct
     public void init() {
         setClassName("menu-bar");
 
@@ -52,9 +49,8 @@ public class Menu extends FlexLayout {
         Label title = new Label("Учет ПО");
 
         //Логотип
-        var url = VaadinServletService.getCurrentServletRequest().getContextPath();
         String resolvedImage = VaadinServletService.getCurrent()
-                .resolveResource(url + LOGO_URL, VaadinSession.getCurrent().getBrowser());
+                .resolveResource(appUrl + LOGO_URL, VaadinSession.getCurrent().getBrowser());
         Image image = new Image(resolvedImage, "");
         top.add(image);
         top.add(title);
@@ -70,7 +66,7 @@ public class Menu extends FlexLayout {
         logoutButton.addClickListener(event -> {
             var username = securityService.currentUsername().orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден!"));
             eventPublisher.publishEvent(new LogoutUserEvent(this, username));
-            UI.getCurrent().getPage().executeJavaScript(format("window.location.href='%s'", url + LOGOUT_PAGE_URL));
+            UI.getCurrent().getPage().executeJavaScript(format("window.location.href='%s'", appUrl + LOGOUT_PAGE_URL));
             UI.getCurrent().getSession().close();
         });
 
