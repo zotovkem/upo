@@ -1,5 +1,7 @@
 package ru.utelksp.upo.service;
 
+import org.springframework.security.core.userdetails.UserDetails;
+
 import java.util.Optional;
 
 /**
@@ -14,6 +16,13 @@ public interface SecurityService {
      *
      * @return имя пользователя
      */
-    Optional<String> currentUser();
+    Optional<String> currentUsername();
+
+    /**
+     * Получить текущего пользователя из контекста приложения
+     *
+     * @return текущий пользователь
+     */
+    UserDetails currentUser();
 
 }

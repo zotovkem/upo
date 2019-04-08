@@ -1,9 +1,12 @@
 package ru.utelksp.upo.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.EventListener;
+import org.springframework.transaction.annotation.Transactional;
 import ru.utelksp.upo.common.enums.TypeEventEnum;
 import ru.utelksp.upo.domain.JournalEvent;
 import ru.utelksp.upo.domain.dictionary.TypeEvent;
+import ru.utelksp.upo.domain.event.LogoutUserEvent;
 import ru.utelksp.upo.service.JournalEventService;
 import ru.utelksp.upo.service.SecurityService;
 
@@ -20,6 +23,7 @@ import static ru.utelksp.upo.common.enums.TypeEventEnum.*;
  * @author Created by ZotovES on 07.04.2019
  * Листнер слушает crud события энтити манеджера и записывает в аудит жкрнал.
  */
+@SuppressWarnings("SpringJavaAutowiredMembersInspection")
 public class CrudOperationListener {
     @Autowired
     private SecurityService securityService;
@@ -27,11 +31,31 @@ public class CrudOperationListener {
     private JournalEventService journalEventService;
 
     /**
+     * Ловит событие разлогирования пользователя
+     *
+     * @param event событие.
+     */
+    @EventListener(value = LogoutUserEvent.class)
+    @Transactional(rollbackFor = Exception.class)
+    public void listenLogoutUserEvent(LogoutUserEvent event) {
+        init();
+        var journalEvent = JournalEvent.builder()
+                .name("Выход пользователя из приложения")
+                .dateEvent(LocalDate.now())
+                .timeEvent(LocalTime.now())
+                .typeEvent(TypeEvent.builder().id(LOGOUT_USER.getTypeEventId()).build())
+                .username(event.getUser())
+                .build();
+        journalEventService.save(journalEvent);
+    }
+
+    /**
      * Ловит событие создания сущности
      *
      * @param entity сущность
      */
     @PostPersist
+    @Transactional(rollbackFor = Exception.class)
     public void postPersist(Object entity) {
         var event = getJournalEvent(entity, ADD_ENTITY);
         journalEventService.save(event);
@@ -43,6 +67,7 @@ public class CrudOperationListener {
      * @param o сущность
      */
     @PostRemove
+    @Transactional(rollbackFor = Exception.class)
     public void postRemove(Object o) {
         var event = getJournalEvent(o, UPDATE_ENTITY);
         journalEventService.save(event);
@@ -55,6 +80,7 @@ public class CrudOperationListener {
      * @param o сущность
      */
     @PostUpdate
+    @Transactional(rollbackFor = Exception.class)
     public void postUpdate(Object o) {
         var event = getJournalEvent(o, REMOVE_ENTITY);
         journalEventService.save(event);
@@ -72,7 +98,7 @@ public class CrudOperationListener {
                 .dateEvent(LocalDate.now())
                 .timeEvent(LocalTime.now())
                 .typeEvent(TypeEvent.builder().id(typeEvent.getTypeEventId()).build())
-                .username(securityService.currentUser().orElse(""))
+                .username(securityService.currentUsername().orElse(""))
                 .description(truncateString(o.toString(), 3500))
                 .build();
     }
