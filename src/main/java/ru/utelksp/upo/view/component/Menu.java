@@ -17,7 +17,6 @@ import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.VaadinServletService;
 import com.vaadin.flow.server.VaadinSession;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import ru.utelksp.upo.domain.event.LogoutUserEvent;
@@ -27,15 +26,12 @@ import static java.lang.String.format;
 import static ru.utelksp.upo.common.UpoConst.LOGOUT_PAGE_URL;
 import static ru.utelksp.upo.common.UpoConst.LOGO_URL;
 
-@org.springframework.stereotype.Component
 @RequiredArgsConstructor
 public class Menu extends FlexLayout {
-    @Value("${server.servlet.context-path}")
-    private String appUrl;
-
+    //    @Value("${server.servlet.context-path}")
+    private final String appUrl;
     private final ApplicationEventPublisher eventPublisher;
     private final SecurityService securityService;
-
     private Tabs tabs;
 
     public void init() {

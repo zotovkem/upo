@@ -89,7 +89,7 @@ public class ProgramCrudView extends HorizontalLayout {
      */
     @SuppressWarnings("unchecked")
     private void refreshCombobox(UpoGridCrud crud) {
-        crud.getCrudFormFactory().setFieldProvider("organization", getTypeUsingProvider());
+        crud.getCrudFormFactory().setFieldProvider("typeUsing", getTypeUsingProvider());
         crud.getCrudFormFactory().buildCaption(CrudOperation.READ, null);
     }
 

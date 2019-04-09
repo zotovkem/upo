@@ -8,6 +8,9 @@ import com.vaadin.flow.server.PWA;
 import com.vaadin.flow.theme.Theme;
 import com.vaadin.flow.theme.lumo.Lumo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
+import ru.utelksp.upo.service.SecurityService;
 import ru.utelksp.upo.view.component.Menu;
 import ru.utelksp.upo.view.crud.*;
 import ru.utelksp.upo.view.report.CertificateReportView;
@@ -24,13 +27,18 @@ import javax.annotation.PostConstruct;
         manifestPath = "manifest.json", offlinePath = "offline-page.html", enableInstallPrompt = false)
 @RequiredArgsConstructor
 public class MainLayout extends FlexLayout implements RouterLayout {
-    private final Menu menu;
+    private Menu menu;
+    @Value("${server.servlet.context-path}")
+    private String appUrl;
+    private final ApplicationEventPublisher eventPublisher;
+    private final SecurityService securityService;
 
     @PostConstruct
     private void init() {
         setSizeFull();
         setClassName("main-layout");
 
+        menu = new Menu(appUrl, eventPublisher, securityService);
         menu.init();
         menu.addView(ProgramCrudView.class, ProgramCrudView.VIEW_NAME, VaadinIcon.BROWSER.create());
         menu.addView(CertificateCrudView.class, CertificateCrudView.VIEW_NAME, VaadinIcon.DIPLOMA.create());
