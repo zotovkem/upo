@@ -16,20 +16,29 @@ import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.router.RouterLink;
 import com.vaadin.flow.server.VaadinServletService;
 import com.vaadin.flow.server.VaadinSession;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import ru.utelksp.upo.domain.event.LogoutUserEvent;
+import ru.utelksp.upo.service.SecurityService;
 
 import static java.lang.String.format;
 import static ru.utelksp.upo.common.UpoConst.LOGOUT_PAGE_URL;
 import static ru.utelksp.upo.common.UpoConst.LOGO_URL;
 
+@org.springframework.stereotype.Component
+@RequiredArgsConstructor
 public class Menu extends FlexLayout {
-
-    private Tabs tabs;
-
     @Value("${server.servlet.context-path}")
     private String appUrl;
 
-    public Menu() {
+    private final ApplicationEventPublisher eventPublisher;
+    private final SecurityService securityService;
+
+    private Tabs tabs;
+
+    public void init() {
         setClassName("menu-bar");
 
         // Заголовок меню
@@ -40,9 +49,8 @@ public class Menu extends FlexLayout {
         Label title = new Label("Учет ПО");
 
         //Логотип
-        var url = VaadinServletService.getCurrentServletRequest().getContextPath();
         String resolvedImage = VaadinServletService.getCurrent()
-                .resolveResource(url + LOGO_URL, VaadinSession.getCurrent().getBrowser());
+                .resolveResource(appUrl + LOGO_URL, VaadinSession.getCurrent().getBrowser());
         Image image = new Image(resolvedImage, "");
         top.add(image);
         top.add(title);
@@ -54,10 +62,11 @@ public class Menu extends FlexLayout {
         add(tabs);
 
         // Кнопка выйти
-        Button logoutButton = new Button("Выйти",
-                VaadinIcon.SIGN_OUT.create());
+        Button logoutButton = new Button("Выйти", VaadinIcon.SIGN_OUT.create());
         logoutButton.addClickListener(event -> {
-            UI.getCurrent().getPage().executeJavaScript(format("window.location.href='%s'", url + LOGOUT_PAGE_URL));
+            var username = securityService.currentUsername().orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден!"));
+            eventPublisher.publishEvent(new LogoutUserEvent(this, username));
+            UI.getCurrent().getPage().executeJavaScript(format("window.location.href='%s'", appUrl + LOGOUT_PAGE_URL));
             UI.getCurrent().getSession().close();
         });
 
