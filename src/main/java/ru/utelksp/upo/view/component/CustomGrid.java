@@ -53,26 +53,12 @@ public class CustomGrid<T> extends CustomField<Collection<T>> {
     @Override
     protected void setPresentationValue(Collection<T> newPresentationValue) {
         grid.deselectAll();
-        newPresentationValue.forEach(grid::select);
+        if (newPresentationValue != null) {
+            newPresentationValue.forEach(grid::select);
+        }
 
     }
 
-    //    @Override
-//    public void setEnabled(boolean enabled) {
-//        super.setEnabled(enabled);
-//        grid.setEnabled(enabled);
-//    }
-//
-//    @Override
-//    public boolean isEnabled() {
-//        return super.isEnabled();
-//    }
-//
-//    @Override
-//    public boolean isReadOnly() {
-//        return super.isReadOnly();
-//    }
-//
     @Override
     public void setReadOnly(boolean readOnly) {
         super.setReadOnly(readOnly);
