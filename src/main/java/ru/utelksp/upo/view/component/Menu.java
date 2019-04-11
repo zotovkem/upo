@@ -28,7 +28,6 @@ import static ru.utelksp.upo.common.UpoConst.LOGO_URL;
 
 @RequiredArgsConstructor
 public class Menu extends FlexLayout {
-    //    @Value("${server.servlet.context-path}")
     private final String appUrl;
     private final ApplicationEventPublisher eventPublisher;
     private final SecurityService securityService;

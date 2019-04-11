@@ -1,12 +1,14 @@
 package ru.utelksp.upo.service.security;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.utelksp.upo.domain.event.AgainUserLoginEvent;
 import ru.utelksp.upo.domain.security.Role;
 import ru.utelksp.upo.domain.security.User;
 import ru.utelksp.upo.repository.UserRepository;
@@ -22,13 +24,14 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
     private final UserRepository userRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> {
-                    System.out.println();
+                    eventPublisher.publishEvent(new AgainUserLoginEvent(this, username));
                     throw new UsernameNotFoundException("Пользователь не найден!");
                 });
 

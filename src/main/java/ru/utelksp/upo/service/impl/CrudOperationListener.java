@@ -1,12 +1,10 @@
 package ru.utelksp.upo.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.event.EventListener;
 import org.springframework.transaction.annotation.Transactional;
 import ru.utelksp.upo.common.enums.TypeEventEnum;
 import ru.utelksp.upo.domain.JournalEvent;
 import ru.utelksp.upo.domain.dictionary.TypeEvent;
-import ru.utelksp.upo.domain.event.LogoutUserEvent;
 import ru.utelksp.upo.service.JournalEventService;
 import ru.utelksp.upo.service.SecurityService;
 
@@ -29,25 +27,6 @@ public class CrudOperationListener {
     private SecurityService securityService;
     @Autowired
     private JournalEventService journalEventService;
-
-    /**
-     * Ловит событие разлогирования пользователя
-     *
-     * @param event событие.
-     */
-    @EventListener(value = LogoutUserEvent.class)
-    @Transactional(rollbackFor = Exception.class)
-    public void listenLogoutUserEvent(LogoutUserEvent event) {
-        init();
-        var journalEvent = JournalEvent.builder()
-                .name("Выход пользователя из приложения")
-                .dateEvent(LocalDate.now())
-                .timeEvent(LocalTime.now())
-                .typeEvent(TypeEvent.builder().id(LOGOUT_USER.getTypeEventId()).build())
-                .username(event.getUser())
-                .build();
-        journalEventService.save(journalEvent);
-    }
 
     /**
      * Ловит событие создания сущности

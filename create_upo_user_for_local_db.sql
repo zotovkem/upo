@@ -14,5 +14,5 @@ GO
 /**
 Создаем пользователя upo
  */
-CREATE LOGIN [upo] WITH PASSWORD=N'{óòÃµ¥ìÕ¾CÍ@³ë¸v¶HV', DEFAULT_DATABASE=[master], DEFAULT_LANGUAGE=[русский], CHECK_EXPIRATION=OFF, CHECK_POLICY=ON
+CREATE LOGIN [upo] WITH PASSWORD=N'êÉAkû2/*;âøèÏ"µ6N¯ÄÙ', DEFAULT_DATABASE=[master], DEFAULT_LANGUAGE=[русский], CHECK_EXPIRATION=OFF, CHECK_POLICY=OFF
 GO

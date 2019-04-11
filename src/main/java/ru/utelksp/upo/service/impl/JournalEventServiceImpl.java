@@ -3,6 +3,7 @@ package ru.utelksp.upo.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.utelksp.upo.domain.JournalEvent;
 import ru.utelksp.upo.repository.JournalEventRepository;
 import ru.utelksp.upo.service.JournalEventService;
@@ -25,6 +26,7 @@ public class JournalEventServiceImpl implements JournalEventService {
      * @return список событий
      */
     @Override
+    @Transactional(readOnly = true)
     public Collection<JournalEvent> findAll() {
         return journalEventRepository.findAll();
     }
@@ -36,6 +38,7 @@ public class JournalEventServiceImpl implements JournalEventService {
      * @return событие
      */
     @Override
+    @Transactional(readOnly = true)
     public Optional<JournalEvent> findById(@NonNull Long eventId) {
         return journalEventRepository.findById(eventId);
     }
@@ -48,6 +51,7 @@ public class JournalEventServiceImpl implements JournalEventService {
      */
     @Override
     @NonNull
+    @Transactional(rollbackFor = Exception.class)
     public JournalEvent save(@NonNull JournalEvent journalEvent) {
         return journalEventRepository.save(journalEvent);
     }

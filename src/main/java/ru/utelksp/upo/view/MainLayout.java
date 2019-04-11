@@ -5,11 +5,13 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import com.vaadin.flow.router.RouterLayout;
 import com.vaadin.flow.server.PWA;
+import com.vaadin.flow.server.VaadinSession;
 import com.vaadin.flow.theme.Theme;
 import com.vaadin.flow.theme.lumo.Lumo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
+import ru.utelksp.upo.UpoErrorHandler;
 import ru.utelksp.upo.service.SecurityService;
 import ru.utelksp.upo.view.component.Menu;
 import ru.utelksp.upo.view.crud.*;
@@ -32,9 +34,11 @@ public class MainLayout extends FlexLayout implements RouterLayout {
     private String appUrl;
     private final ApplicationEventPublisher eventPublisher;
     private final SecurityService securityService;
+    private final UpoErrorHandler errorHandler;
 
     @PostConstruct
     private void init() {
+        VaadinSession.getCurrent().setErrorHandler(errorHandler);
         setSizeFull();
         setClassName("main-layout");
 
