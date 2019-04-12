@@ -5,6 +5,9 @@ import org.springframework.lang.NonNull;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.utelksp.upo.common.exception.ValidationException;
+import ru.utelksp.upo.common.validators.validator.Validator;
+import ru.utelksp.upo.common.validators.validator.hints.Update;
 import ru.utelksp.upo.domain.security.User;
 import ru.utelksp.upo.repository.RoleRepository;
 import ru.utelksp.upo.repository.UserRepository;
@@ -25,10 +28,12 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final Validator<User> validator;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public User save(User user) {
+    public User save(User user) throws ValidationException {
+        validator.validate(user, Update.class);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(Set.of(roleRepository.getOne(2L)));
         return userRepository.save(user);
