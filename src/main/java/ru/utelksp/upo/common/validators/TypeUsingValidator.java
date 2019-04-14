@@ -41,7 +41,7 @@ public class TypeUsingValidator implements Validator<TypeUsing> {
     }
 
     /**
-     * Формирует текст ошибки при налачии связанных сущностей
+     * Формирует текст ошибки при наличии связанных сущностей
      *
      * @param target проверяемая сущность
      * @param errors список ошибок
