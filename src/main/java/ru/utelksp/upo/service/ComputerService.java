@@ -37,9 +37,9 @@ public interface ComputerService {
     Computer save(@NonNull Computer computer);
 
     /**
-     * Удаляет компьютер по идентификатору
+     * Удаляет компьютер
      *
-     * @param id идентификатор компьютер
+     * @param computer компьютер
      */
-    void deleteById(@NonNull Long id);
+    void delete(@NonNull Computer computer);
 }
