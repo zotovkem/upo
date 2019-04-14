@@ -37,9 +37,9 @@ public interface EmployeeService {
     Employee save(@NonNull Employee employee);
 
     /**
-     * Удаляет пользователя по идентификатору
+     * Удаляет пользователя
      *
-     * @param id идентификатор пользователя
+     * @param employee идентификатор пользователя
      */
-    void deleteById(@NonNull Long id);
+    void delete(@NonNull Employee employee);
 }
