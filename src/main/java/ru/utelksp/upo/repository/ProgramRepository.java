@@ -2,6 +2,7 @@ package ru.utelksp.upo.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.utelksp.upo.common.dto.ProgramReportDto;
 import ru.utelksp.upo.domain.Program;
@@ -34,4 +35,38 @@ public interface ProgramRepository extends JpaRepository<Program, Long> {
             "where (:employeeId is null or emp.id = :employeeId) " +
             "and (:orderId is null or ord.id = :orderId)")
     List<ProgramReportDto> findWithParam(Long employeeId, Long orderId);
+
+    /**
+     * Поиск по виду использования ПО
+     *
+     * @param typeUsingId идентификатор вида использования
+     * @return список программ.
+     */
+    List<Program> findByTypeUsingId(Long typeUsingId);
+
+    /**
+     * Поиск программы по идентификатору компьютера
+     *
+     * @param computerId идентификатор компьютера
+     * @return список программ
+     */
+    @Query(value = "" +
+            "select distinct program " +
+            "from Program program " +
+            "left join fetch program.computers comp " +
+            "where comp.id = :computerId ")
+    List<Program> findByComputerId(@Param("computerId") Long computerId);
+
+    /**
+     * Поиск программы по идентификатору приказа
+     *
+     * @param orderId идентификатор приказа
+     * @return список программ
+     */
+    @Query(value = "" +
+            "select distinct program " +
+            "from Program program " +
+            "left join fetch program.orders ord " +
+            "where ord.id = :orderId ")
+    List<Program> findByOrderId(@Param("orderId") Long orderId);
 }

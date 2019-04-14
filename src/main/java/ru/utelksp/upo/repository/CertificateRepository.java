@@ -48,4 +48,20 @@ public interface CertificateRepository extends JpaRepository<Certificate, Long> 
             "and (:certificateId is null or cert.id = :certificateId) " +
             "and (:pcId is null or pc.id = :pcId)")
     List<CertificateReportDto> findWithParam(@Param("employeeId") Long employeeId, @Param("certificateId") Long certificateId, @Param("pcId") Long pcId);
+
+    /**
+     * Поиск сертификатов по идентификатору компьютера
+     *
+     * @param computerId идентификатор компьютера
+     * @return список сертификатов
+     */
+    List<Certificate> findByComputerId(Long computerId);
+
+    /**
+     * Поиск сертификатов по идентификатору пользователя
+     *
+     * @param employeeId идентификатор пользователя
+     * @return список сертификатов
+     */
+    List<Certificate> findByEmployeeId(Long employeeId);
 }
