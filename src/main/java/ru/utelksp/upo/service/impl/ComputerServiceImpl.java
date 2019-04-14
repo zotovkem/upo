@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.utelksp.upo.common.validators.ComputerValidator;
+import ru.utelksp.upo.common.validators.validator.hints.Delete;
 import ru.utelksp.upo.domain.dictionary.Computer;
 import ru.utelksp.upo.repository.ComputerRepository;
 import ru.utelksp.upo.service.ComputerService;
@@ -19,6 +21,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ComputerServiceImpl implements ComputerService {
     private final ComputerRepository computerRepository;
+    private final ComputerValidator validator;
 
     /**
      * Возвращает список всех компьютеров
@@ -58,13 +61,14 @@ public class ComputerServiceImpl implements ComputerService {
     }
 
     /**
-     * Удаляет компьютер по идентификатору
+     * Удаляет компьютер
      *
-     * @param id идентификатор компьютер
+     * @param computer компьютер
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void deleteById(@NonNull Long id) {
-        computerRepository.deleteById(id);
+    public void delete(@NonNull Computer computer) {
+        validator.validate(computer, Delete.class);
+        computerRepository.deleteById(computer.getId());
     }
 }

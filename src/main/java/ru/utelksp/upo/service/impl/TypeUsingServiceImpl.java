@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.utelksp.upo.common.validators.TypeUsingValidator;
+import ru.utelksp.upo.common.validators.validator.hints.Delete;
 import ru.utelksp.upo.domain.dictionary.TypeUsing;
 import ru.utelksp.upo.repository.TypeUsingRepository;
 import ru.utelksp.upo.service.TypeUsingService;
@@ -19,6 +21,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class TypeUsingServiceImpl implements TypeUsingService {
     private final TypeUsingRepository typeUsingRepository;
+    private final TypeUsingValidator validator;
 
     /**
      * Возвращает список всех видов использования
@@ -58,11 +61,12 @@ public class TypeUsingServiceImpl implements TypeUsingService {
     /**
      * Удаляет вид использования по идентификатору
      *
-     * @param id идентификатор вида использования
+     * @param typeUsing идентификатор вида использования
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void deleteById(@NonNull Long id) {
-        typeUsingRepository.deleteById(id);
+    public void delete(@NonNull TypeUsing typeUsing) {
+        validator.validate(typeUsing, Delete.class);
+        typeUsingRepository.deleteById(typeUsing.getId());
     }
 }

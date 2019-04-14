@@ -34,6 +34,6 @@ public class TypeUsingCrudListener implements CrudListener<TypeUsing> {
 
     @Override
     public void delete(TypeUsing domainObjectToDelete) {
-        typeUsingService.deleteById(domainObjectToDelete.getId());
+        typeUsingService.delete(domainObjectToDelete);
     }
 }

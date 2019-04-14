@@ -1,13 +1,15 @@
 package ru.utelksp.upo.common.validators;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.lang.NonNull;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import org.springframework.validation.Errors;
-import org.springframework.validation.ValidationUtils;
-import org.springframework.validation.Validator;
+import ru.utelksp.upo.SecurityConfig;
+import ru.utelksp.upo.common.validators.validator.Validator;
 import ru.utelksp.upo.domain.security.User;
+import ru.utelksp.upo.repository.UserRepository;
 import ru.utelksp.upo.service.UserService;
+
+import java.util.Collection;
 
 /**
  * @author Created by ZotovES on 08.04.2019
@@ -16,35 +18,34 @@ import ru.utelksp.upo.service.UserService;
 
 @Component
 @RequiredArgsConstructor
-public class UserValidator implements Validator {
+public class UserValidator implements Validator<User> {
 
-    private final UserService userService;
+    private final UserRepository userRepository;
 
+    /**
+     * Метод валидирующий сущность
+     *
+     * @param user   сущность для валидации
+     * @param hint   Объект подсказка если требуется валидация по условию
+     * @param errors список ошибок
+     */
     @Override
-    public boolean supports(@NonNull Class<?> aClass) {
-        return User.class.equals(aClass);
-    }
-
-    @Override
-    public void validate(@NonNull Object o, @NonNull Errors errors) {
-        User user = (User) o;
-
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "Required");
-        if (user.getUsername().length() < 8 || user.getUsername().length() > 32) {
-            errors.rejectValue("username", "Size.userForm.username");
+    public void validate(User user, Object hint, Collection<String> errors) {
+        if (user.getConfirmPassword().length() < 8) {
+            errors.add("Длина пароля менее 8 символов");
         }
 
-        if (userService.findByUsername(user.getUsername()).isPresent()) {
-            errors.rejectValue("username", "Duplicate.userForm.username");
+        if (user.getConfirmPassword().length() > 32) {
+            errors.add("Длина пароля более 32 символов");
         }
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "Required");
-        if (user.getPassword().length() < 8 || user.getPassword().length() > 32) {
-            errors.rejectValue("password", "Size.userForm.password");
+        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
+            errors.add("Уже существует пользователь с таким именем");
         }
 
         if (!user.getConfirmPassword().equals(user.getPassword())) {
-            errors.rejectValue("confirmPassword", "Different.userForm.password");
+            errors.add("Пароли не совпадают");
         }
     }
+
 }

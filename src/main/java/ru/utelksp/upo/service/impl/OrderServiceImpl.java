@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.utelksp.upo.common.validators.OrderValidator;
+import ru.utelksp.upo.common.validators.validator.hints.Delete;
 import ru.utelksp.upo.domain.Order;
 import ru.utelksp.upo.repository.OrderRepository;
 import ru.utelksp.upo.service.OrderService;
@@ -13,12 +15,13 @@ import java.util.Optional;
 
 /**
  * @author Created by ZotovES on 22.03.2019
- *
  */
 @Service
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
+    private final OrderValidator validator;
+
     /**
      * Получить все приказы
      *
@@ -59,11 +62,12 @@ public class OrderServiceImpl implements OrderService {
     /**
      * Удалить приказ
      *
-     * @param id идентификатор приказа
+     * @param order приказа
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void deleteById(@NonNull Long id) {
-
+    public void delete(@NonNull Order order) {
+        validator.validate(order, Delete.class);
+        orderRepository.deleteById(order.getId());
     }
 }

@@ -34,6 +34,6 @@ public class ComputerCrudListener implements CrudListener<Computer>{
 
     @Override
     public void delete(Computer domainObjectToDelete) {
-        computerService.deleteById(domainObjectToDelete.getId());
+        computerService.delete(domainObjectToDelete);
     }
 }

@@ -39,8 +39,8 @@ public interface TypeUsingService {
     /**
      * Удаляет вид использования по идентификатору
      *
-     * @param id идентификатор вида использования
+     * @param typeUsing вида использования
      */
-    void deleteById(@NonNull Long id);
+    void delete(@NonNull TypeUsing typeUsing);
 
 }

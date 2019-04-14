@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.utelksp.upo.common.validators.OrganizationValidator;
+import ru.utelksp.upo.common.validators.validator.hints.Delete;
 import ru.utelksp.upo.domain.dictionary.Organization;
 import ru.utelksp.upo.repository.OrganizationRepository;
 import ru.utelksp.upo.service.OrganizationService;
@@ -19,6 +21,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class OrganizationServiceImpl implements OrganizationService {
     private final OrganizationRepository organizationRepository;
+    private final OrganizationValidator validator;
 
     /**
      * Возвращает список всех организаций
@@ -56,12 +59,13 @@ public class OrganizationServiceImpl implements OrganizationService {
     }
 
     /**
-     * Удаляет организацию по идентификатору
+     * Удаляет организацию
      *
-     * @param id идентификатор организации
+     * @param organization организация
      */
     @Override
-    public void deleteById(@NonNull Long id) {
-        organizationRepository.deleteById(id);
+    public void delete(@NonNull Organization organization) {
+        validator.validate(organization, Delete.class);
+        organizationRepository.deleteById(organization.getId());
     }
 }

@@ -34,6 +34,6 @@ public class OrganizationCrudListener implements CrudListener<Organization> {
 
     @Override
     public void delete(Organization domainObjectToDelete) {
-        organizationService.deleteById(domainObjectToDelete.getId());
+        organizationService.delete(domainObjectToDelete);
     }
 }

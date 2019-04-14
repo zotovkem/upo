@@ -34,6 +34,6 @@ public class EmployeeCrudListener implements CrudListener<Employee> {
 
     @Override
     public void delete(Employee domainObjectToDelete) {
-        employeeService.deleteById(domainObjectToDelete.getId());
+        employeeService.delete(domainObjectToDelete);
     }
 }

@@ -39,7 +39,7 @@ public interface OrganizationService {
     /**
      * Удаляет организацию по идентификатору
      *
-     * @param id идентификатор организации
+     * @param organization организация
      */
-    void deleteById(@NonNull Long id);
+    void delete(@NonNull Organization organization);
 }

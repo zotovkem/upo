@@ -35,7 +35,7 @@ public interface OrderService {
 
     /**
      * Удалить приказ
-     * @param id идентификатор приказа
+     * @param order приказа
      */
-    void deleteById(@NonNull Long id);
+    void delete(@NonNull Order order);
 }

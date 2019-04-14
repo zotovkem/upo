@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.utelksp.upo.common.validators.EmployeeValidator;
+import ru.utelksp.upo.common.validators.validator.hints.Delete;
 import ru.utelksp.upo.domain.dictionary.Employee;
 import ru.utelksp.upo.repository.EmployeeRepository;
 import ru.utelksp.upo.service.EmployeeService;
@@ -19,6 +21,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository employeeRepository;
+    private final EmployeeValidator validator;
 
     /**
      * Получить всех пользователей
@@ -58,13 +61,14 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     /**
-     * Удаляет пользователя по идентификатору
+     * Удаляет пользователя
      *
-     * @param id идентификатор пользователя
+     * @param employee идентификатор пользователя
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void deleteById(@NonNull Long id) {
-        employeeRepository.deleteById(id);
+    public void delete(@NonNull Employee employee) {
+        validator.validate(employee, Delete.class);
+        employeeRepository.deleteById(employee.getId());
     }
 }
