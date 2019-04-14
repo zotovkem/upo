@@ -34,6 +34,6 @@ public class OrderCrudListener implements CrudListener<Order> {
 
     @Override
     public void delete(Order domainObjectToDelete) {
-        orderService.deleteById(domainObjectToDelete.getId());
+        orderService.delete(domainObjectToDelete);
     }
 }
