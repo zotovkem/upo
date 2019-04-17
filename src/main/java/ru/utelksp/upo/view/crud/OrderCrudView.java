@@ -1,6 +1,7 @@
 package ru.utelksp.upo.view.crud;
 
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.renderer.TextRenderer;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -24,6 +25,7 @@ import ru.utelksp.upo.view.listener.OrderCrudListener;
 import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static ru.utelksp.upo.common.Util.getCollectMap;
 
@@ -69,6 +71,12 @@ public class OrderCrudView extends VerticalLayout {
         crud.setGridColumn(GRID_COLUMNS);
         crud.setGridCaptionColumn(MAP_COLUMN_PROP);
         crud.addAttachListener(attachEvent -> refreshCombobox(crud));
+        crud.getGrid().addColumn(new TextRenderer<>(order -> order.getEmployees().stream().map(Employee::getShortFio).collect(Collectors.joining(", "))))
+                .setHeader("Пользователи");
+        TextField employeeFilter = new TextField();
+        employeeFilter.setPlaceholder("поиск по пользователям");
+        employeeFilter.addValueChangeListener(e -> crud.refreshGrid());
+        crud.getCrudLayout().addFilterComponent(employeeFilter);
         add(crud);
     }
 
