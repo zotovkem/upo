@@ -1,5 +1,7 @@
 package ru.utelksp.upo.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -35,4 +37,19 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
      * @return список приказов
      */
     List<Order> findByOrganizationId(Long organizationId);
+
+    /**
+     * Поиск приказов по ФИО пользователя
+     *
+     * @param employeeFio фио пользователя
+     * @return страница с найдеными ордерами
+     */
+    @Query(value = "" +
+            "select distinct ord " +
+            "from Order ord " +
+            "left join ord.employees employee " +
+            "where :employeeFio is null " +
+            "or lower(concat(employee.lastName,' ' , employee.firstName,' ' , employee.patronymic)) like lower(concat('%',:employeeFio,'%') ) ")
+    Page<Order> findByLikeEmployee(Pageable page,
+                                   @Param("employeeFio") String employeeFio);
 }

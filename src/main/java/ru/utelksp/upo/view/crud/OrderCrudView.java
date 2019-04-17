@@ -2,6 +2,7 @@ package ru.utelksp.upo.view.crud;
 
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.data.renderer.TextRenderer;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -77,6 +78,10 @@ public class OrderCrudView extends VerticalLayout {
         employeeFilter.setPlaceholder("поиск по пользователям");
         employeeFilter.addValueChangeListener(e -> crud.refreshGrid());
         crud.getCrudLayout().addFilterComponent(employeeFilter);
+
+        crud.setFindAllOperation(DataProvider.fromCallbacks(
+                query -> orderCrudListener.findByLikeEmployee(employeeFilter.getValue(), query.getLimit(), query.getOffset()).stream(),
+                query -> orderCrudListener.countByLikeEmployee(employeeFilter.getValue(), query.getLimit(), query.getOffset())));
         add(crud);
     }
 

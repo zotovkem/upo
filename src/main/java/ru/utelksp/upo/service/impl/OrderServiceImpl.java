@@ -1,6 +1,8 @@
 package ru.utelksp.upo.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -69,5 +71,16 @@ public class OrderServiceImpl implements OrderService {
     public void delete(@NonNull Order order) {
         validator.validate(order, Delete.class);
         orderRepository.deleteById(order.getId());
+    }
+
+    /**
+     * Поиск приказов по ФИО пользователя
+     *
+     * @param employeeFio фио пользователя
+     * @return страница с найдеными ордерами
+     */
+    @Override
+    public Page<Order> findByLikeEmployee(Pageable page, String employeeFio) {
+        return orderRepository.findByLikeEmployee(page, employeeFio);
     }
 }

@@ -1,5 +1,7 @@
 package ru.utelksp.upo.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.lang.NonNull;
 import ru.utelksp.upo.domain.Order;
 
@@ -38,4 +40,12 @@ public interface OrderService {
      * @param order приказа
      */
     void delete(@NonNull Order order);
+
+    /**
+     * Поиск приказов по ФИО пользователя
+     *
+     * @param employeeFio фио пользователя
+     * @return страница с найдеными ордерами
+     */
+    Page<Order> findByLikeEmployee(Pageable page, String employeeFio);
 }

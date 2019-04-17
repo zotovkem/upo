@@ -1,6 +1,7 @@
 package ru.utelksp.upo.view.listener;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
 import org.vaadin.crudui.crud.CrudListener;
 import ru.utelksp.upo.domain.Order;
@@ -36,4 +37,13 @@ public class OrderCrudListener implements CrudListener<Order> {
     public void delete(Order domainObjectToDelete) {
         orderService.delete(domainObjectToDelete);
     }
+
+    public Collection<Order> findByLikeEmployee(String fio, int limit, int offset) {
+        return orderService.findByLikeEmployee(PageRequest.of(offset, limit), fio.isEmpty() ? null : fio).getContent();
+    }
+
+    public int countByLikeEmployee(String fio, int limit, int offset) {
+        return (int) orderService.findByLikeEmployee(PageRequest.of(offset, limit), fio.isEmpty() ? null : fio).getTotalElements();
+    }
+
 }
