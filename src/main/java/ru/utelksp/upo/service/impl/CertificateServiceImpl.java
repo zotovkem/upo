@@ -1,6 +1,8 @@
 package ru.utelksp.upo.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -69,8 +71,27 @@ public class CertificateServiceImpl implements CertificateService {
         certificateRepository.deleteById(id);
     }
 
+    /**
+     * Жадное получение списка всех сертификатов
+     *
+     * @return список сертификатов
+     */
     @Override
+    @Transactional(readOnly = true)
     public Collection<Certificate> findByAllEager() {
         return certificateRepository.findByAllEager();
+    }
+
+    /**
+     * Поиск сертификатов по ФИО пользователя
+     *
+     * @param page        страница со списком сертификатов
+     * @param employeeFio фио пользователя
+     * @return страница с найдеными сертификатами
+     */
+    @Override
+    @NonNull
+    public Page<Certificate> findByLikeEmployee(@NonNull Pageable page, String employeeFio) {
+        return certificateRepository.findByLikeEmployee(page, employeeFio);
     }
 }

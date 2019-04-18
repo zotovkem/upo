@@ -1,6 +1,8 @@
 package ru.utelksp.upo.view.crud;
 
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.data.renderer.TextRenderer;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -63,6 +65,14 @@ public class CertificateCrudView extends VerticalLayout {
         crud.setGridColumn(GRID_COLUMNS);
         crud.setGridCaptionColumn(MAP_COLUMN_PROP);
         crud.addAttachListener(attachEvent -> refreshCombobox(crud));
+        TextField employeeFilter = new TextField();
+        employeeFilter.setPlaceholder("поиск по пользователям");
+        employeeFilter.addValueChangeListener(e -> crud.refreshGrid());
+        crud.getCrudLayout().addFilterComponent(employeeFilter);
+
+        crud.setFindAllOperation(DataProvider.fromCallbacks(
+                query -> certificateCrudListener.findByLikeEmployee(employeeFilter.getValue(), query.getLimit(), query.getOffset()).stream(),
+                query -> certificateCrudListener.countByLikeEmployee(employeeFilter.getValue(), query.getLimit(), query.getOffset())));
         add(crud);
     }
 

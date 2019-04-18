@@ -50,6 +50,5 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             "left join ord.employees employee " +
             "where :employeeFio is null " +
             "or lower(concat(employee.lastName,' ' , employee.firstName,' ' , employee.patronymic)) like lower(concat('%',:employeeFio,'%') ) ")
-    Page<Order> findByLikeEmployee(Pageable page,
-                                   @Param("employeeFio") String employeeFio);
+    Page<Order> findByLikeEmployee(Pageable page, @Param("employeeFio") String employeeFio);
 }

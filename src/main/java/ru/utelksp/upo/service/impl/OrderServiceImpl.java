@@ -80,6 +80,7 @@ public class OrderServiceImpl implements OrderService {
      * @return страница с найдеными ордерами
      */
     @Override
+    @Transactional(readOnly = true)
     public Page<Order> findByLikeEmployee(Pageable page, String employeeFio) {
         return orderRepository.findByLikeEmployee(page, employeeFio);
     }
