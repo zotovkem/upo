@@ -66,10 +66,11 @@ public class CertificateCrudView extends VerticalLayout {
         crud.setGridCaptionColumn(MAP_COLUMN_PROP);
         crud.addAttachListener(attachEvent -> refreshCombobox(crud));
         TextField employeeFilter = new TextField();
-        employeeFilter.setPlaceholder("поиск по пользователям");
+        employeeFilter.setPlaceholder("поиск по пользователю");
         employeeFilter.addValueChangeListener(e -> crud.refreshGrid());
         crud.getCrudLayout().addFilterComponent(employeeFilter);
-
+        crud.getGrid().addColumn(new TextRenderer<>(certificate -> certificate.getEmployee().getShortFio()))
+                .setHeader("Пользователь");
         crud.setFindAllOperation(DataProvider.fromCallbacks(
                 query -> certificateCrudListener.findByLikeEmployee(employeeFilter.getValue(), query.getLimit(), query.getOffset()).stream(),
                 query -> certificateCrudListener.countByLikeEmployee(employeeFilter.getValue(), query.getLimit(), query.getOffset())));
