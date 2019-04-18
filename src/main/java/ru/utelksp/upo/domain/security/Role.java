@@ -28,6 +28,9 @@ public class Role {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "caption")
+    private String caption;
+
     @ManyToMany(mappedBy = "roles")
     private Set<User> users;
 

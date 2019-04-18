@@ -15,7 +15,6 @@ import ru.utelksp.upo.service.UserService;
 
 import java.util.Collection;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * @author Created by ZotovES on 18.03.2019
@@ -35,7 +34,6 @@ public class UserServiceImpl implements UserService {
     public User save(User user) throws ValidationException {
         validator.validate(user, Update.class);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles(Set.of(roleRepository.getOne(2L)));
         return userRepository.save(user);
     }
 

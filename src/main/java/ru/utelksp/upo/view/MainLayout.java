@@ -11,6 +11,7 @@ import com.vaadin.flow.theme.lumo.Lumo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.security.core.context.SecurityContextHolder;
 import ru.utelksp.upo.UpoErrorHandler;
 import ru.utelksp.upo.service.SecurityService;
 import ru.utelksp.upo.view.component.Menu;
@@ -44,6 +45,15 @@ public class MainLayout extends FlexLayout implements RouterLayout {
 
         menu = new Menu(appUrl, eventPublisher, securityService);
         menu.init();
+        if (hasPermission("user")) {
+            addViewUser();
+        }
+        menu.addView(CertificateReportView.class, CertificateReportView.VIEW_NAME, VaadinIcon.SPLINE_CHART.create());
+        menu.addView(ProgramReportView.class, ProgramReportView.VIEW_NAME, VaadinIcon.NEWSPAPER.create());
+        add(menu);
+    }
+
+    private void addViewUser() {
         menu.addView(ProgramCrudView.class, ProgramCrudView.VIEW_NAME, VaadinIcon.BROWSER.create());
         menu.addView(CertificateCrudView.class, CertificateCrudView.VIEW_NAME, VaadinIcon.DIPLOMA.create());
         menu.addView(OrderCrudView.class, OrderCrudView.VIEW_NAME, VaadinIcon.EDIT.create());
@@ -53,8 +63,13 @@ public class MainLayout extends FlexLayout implements RouterLayout {
         menu.addView(TypeUsingCrudView.class, TypeUsingCrudView.VIEW_NAME, VaadinIcon.ACCORDION_MENU.create());
         menu.addView(UserCrudView.class, UserCrudView.VIEW_NAME, VaadinIcon.USER_CARD.create());
         menu.addView(JournalEventCrudView.class, JournalEventCrudView.VIEW_NAME, VaadinIcon.TASKS.create());
-        menu.addView(CertificateReportView.class, CertificateReportView.VIEW_NAME, VaadinIcon.SPLINE_CHART.create());
-        menu.addView(ProgramReportView.class, ProgramReportView.VIEW_NAME, VaadinIcon.NEWSPAPER.create());
-        add(menu);
+    }
+
+    private Boolean hasPermission(String authority) {
+        return SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getAuthorities()
+                .stream().anyMatch(a -> a.getAuthority().equals(authority));
     }
 }

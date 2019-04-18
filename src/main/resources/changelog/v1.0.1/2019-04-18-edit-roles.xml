@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="2019-04-18-edit-roles" author="ZotovES" context="production">
+        <sql dbms="mssql">SET IDENTITY_INSERT upo.s_type_event ON</sql>
+        <update tableName="upo_user" schemaName="upo">
+            <column name="id" value="1"/>
+            <where>username='root'</where>
+        </update>
+
+        <addColumn tableName="role">
+            <column name="caption" type="varchar(255)"/>
+        </addColumn>
+
+        <update tableName="role" schemaName="upo">
+            <column name="id" value="1"/>
+            <column name="name" value="ADMIN"/>
+            <column name="caption" value="Администратор"/>
+            <where>name='admin'</where>
+        </update>
+        <update tableName="role" schemaName="upo">
+            <column name="id" value="2"/>
+            <column name="name" value="USER"/>
+            <column name="caption" value="Пользователь"/>
+            <where>name='user'</where>
+        </update>
+        <insert tableName="role" schemaName="upo">
+            <column name="id" value="3"/>
+            <column name="name" value="READ_ONLY"/>
+            <column name="caption" value="Только просмотр"/>
+        </insert>
+
+        <insert tableName="mtm_user_role">
+            <column name="user_id" value="1"/>
+            <column name="role_id" value="1"/>
+        </insert>
+        <insert tableName="mtm_user_role">
+            <column name="user_id" value="1"/>
+            <column name="role_id" value="2"/>
+        </insert>
+
+        <addNotNullConstraint tableName="role" schemaName="upo" columnDataType="varchar(255)" columnName="caption"/>
+
+        <sql dbms="mssql">SET IDENTITY_INSERT upo.s_type_event OFF</sql>
+    </changeSet>
+
+</databaseChangeLog>
