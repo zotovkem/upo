@@ -78,6 +78,7 @@ public interface CertificateRepository extends JpaRepository<Certificate, Long> 
             "from Certificate cert " +
             "left join cert.employee employee " +
             "where :employeeFio is null " +
-            "or lower(concat(employee.lastName,' ' , employee.firstName,' ' , employee.patronymic)) like lower(concat('%',:employeeFio,'%') ) ")
+            "or lower(concat(employee.lastName,' ' , employee.firstName,' ' , employee.patronymic)) like concat('%', lower(:employeeFio), '%') "
+    )
     Page<Certificate> findByLikeEmployee(Pageable page, @Param("employeeFio") String employeeFio);
 }
