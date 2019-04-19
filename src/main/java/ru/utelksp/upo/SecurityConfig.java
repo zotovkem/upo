@@ -18,6 +18,8 @@ import ru.utelksp.upo.service.security.UserDetailsServiceImpl;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    private static final String[] SECURED_PAGE_USER = {"/program", "/certificate", "/computer", "/employee", "/order", "/organization", "/typeUsing"};
+    private static final String[] SECURED_PAGE_ADMIN = {"/journalEvent", "/user"};
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
 
@@ -46,6 +48,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable().cors().and()
                 .authorizeRequests()
                 .antMatchers("/VAADIN/**", "/manifest.json", "/sw.js", "/offline-page.html").permitAll()
+                .antMatchers(SECURED_PAGE_USER).hasAnyRole("USER")
+                .antMatchers(SECURED_PAGE_ADMIN).hasAnyRole("ADMIN")
                 .anyRequest().authenticated().and();
 
         http.logout().permitAll()

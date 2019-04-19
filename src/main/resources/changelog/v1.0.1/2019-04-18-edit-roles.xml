@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="2019-04-18-edit-roles" author="ZotovES" context="production">
+        <sql dbms="mssql">SET IDENTITY_INSERT upo.upo_user ON</sql>
+
+        <delete tableName="upo_user" schemaName="upo"/>
+        <insert tableName="upo_user">
+            <column name="id" value="1"/>
+            <column name="username" value="root"/>
+            <column name="password" value="$2a$09$AUdSX4vKoFaYS.gyEcfGGO/lOxjHSDltxd..wYvOrwYMxMlufV0Qe"/>
+        </insert>
+
+        <sql dbms="mssql">SET IDENTITY_INSERT upo.upo_user OFF</sql>
+
+        <delete tableName="role" schemaName="upo"/>
+
+        <delete tableName="mtm_user_role" schemaName="upo"/>
+
+        <addColumn tableName="role">
+            <column name="caption" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </addColumn>
+
+        <sql dbms="mssql">SET IDENTITY_INSERT upo.role ON</sql>
+
+        <insert tableName="role" schemaName="upo">
+            <column name="id" value="1"/>
+            <column name="name" value="ADMIN"/>
+            <column name="caption" value="Администратор"/>
+        </insert>
+        <insert tableName="role" schemaName="upo">
+            <column name="id" value="2"/>
+            <column name="name" value="USER"/>
+            <column name="caption" value="Пользователь"/>
+        </insert>
+        <insert tableName="role" schemaName="upo">
+            <column name="id" value="3"/>
+            <column name="name" value="READ_ONLY"/>
+            <column name="caption" value="Только просмотр"/>
+        </insert>
+
+        <insert tableName="mtm_user_role">
+            <column name="user_id" value="1"/>
+            <column name="role_id" value="1"/>
+        </insert>
+        <insert tableName="mtm_user_role">
+            <column name="user_id" value="1"/>
+            <column name="role_id" value="2"/>
+        </insert>
+        <sql dbms="mssql">SET IDENTITY_INSERT upo.role OFF</sql>
+
+    </changeSet>
+
+</databaseChangeLog>

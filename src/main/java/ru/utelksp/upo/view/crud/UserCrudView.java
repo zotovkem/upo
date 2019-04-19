@@ -7,7 +7,10 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.UIScope;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.vaadin.crudui.form.impl.field.provider.CheckBoxGroupProvider;
+import ru.utelksp.upo.domain.security.Role;
 import ru.utelksp.upo.domain.security.User;
+import ru.utelksp.upo.service.RoleService;
 import ru.utelksp.upo.view.MainLayout;
 import ru.utelksp.upo.view.component.UpoCrudFormFactory;
 import ru.utelksp.upo.view.component.UpoGridCrud;
@@ -31,9 +34,10 @@ import static ru.utelksp.upo.common.Util.getCollectMap;
 @RequiredArgsConstructor
 public class UserCrudView extends VerticalLayout {
     private final UserCrudListener userCrudListener;
+    private final RoleService roleService;
 
-    private static final String[] CRUD_FORM_FIELD = {"id", "username", "password", "confirmPassword"};
-    private static final String[] CRUD_FORM_FIELD_CAPTION = {"Код", "Логин", "Пароль", "Повторите пароль"};
+    private static final String[] CRUD_FORM_FIELD = {"id", "username", "roles", "password", "confirmPassword"};
+    private static final String[] CRUD_FORM_FIELD_CAPTION = {"Код", "Логин", "Роли", "Пароль", "Повторите пароль"};
     private static final List<String> GRID_COLUMNS = List.of("id", "username");
     private static final List<String> GRID_COLUMNS_CAPTION = List.of("Код", "Имя пользователя");
     private static final Map<String, String> MAP_COLUMN_PROP = getCollectMap(GRID_COLUMNS, GRID_COLUMNS_CAPTION);
@@ -48,6 +52,7 @@ public class UserCrudView extends VerticalLayout {
         formFactory.setFieldCaptions(CRUD_FORM_FIELD_CAPTION);
         formFactory.setFieldType("password", PasswordField.class);
         formFactory.setFieldType("confirmPassword", PasswordField.class);
+        formFactory.setFieldProvider("roles", new CheckBoxGroupProvider<>("Роли", roleService.findAll(), Role::getCaption));
 
         UpoGridCrud<User> crud = new UpoGridCrud<>(User.class, new UpoHorizontalSplitCrudLayout(), formFactory, userCrudListener);
         crud.setGridColumn(GRID_COLUMNS);

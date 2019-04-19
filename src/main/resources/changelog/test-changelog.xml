@@ -12,5 +12,6 @@
     <include file="changelog/testdata/certificate.xml"/>
     <include file="changelog/testdata/account_order.xml"/>
     <include file="changelog/testdata/program.xml"/>
+    <include file="changelog/testdata/user.xml"/>
 
 </databaseChangeLog>
