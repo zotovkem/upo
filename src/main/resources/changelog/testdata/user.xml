@@ -6,7 +6,7 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
     <changeSet id="testdata-user" author="ZotovES" context="test">
-        <sql dbms="mssql">SET IDENTITY_INSERT upo.s_type_event ON</sql>
+        <sql dbms="mssql">SET IDENTITY_INSERT upo.upo_user ON</sql>
 
         <insert tableName="upo_user" schemaName="upo">
             <column name="id" value="101"/>
@@ -18,7 +18,7 @@
             <column name="username" value="user"/>
             <column name="password" value="$2a$09$AUdSX4vKoFaYS.gyEcfGGO/lOxjHSDltxd..wYvOrwYMxMlufV0Qe"/>
         </insert>
-        <sql dbms="mssql">SET IDENTITY_INSERT upo.s_type_event OFF</sql>
+        <sql dbms="mssql">SET IDENTITY_INSERT upo.upo_user OFF</sql>
 
         <insert tableName="mtm_user_role">
             <column name="user_id" value="101"/>
