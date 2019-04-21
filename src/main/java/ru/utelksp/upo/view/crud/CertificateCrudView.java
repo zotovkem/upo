@@ -42,8 +42,9 @@ public class CertificateCrudView extends VerticalLayout {
     private final EmployeeService employeeService;
     private final ComputerService computerService;
 
-    private static final String[] CRUD_FORM_FIELD = {"id", "name", "employee", "computer", "dateEnd", "description"};
-    private static final String[] CRUD_FORM_FIELD_CAPTION = {"Код", "Наименование", "Пользователь", "Компьютер", "Дата окончания", "Комментарии"};
+    private static final String[] CRUD_FORM_FIELD = {"id", "name", "employee", "computer", "publisher", "keyContainerName", "dateEnd", "description"};
+    private static final String[] CRUD_FORM_FIELD_CAPTION = {"Код", "Наименование", "Пользователь", "Компьютер",
+            "Издатель", "Имя ключевого контейнера", "Дата окончания", "Комментарии"};
     private static final List<String> GRID_COLUMNS = List.of("id", "name");
     private static final List<String> GRID_COLUMNS_CAPTION = List.of("Код", "Наименование");
     private static final Map<String, String> MAP_COLUMN_PROP = getCollectMap(GRID_COLUMNS, GRID_COLUMNS_CAPTION);

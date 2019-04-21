@@ -18,8 +18,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Entity
 @EntityListeners(CrudOperationListener.class)
-@EqualsAndHashCode(exclude = {"employee","computer"})
-@ToString(exclude = {"employee","computer"})
+@EqualsAndHashCode(exclude = {"employee", "computer"})
+@ToString(exclude = {"employee", "computer"})
 @Table(name = "certificate", schema = "upo")
 public class Certificate {
     @Id
@@ -52,6 +52,25 @@ public class Certificate {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "computer_id", referencedColumnName = "id")
     private Computer computer;
+
+    /**
+     * Издатель
+     */
+    @Column(name = "publisher")
+    private String publisher;
+
+    /**
+     * Имя ключевого контейнера
+     */
+    @Column(name = "key_container_name")
+    private String keyContainerName;
+
+    /**
+     * Время окончания действия сертификата
+     */
+    @Column(name = "time_end")
+    private String timeEnd;
+
     /**
      * Описание
      */
