@@ -2,9 +2,9 @@ package ru.utelksp.upo.view.component;
 
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.customfield.CustomField;
-import com.vaadin.flow.component.dependency.HtmlImport;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import lombok.Getter;
 
 import java.util.Collection;
 import java.util.List;
@@ -15,8 +15,8 @@ import java.util.Map;
  * Грид для отображения справочника на форме.
  */
 @Tag("vaadin-custom-grid")
-@HtmlImport("css/shared-styles.html")
 public class CustomGrid<T> extends CustomField<Collection<T>> {
+    @Getter
     private Grid<T> grid;
 
     public CustomGrid(Class<T> domainType, Collection<T> defaultValue, List<String> columns, Map<String, String> mapColumn) {
