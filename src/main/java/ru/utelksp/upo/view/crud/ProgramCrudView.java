@@ -45,8 +45,8 @@ public class ProgramCrudView extends HorizontalLayout implements HasUrlParameter
     private final ComputerCrudListener computerCrudListener;
 
     public static final String VIEW_NAME = "Реестр ПО";
-    private static final String[] CRUD_FORM_FIELD = {"orders", "computers", "id", "name", "typeUsing", "description"};
-    private static final String[] CRUD_FORM_FIELD_CAPTION = {"Приказы", "Компьютеры", "Код", "Наименование", "Вид использования", "Комментарии"};
+    private static final String[] CRUD_FORM_FIELD = {"orders", "computers", "id", "name", "license", "typeUsing", "description"};
+    private static final String[] CRUD_FORM_FIELD_CAPTION = {"Приказы", "Компьютеры", "Код", "Наименование", "Лицензия", "Вид использования", "Комментарии"};
     private static final List<String> GRID_COLUMNS = List.of("id", "name");
     private static final List<String> GRID_ORDER_COLUMNS = List.of("orderNumber", "orderDate");
     private static final List<String> GRID_COMPUTER_COLUMNS = List.of("name");

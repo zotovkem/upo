@@ -59,6 +59,12 @@ public class Program {
     private Set<Computer> computers;
 
     /**
+     * Лицензия
+     */
+    @Column(name = "license")
+    private String license;
+
+    /**
      * Описание
      */
     @Column(name = "description")
