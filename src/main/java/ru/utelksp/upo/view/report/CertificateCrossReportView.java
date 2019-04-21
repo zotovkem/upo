@@ -77,15 +77,15 @@ public class CertificateCrossReportView extends VerticalLayout {
      */
     @NonNull
     private Div getReport(@NonNull Employee employee) {
-        List<ProgramAndCertificateReportDto> report = programService.getProgramAndCertificate();
+        List<ProgramAndCertificateReportDto> report = programService.getProgramAndCertificate(employee.getId());
         var tableDiv = new Div();
         tableDiv.setClassName("divTable blueTable");
         var firstRowLayout = new Div();
         firstRowLayout.setClassName("divTableRow");
         firstRowLayout.add(getItemDiv(employee.getShortFio()));
         tableDiv.add(firstRowLayout);
-        var programs = programService.findAll();
-        var certificates = certificateService.findAll();
+        var programs = programService.findByEmployeeId(employee.getId());
+        var certificates = certificateService.findByEmployeeId(employee.getId());
         programs.forEach(p -> {
             firstRowLayout.add(getLinkDiv(p.getName(), p.getId()));
             certificates.stream().filter(c -> c.getId().equals(p.getId()))

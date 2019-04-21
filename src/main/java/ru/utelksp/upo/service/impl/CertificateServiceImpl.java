@@ -11,6 +11,7 @@ import ru.utelksp.upo.repository.CertificateRepository;
 import ru.utelksp.upo.service.CertificateService;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -93,5 +94,16 @@ public class CertificateServiceImpl implements CertificateService {
     @NonNull
     public Page<Certificate> findByLikeEmployee(@NonNull Pageable page, String employeeFio) {
         return certificateRepository.findByLikeEmployee(page, employeeFio);
+    }
+
+    /**
+     * Получить список сертификатоф по идентификатору пользователя
+     *
+     * @param employeeId ид пользователя
+     * @return список программ
+     */
+    @Override
+    public List<Certificate> findByEmployeeId(@NonNull Long employeeId) {
+        return certificateRepository.findByEmployeeId(employeeId);
     }
 }

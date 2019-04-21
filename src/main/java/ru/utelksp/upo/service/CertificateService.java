@@ -6,6 +6,7 @@ import org.springframework.lang.NonNull;
 import ru.utelksp.upo.domain.Certificate;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -59,4 +60,12 @@ public interface CertificateService {
      */
     @NonNull
     Page<Certificate> findByLikeEmployee(@NonNull Pageable page, String employeeFio);
+
+    /**
+     * Получить список сертификатоф по идентификатору пользователя
+     *
+     * @param employeeId ид пользователя
+     * @return список программ
+     */
+    List<Certificate> findByEmployeeId(@NonNull Long employeeId);
 }
