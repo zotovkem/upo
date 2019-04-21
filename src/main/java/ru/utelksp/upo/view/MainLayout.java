@@ -16,6 +16,7 @@ import ru.utelksp.upo.UpoErrorHandler;
 import ru.utelksp.upo.service.SecurityService;
 import ru.utelksp.upo.view.component.Menu;
 import ru.utelksp.upo.view.crud.*;
+import ru.utelksp.upo.view.report.CertificateCrossReportView;
 import ru.utelksp.upo.view.report.CertificateReportView;
 import ru.utelksp.upo.view.report.ProgramReportView;
 
@@ -53,6 +54,7 @@ public class MainLayout extends FlexLayout implements RouterLayout {
         addViewAdmin();
         menu.addView(CertificateReportView.class, CertificateReportView.VIEW_NAME, VaadinIcon.SPLINE_CHART.create());
         menu.addView(ProgramReportView.class, ProgramReportView.VIEW_NAME, VaadinIcon.NEWSPAPER.create());
+        menu.addView(CertificateCrossReportView.class, CertificateCrossReportView.VIEW_NAME, VaadinIcon.ABSOLUTE_POSITION.create());
         add(menu);
     }
 
@@ -61,7 +63,7 @@ public class MainLayout extends FlexLayout implements RouterLayout {
      */
     private void addViewUser() {
         if (hasPermission("USER")) {
-            menu.addView(ProgramCrudView.class, ProgramCrudView.VIEW_NAME, VaadinIcon.BROWSER.create());
+            menu.addView(ProgramCrudView.class, ProgramCrudView.VIEW_NAME, VaadinIcon.BROWSER.create(), null);
             menu.addView(CertificateCrudView.class, CertificateCrudView.VIEW_NAME, VaadinIcon.DIPLOMA.create());
             menu.addView(OrderCrudView.class, OrderCrudView.VIEW_NAME, VaadinIcon.EDIT.create());
             menu.addView(EmployeeCrudView.class, EmployeeCrudView.VIEW_NAME, VaadinIcon.USER.create());

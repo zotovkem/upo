@@ -16,7 +16,6 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,7 +24,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * @author Created by ZotovES on 07.04.2019
  * Страница входа в систему
  */
-@Route("login1")
+//@Route("login1")
 @PageTitle("Вход в систему")
 @HtmlImport("css/shared-styles.html")
 public class LoginScreen extends FlexLayout {

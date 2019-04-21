@@ -2,9 +2,7 @@ package ru.utelksp.upo.view.crud;
 
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.data.renderer.TextRenderer;
-import com.vaadin.flow.router.PageTitle;
-import com.vaadin.flow.router.Route;
-import com.vaadin.flow.router.RouteAlias;
+import com.vaadin.flow.router.*;
 import com.vaadin.flow.spring.annotation.UIScope;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -28,22 +26,23 @@ import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.Objects.nonNull;
 import static ru.utelksp.upo.common.Util.getCollectMap;
 
 
 @Route(value = "program", layout = MainLayout.class)
 @RouteAlias(value = "", layout = MainLayout.class)
-@PageTitle("Программное обеспечение")
+@PageTitle("Реестр ПО")
 @UIScope
 @Component
 @RequiredArgsConstructor
-public class ProgramCrudView extends HorizontalLayout {
+public class ProgramCrudView extends HorizontalLayout implements HasUrlParameter<Long> {
     private final ProgramCrudListener programCrudListener;
     private final TypeUsingCrudListener typeUsingCrudListener;
     private final OrderCrudListener orderCrudListener;
     private final ComputerCrudListener computerCrudListener;
 
-    public static final String VIEW_NAME = "Программное обеспечение";
+    public static final String VIEW_NAME = "Реестр ПО";
     private static final String[] CRUD_FORM_FIELD = {"orders", "computers", "id", "name", "typeUsing", "description"};
     private static final String[] CRUD_FORM_FIELD_CAPTION = {"Приказы", "Компьютеры", "Код", "Наименование", "Вид использования", "Комментарии"};
     private static final List<String> GRID_COLUMNS = List.of("id", "name");
@@ -53,6 +52,8 @@ public class ProgramCrudView extends HorizontalLayout {
     private static final Map<String, String> MAP_COLUMN_PROP = getCollectMap(GRID_COLUMNS, GRID_COLUMNS_CAPTION);
     private static final Map<String, String> MAP_COLUMN_COMPUTER = Map.of("name", "Компьютеры");
     private static final Map<String, String> MAP_COLUMN_ORDER = Map.of("orderNumber", "Приказ", "orderDate", "Дата");
+
+    private UpoGridCrud<Program> crud;
 
     @PostConstruct
     void init() {
@@ -75,7 +76,7 @@ public class ProgramCrudView extends HorizontalLayout {
 
         var splitLayout = new UpoHorizontalSplitCrudLayout();
         splitLayout.getMainLayout().setSplitterPosition(60);
-        UpoGridCrud<Program> crud = new UpoGridCrud<>(Program.class, splitLayout, formFactory, programCrudListener);
+        crud = new UpoGridCrud<>(Program.class, splitLayout, formFactory, programCrudListener);
         crud.setGridColumn(GRID_COLUMNS);
         crud.setGridCaptionColumn(MAP_COLUMN_PROP);
         crud.addAttachListener(attachEvent -> refreshCombobox(crud));
@@ -98,5 +99,29 @@ public class ProgramCrudView extends HorizontalLayout {
      */
     private ComboBoxProvider getTypeUsingProvider() {
         return new ComboBoxProvider<>("Вид использования", typeUsingCrudListener.findAll(), new TextRenderer<>(TypeUsing::getName), TypeUsing::getName);
+    }
+
+    /**
+     * Ловит входящий параметр и ищет по нему ПО
+     */
+    @Override
+    public void setParameter(BeforeEvent event, @OptionalParameter Long parameter) {
+        if (nonNull(parameter)) {
+            programCrudListener.findById(parameter).ifPresent(this::showCrudForm);
+        }
+    }
+
+    /**
+     * Отображает форму детального просмотра
+     *
+     * @param p объект для отображения
+     */
+    private void showCrudForm(Program p) {
+        var form = crud.getCrudFormFactory().buildNewForm(CrudOperation.READ, p, true, null, e -> {
+            crud.getGrid().asSingleSelect().clear();
+            crud.getGrid().select(p);
+        });
+        String caption = crud.getCrudFormFactory().buildCaption(CrudOperation.READ, p);
+        crud.getCrudLayout().showForm(CrudOperation.READ, form, caption);
     }
 }

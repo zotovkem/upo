@@ -21,6 +21,7 @@ import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import ru.utelksp.upo.domain.event.LogoutUserEvent;
 import ru.utelksp.upo.service.SecurityService;
+import ru.utelksp.upo.view.crud.ProgramCrudView;
 
 import static java.lang.String.format;
 import static ru.utelksp.upo.common.UpoConst.LOGOUT_PAGE_URL;
@@ -75,6 +76,27 @@ public class Menu extends FlexLayout {
     public void addView(Class<? extends Component> viewClass, String caption, Icon icon) {
         Tab tab = new Tab();
         RouterLink routerLink = new RouterLink(null, viewClass);
+        addRouteLink(caption, icon, tab, routerLink);
+    }
+
+    /**
+     * Добавляет пункт меню c параметром на панель
+     */
+    public void addView(Class<? extends ProgramCrudView> viewClass, String caption, Icon icon, Long parameter) {
+        Tab tab = new Tab();
+        RouterLink routerLink = new RouterLink(null, viewClass, parameter);
+        addRouteLink(caption, icon, tab, routerLink);
+    }
+
+    /**
+     * Добавляет ссылку
+     *
+     * @param caption    заголовок меню
+     * @param icon       иконка
+     * @param tab        закладка
+     * @param routerLink ссылка
+     */
+    private void addRouteLink(String caption, Icon icon, Tab tab, RouterLink routerLink) {
         routerLink.setClassName("menu-link");
         routerLink.add(icon);
         routerLink.add(new Span(caption));

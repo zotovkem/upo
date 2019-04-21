@@ -2,21 +2,22 @@ package ru.utelksp.upo.view.report;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.combobox.ComboBox;
-import com.vaadin.flow.component.dependency.HtmlImport;
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.flow.data.renderer.TemplateRenderer;
-import com.vaadin.flow.data.renderer.TextRenderer;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.UIScope;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
-import org.vaadin.crudui.form.impl.field.provider.ComboBoxProvider;
 import ru.utelksp.upo.common.dto.ProgramAndCertificateReportDto;
+import ru.utelksp.upo.domain.Certificate;
+import ru.utelksp.upo.domain.Program;
 import ru.utelksp.upo.domain.dictionary.Employee;
+import ru.utelksp.upo.service.CertificateService;
 import ru.utelksp.upo.service.EmployeeService;
 import ru.utelksp.upo.service.ProgramService;
 import ru.utelksp.upo.view.MainLayout;
@@ -33,10 +34,10 @@ import static java.util.Objects.nonNull;
 @PageTitle("Кросс-отчет ПО и сертификаты")
 @UIScope
 @org.springframework.stereotype.Component
-@HtmlImport("css/shared-styles.html")
 @RequiredArgsConstructor
 public class CertificateCrossReportView extends VerticalLayout {
     private final ProgramService programService;
+    private final CertificateService certificateService;
     private final EmployeeService employeeService;
     private VerticalLayout menuLayout = new VerticalLayout();
     private VerticalLayout reportContainer = new VerticalLayout();
@@ -60,7 +61,7 @@ public class CertificateCrossReportView extends VerticalLayout {
                 .withProperty("name", Employee::getShortFio));
         employeeCombobox.addValueChangeListener(e -> {
             reportContainer.removeAll();
-            if (nonNull(e)) {
+            if (nonNull(e.getValue())) {
                 Div tableDiv = getReport(e.getValue());
                 reportContainer.add(tableDiv);
             }
@@ -68,9 +69,15 @@ public class CertificateCrossReportView extends VerticalLayout {
         menuLayout.add(employeeCombobox);
     }
 
+    /**
+     * Формирует отчет по пользователю
+     *
+     * @param employee пользователь
+     * @return компонент с отчетом
+     */
     @NonNull
     private Div getReport(@NonNull Employee employee) {
-        List<ProgramAndCertificateReportDto> certificates = programService.getProgramAndCertificate();
+        List<ProgramAndCertificateReportDto> report = programService.getProgramAndCertificate();
         var tableDiv = new Div();
         tableDiv.setClassName("divTable blueTable");
         var firstRowLayout = new Div();
@@ -78,36 +85,56 @@ public class CertificateCrossReportView extends VerticalLayout {
         firstRowLayout.add(getItemDiv(employee.getShortFio()));
         tableDiv.add(firstRowLayout);
         var programs = programService.findAll();
+        var certificates = certificateService.findAll();
         programs.forEach(p -> {
-            int countPO = 0;
-            firstRowLayout.add(getItemDiv(p.getName()));
-            int finalCountPO = countPO;
+            firstRowLayout.add(getLinkDiv(p.getName(), p.getId()));
             certificates.stream().filter(c -> c.getId().equals(p.getId()))
                     .forEach(c -> {
                         var certRowLayout = new Div();
                         certRowLayout.setClassName("divTableRow");
-                        for (int i = 0; i < finalCountPO; i++) {
-                            certRowLayout.add(getDiv());
-                        }
-                        certRowLayout.add(getItemDiv(c.getCertificateName()));
-                        certRowLayout.add(getItemDiv(c.getDateEnd().toString()));
-                        long countEmptyCell = programs.size() - certificates.stream().filter(cert -> cert.getId().equals(p.getId())).count();
-                        for (int i = 0; i < countEmptyCell; i++) {
-                            certRowLayout.add(getDiv());
-                        }
+                        certRowLayout.add(getItemDiv(c.getName()));
+                        programs.forEach(program -> {
+                            if (isCross(report, c, program)) {
+                                certRowLayout.add(getItemDiv(c.getDateEnd().toString()));
+                            } else {
+                                certRowLayout.add(getDiv());
+                            }
+                        });
                         tableDiv.add(certRowLayout);
                     });
-            countPO++;
         });
         return tableDiv;
     }
 
+    /**
+     * Проверяет пересечение программы и сертификата
+     *
+     * @param report  отчет ссо всеми вариантами
+     * @param cert    сертификат
+     * @param program ПО
+     * @return результат проверки
+     */
+    private boolean isCross(List<ProgramAndCertificateReportDto> report, Certificate cert, Program program) {
+        return report.stream()
+                .anyMatch(r -> r.getId().equals(program.getId()) && r.getCertificateId().equals(cert.getId()));
+    }
+
+    /**
+     * Формирует пустой блок
+     *
+     * @return компонент
+     */
     private Component getDiv() {
         Div div = new Div();
         div.setClassName("divTableCell");
         return div;
     }
 
+    /**
+     * Формирует блок с текстом
+     * @param text текст
+     * @return компонент
+     */
     private Component getItemDiv(String text) {
         Div div = new Div();
         div.setClassName("divTableCell");
@@ -116,9 +143,16 @@ public class CertificateCrossReportView extends VerticalLayout {
     }
 
     /**
-     * Получить провейдера для справочника пользователей
+     * Добавить на форму блок с ссылкой
+     * @param text текст ссылки
+     * @param programId идентификатор программы
+     * @return компонент
      */
-    private ComboBoxProvider getEmployeeProvider() {
-        return new ComboBoxProvider<>("Пользователь", employeeService.findAll(), new TextRenderer<>(Employee::getShortFio), Employee::getShortFio);
+    private Component getLinkDiv(String text, Long programId) {
+        Div div = new Div();
+        div.setClassName("divTableCell");
+        var link = new Anchor("program/" + programId, text);
+        div.add(link);
+        return div;
     }
 }
