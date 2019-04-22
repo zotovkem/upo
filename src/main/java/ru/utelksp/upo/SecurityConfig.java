@@ -48,9 +48,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable().cors().and()
                 .authorizeRequests()
                 .antMatchers("/VAADIN/**", "/manifest.json", "/sw.js", "/offline-page.html").permitAll()
+                .anyRequest().authenticated()
                 .antMatchers(SECURED_PAGE_USER).hasAnyRole("USER")
-                .antMatchers(SECURED_PAGE_ADMIN).hasAnyRole("ADMIN")
-                .anyRequest().authenticated().and();
+                .antMatchers(SECURED_PAGE_ADMIN).hasAnyRole("ADMIN");
 
         http.logout().permitAll()
                 .logoutUrl("/logout")
