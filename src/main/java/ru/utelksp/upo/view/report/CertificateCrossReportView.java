@@ -13,8 +13,8 @@ import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.UIScope;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
-import ru.utelksp.upo.common.dto.ProgramAndCertificateReportDto;
 import ru.utelksp.upo.domain.Certificate;
+import ru.utelksp.upo.domain.Order;
 import ru.utelksp.upo.domain.Program;
 import ru.utelksp.upo.domain.dictionary.Employee;
 import ru.utelksp.upo.service.CertificateService;
@@ -23,7 +23,6 @@ import ru.utelksp.upo.service.ProgramService;
 import ru.utelksp.upo.view.MainLayout;
 
 import javax.annotation.PostConstruct;
-import java.util.List;
 
 import static java.util.Objects.nonNull;
 
@@ -77,7 +76,6 @@ public class CertificateCrossReportView extends VerticalLayout {
      */
     @NonNull
     private Div getReport(@NonNull Employee employee) {
-        List<ProgramAndCertificateReportDto> report = programService.getProgramAndCertificate(employee.getId());
         var tableDiv = new Div();
         tableDiv.setClassName("divTable blueTable");
         var firstRowLayout = new Div();
@@ -88,20 +86,19 @@ public class CertificateCrossReportView extends VerticalLayout {
         var certificates = certificateService.findByEmployeeId(employee.getId());
         programs.forEach(p -> {
             firstRowLayout.add(getLinkDiv(p.getName(), p.getId()));
-            certificates.stream().filter(c -> c.getId().equals(p.getId()))
-                    .forEach(c -> {
-                        var certRowLayout = new Div();
-                        certRowLayout.setClassName("divTableRow");
-                        certRowLayout.add(getItemDiv(c.getName()));
-                        programs.forEach(program -> {
-                            if (isCross(report, c, program)) {
-                                certRowLayout.add(getItemDiv(c.getDateEnd().toString()));
-                            } else {
-                                certRowLayout.add(getDiv());
-                            }
-                        });
-                        tableDiv.add(certRowLayout);
-                    });
+        });
+        certificates.forEach(c -> {
+            var certRowLayout = new Div();
+            certRowLayout.setClassName("divTableRow");
+            certRowLayout.add(getItemDiv(c.getName()));
+            programs.forEach(program -> {
+                if (isCross(c, program)) {
+                    certRowLayout.add(getItemDiv(c.getDateEnd().toString()));
+                } else {
+                    certRowLayout.add(getDiv());
+                }
+            });
+            tableDiv.add(certRowLayout);
         });
         return tableDiv;
     }
@@ -109,14 +106,15 @@ public class CertificateCrossReportView extends VerticalLayout {
     /**
      * Проверяет пересечение программы и сертификата
      *
-     * @param report  отчет ссо всеми вариантами
      * @param cert    сертификат
      * @param program ПО
      * @return результат проверки
      */
-    private boolean isCross(List<ProgramAndCertificateReportDto> report, Certificate cert, Program program) {
-        return report.stream()
-                .anyMatch(r -> r.getId().equals(program.getId()) && r.getCertificateId().equals(cert.getId()));
+    private boolean isCross(Certificate cert, Program program) {
+        return program.getOrders().stream()
+                .map(Order::getCertificate)
+                .map(Certificate::getId)
+                .anyMatch(id -> cert.getId().equals(id));
     }
 
     /**
@@ -132,6 +130,7 @@ public class CertificateCrossReportView extends VerticalLayout {
 
     /**
      * Формирует блок с текстом
+     *
      * @param text текст
      * @return компонент
      */
@@ -144,7 +143,8 @@ public class CertificateCrossReportView extends VerticalLayout {
 
     /**
      * Добавить на форму блок с ссылкой
-     * @param text текст ссылки
+     *
+     * @param text      текст ссылки
      * @param programId идентификатор программы
      * @return компонент
      */

@@ -53,8 +53,9 @@ public interface ProgramRepository extends JpaRepository<Program, Long> {
             "from Program program " +
             "inner join program.orders ord " +
             "inner join ord.employees emp " +
-            "inner join fetch Certificate cert on cert.employee.id = emp.id " +
-            "where emp.id = :employeeId")
+            "inner join ord.certificate cert " +
+            "where emp.id = :employeeId " +
+            "and cert.employee.id = :employeeId")
     List<ProgramAndCertificateReportDto> getProgramAndCertificate(@NonNull @Param("employeeId") Long employeeId);
 
     /**
