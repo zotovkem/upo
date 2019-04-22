@@ -48,6 +48,13 @@ public class Order {
     private Organization organization;
 
     /**
+     * Сертификат
+     */
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "certificate_id", referencedColumnName = "id")
+    private Certificate certificate;
+
+    /**
      * Список пользователей
      */
     @ManyToMany(fetch = FetchType.EAGER)

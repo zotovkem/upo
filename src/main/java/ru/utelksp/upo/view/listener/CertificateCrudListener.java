@@ -56,7 +56,7 @@ public class CertificateCrudListener implements CrudListener<Certificate> {
      */
     @Override
     public void delete(Certificate certificate) {
-        certificateService.deleteById(certificate.getId());
+        certificateService.delete(certificate);
     }
 
     /**

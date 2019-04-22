@@ -8,4 +8,5 @@
     <include file="2019-04-21-01-add-license.xml" relativeToChangelogFile="true"/>
     <include file="2019-04-21-02-add-fields-certificate.xml" relativeToChangelogFile="true"/>
     <include file="2019-04-22-edit-roles.xml" relativeToChangelogFile="true"/>
+    <include file="2019-04-22-02-order-add-column-certificate.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>

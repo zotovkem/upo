@@ -6,6 +6,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.utelksp.upo.common.validators.CertificateValidator;
+import ru.utelksp.upo.common.validators.validator.hints.Delete;
 import ru.utelksp.upo.domain.Certificate;
 import ru.utelksp.upo.repository.CertificateRepository;
 import ru.utelksp.upo.service.CertificateService;
@@ -22,6 +24,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CertificateServiceImpl implements CertificateService {
     private final CertificateRepository certificateRepository;
+    private final CertificateValidator validator;
 
     /**
      * Возвращает список всех сертификатов
@@ -64,12 +67,13 @@ public class CertificateServiceImpl implements CertificateService {
     /**
      * Удалить сертификат по идентификатору
      *
-     * @param id идентификатор сертификата
+     * @param certificate сертификата
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void deleteById(@NonNull Long id) {
-        certificateRepository.deleteById(id);
+    public void delete(@NonNull Certificate certificate) {
+        validator.validate(certificate, Delete.class);
+        certificateRepository.delete(certificate);
     }
 
     /**

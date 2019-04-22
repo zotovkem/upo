@@ -41,9 +41,9 @@ public interface CertificateService {
     /**
      * Удалить сертификат по идентификатору
      *
-     * @param id идентификатор сертификата
+     * @param certificate сертификат
      */
-    void deleteById(@NonNull Long id);
+    void delete(@NonNull Certificate certificate);
 
     /**
      * Жадное получение всех сертификатов
