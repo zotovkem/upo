@@ -39,6 +39,14 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findByOrganizationId(Long organizationId);
 
     /**
+     * Поиск приказов по идентификатору сертификата
+     *
+     * @param certificateId иднетфикатор сертификата
+     * @return список приказов
+     */
+    List<Order> findByCertificateId(Long certificateId);
+
+    /**
      * Поиск приказов по ФИО пользователя
      *
      * @param employeeFio фио пользователя

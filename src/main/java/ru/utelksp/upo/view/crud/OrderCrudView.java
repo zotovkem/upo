@@ -11,9 +11,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.vaadin.crudui.crud.CrudOperation;
 import org.vaadin.crudui.form.impl.field.provider.ComboBoxProvider;
+import ru.utelksp.upo.domain.Certificate;
 import ru.utelksp.upo.domain.Order;
 import ru.utelksp.upo.domain.dictionary.Employee;
 import ru.utelksp.upo.domain.dictionary.Organization;
+import ru.utelksp.upo.service.CertificateService;
 import ru.utelksp.upo.service.OrganizationService;
 import ru.utelksp.upo.view.MainLayout;
 import ru.utelksp.upo.view.component.CustomGrid;
@@ -41,11 +43,13 @@ import static ru.utelksp.upo.common.Util.getCollectMap;
 public class OrderCrudView extends VerticalLayout {
     private final OrderCrudListener orderCrudListener;
     private final OrganizationService organizationService;
+    private final CertificateService certificateService;
     private final EmployeeCrudListener employeeCrudListener;
 
     public static final String VIEW_NAME = "Приказы";
-    private static final String[] CRUD_FORM_FIELD = {"id", "orderNumber", "orderDate", "organization", "description", "employees"};
-    private static final String[] CRUD_FORM_FIELD_CAPTION = {"Код", "Номер приказа", "Дата приказа", "Организация", "Комментарии", "Пользователи"};
+    private static final String[] CRUD_FORM_FIELD = {"id", "orderNumber", "orderDate", "organization", "certificate", "description", "employees"};
+    private static final String[] CRUD_FORM_FIELD_CAPTION = {"Код", "Номер приказа", "Дата приказа", "Организация",
+            "Сертификат", "Комментарии", "Пользователи"};
     private static final List<String> GRID_COLUMNS = List.of("id", "orderNumber");
     private static final List<String> GRID_EMPLOYEE_COLUMNS = List.of("lastName", "firstName", "patronymic");
     private static final Map<String, String> MAP_EMPLOYEE_COLUMNS = Map.of("lastName", "Фамилия", "firstName", "Имя", "patronymic", "Отчество");
@@ -60,6 +64,7 @@ public class OrderCrudView extends VerticalLayout {
         formFactory.setVisibleProperties(CRUD_FORM_FIELD);
         formFactory.setFieldCaptions(CRUD_FORM_FIELD_CAPTION);
         formFactory.setFieldProvider("organization", getOrganizationProvider());
+        formFactory.setFieldProvider("certificate", getCertificateProvider());
         formFactory.setFieldProvider("employees", () -> {
             var grid = new CustomGrid<>(Employee.class, employeeCrudListener.findAll(), GRID_EMPLOYEE_COLUMNS, MAP_EMPLOYEE_COLUMNS);
             grid.setValue(employeeCrudListener.findAll());
@@ -93,6 +98,7 @@ public class OrderCrudView extends VerticalLayout {
     @SuppressWarnings("unchecked")
     private void refreshCombobox(UpoGridCrud crud) {
         crud.getCrudFormFactory().setFieldProvider("organization", getOrganizationProvider());
+        crud.getCrudFormFactory().setFieldProvider("certificate", getCertificateProvider());
         crud.getCrudFormFactory().buildCaption(CrudOperation.READ, null);
     }
 
@@ -101,5 +107,12 @@ public class OrderCrudView extends VerticalLayout {
      */
     private ComboBoxProvider getOrganizationProvider() {
         return new ComboBoxProvider<>("Организация", organizationService.findAll(), new TextRenderer<>(Organization::getName), Organization::getName);
+    }
+
+    /**
+     * Получить провайдера для сертификатов
+     */
+    private ComboBoxProvider getCertificateProvider() {
+        return new ComboBoxProvider<>("Сертификат", certificateService.findAll(), new TextRenderer<>(Certificate::getName), Certificate::getName);
     }
 }

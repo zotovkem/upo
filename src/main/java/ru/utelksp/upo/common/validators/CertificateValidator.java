@@ -33,7 +33,7 @@ public class CertificateValidator implements Validator<Certificate> {
     @Override
     public void validate(Certificate target, Object hint, Collection<String> errors) {
         if (hint.equals(Delete.class)) {
-            orderRepository.findByComputerId(target.getId()).forEach(getTextErrorOrder(target, errors));
+            orderRepository.findByCertificateId(target.getId()).forEach(getTextErrorOrder(target, errors));
         }
         if (!errors.isEmpty()) {
             errors.add("Не возможно удалить запись, отредактируйте зависимые записи");
