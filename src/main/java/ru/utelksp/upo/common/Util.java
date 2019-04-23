@@ -74,6 +74,6 @@ public class Util {
      * @return пустую строку, если исходная - пустая, либо первый символ из исходной строки с точкой на конце
      */
     public static String getFirstSymbolWithDot(@NonNull String source) {
-        return of(addSymbolToEnd(getFirstSymbol((source)), ".")).orElse("");
+        return of(addSymbolToEnd(getFirstSymbol(source), ".")).orElse("");
     }
 }

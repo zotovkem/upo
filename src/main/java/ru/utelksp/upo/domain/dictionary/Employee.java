@@ -9,6 +9,7 @@ import ru.utelksp.upo.service.impl.CrudOperationListener;
 import javax.persistence.*;
 
 import static java.lang.String.format;
+import static java.util.Objects.isNull;
 import static ru.utelksp.upo.common.Util.getFirstSymbolWithDot;
 
 /**
@@ -60,6 +61,8 @@ public class Employee {
     private String description;
 
     public String getShortFio() {
-        return format("%s %s%s", lastName, getFirstSymbolWithDot(firstName), getFirstSymbolWithDot(patronymic));
+        return format("%s %s%s", isNull(lastName) ? "" : lastName,
+                getFirstSymbolWithDot(isNull(firstName) ? "" : firstName),
+                getFirstSymbolWithDot(isNull(patronymic) ? "" : patronymic));
     }
 }

@@ -26,6 +26,7 @@ import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.Optional.ofNullable;
 import static ru.utelksp.upo.common.Util.getCollectMap;
 
 /**
@@ -70,7 +71,10 @@ public class CertificateCrudView extends VerticalLayout {
         employeeFilter.setPlaceholder("поиск по пользователю");
         employeeFilter.addValueChangeListener(e -> crud.refreshGrid());
         crud.getCrudLayout().addFilterComponent(employeeFilter);
-        crud.getGrid().addColumn(new TextRenderer<>(certificate -> certificate.getEmployee().getShortFio()))
+        crud.getGrid().addColumn(new TextRenderer<>(certificate -> ofNullable(certificate)
+                .map(Certificate::getEmployee)
+                .map(Employee::getShortFio)
+                .orElse("")))
                 .setHeader("Пользователь");
         crud.setFindAllOperation(DataProvider.fromCallbacks(
                 query -> certificateCrudListener.findByLikeEmployee(employeeFilter.getValue(), query.getLimit(), query.getOffset()).stream(),
