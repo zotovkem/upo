@@ -67,6 +67,7 @@ public interface ProgramRepository extends JpaRepository<Program, Long> {
             "select distinct program " +
             "from Program program " +
             "inner join program.orders ord " +
+            "inner join ord.certificate " +
             "inner join ord.employees emp " +
             "where emp.id = :employeeId")
     List<Program> findByEmployeeId(@NonNull @Param("employeeId") Long employeeId);
