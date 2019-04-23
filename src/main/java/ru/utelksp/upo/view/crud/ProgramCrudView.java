@@ -11,7 +11,6 @@ import org.vaadin.crudui.form.impl.field.provider.ComboBoxProvider;
 import ru.utelksp.upo.domain.Order;
 import ru.utelksp.upo.domain.Program;
 import ru.utelksp.upo.domain.dictionary.Computer;
-import ru.utelksp.upo.domain.dictionary.Employee;
 import ru.utelksp.upo.domain.dictionary.TypeUsing;
 import ru.utelksp.upo.view.MainLayout;
 import ru.utelksp.upo.view.component.CustomGrid;
@@ -26,10 +25,11 @@ import ru.utelksp.upo.view.listener.TypeUsingCrudListener;
 import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import static java.util.Objects.nonNull;
 import static ru.utelksp.upo.common.Util.getCollectMap;
+import static ru.utelksp.upo.view.component.FactoryComponent.getOrderItemLabelGenerator;
+import static ru.utelksp.upo.view.component.FactoryComponent.getTypeUsingItemLabelGenerator;
 
 
 @Route(value = "program", layout = MainLayout.class)
@@ -66,11 +66,7 @@ public class ProgramCrudView extends HorizontalLayout implements HasUrlParameter
             var grid = new CustomGrid<>(Order.class, orderCrudListener.findAll(), GRID_ORDER_COLUMNS, MAP_COLUMN_ORDER);
             grid.getGrid().getColumnByKey("orderNumber").setWidth("10%");
             grid.getGrid().getColumnByKey("orderDate").setWidth("30%");
-            grid.getGrid().addColumn(new TextRenderer<>(order -> order.getEmployees().stream()
-                    .map(Employee::getShortFio)
-                    .collect(Collectors.joining(", "))))
-                    .setWidth("60%")
-                    .setHeader("Пользователи");
+            grid.getGrid().addColumn(new TextRenderer<>(getOrderItemLabelGenerator())).setWidth("60%").setHeader("Пользователи");
             grid.setValue(orderCrudListener.findAll());
             return grid;
         });
@@ -109,7 +105,7 @@ public class ProgramCrudView extends HorizontalLayout implements HasUrlParameter
      * Получить провайдера для справочника видов использования
      */
     private ComboBoxProvider getTypeUsingProvider() {
-        return new ComboBoxProvider<>("Вид использования", typeUsingCrudListener.findAll(), new TextRenderer<>(TypeUsing::getName), TypeUsing::getName);
+        return new ComboBoxProvider<>("Вид использования", typeUsingCrudListener.findAll(), new TextRenderer<>(getTypeUsingItemLabelGenerator()), TypeUsing::getName);
     }
 
     /**

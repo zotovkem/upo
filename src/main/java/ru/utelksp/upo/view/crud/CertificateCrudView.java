@@ -17,6 +17,7 @@ import ru.utelksp.upo.domain.dictionary.Employee;
 import ru.utelksp.upo.service.ComputerService;
 import ru.utelksp.upo.service.EmployeeService;
 import ru.utelksp.upo.view.MainLayout;
+import ru.utelksp.upo.view.component.FactoryComponent;
 import ru.utelksp.upo.view.component.UpoCrudFormFactory;
 import ru.utelksp.upo.view.component.UpoGridCrud;
 import ru.utelksp.upo.view.component.UpoHorizontalSplitCrudLayout;
@@ -26,7 +27,6 @@ import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Map;
 
-import static java.util.Optional.ofNullable;
 import static ru.utelksp.upo.common.Util.getCollectMap;
 
 /**
@@ -71,11 +71,7 @@ public class CertificateCrudView extends VerticalLayout {
         employeeFilter.setPlaceholder("поиск по пользователю");
         employeeFilter.addValueChangeListener(e -> crud.refreshGrid());
         crud.getCrudLayout().addFilterComponent(employeeFilter);
-        crud.getGrid().addColumn(new TextRenderer<>(certificate -> ofNullable(certificate)
-                .map(Certificate::getEmployee)
-                .map(Employee::getShortFio)
-                .orElse("")))
-                .setHeader("Пользователь");
+        crud.getGrid().addColumn(new TextRenderer<>(FactoryComponent.getCertificateItemLabelGenerator())).setHeader("Пользователь");
         crud.setFindAllOperation(DataProvider.fromCallbacks(
                 query -> certificateCrudListener.findByLikeEmployee(employeeFilter.getValue(), query.getLimit(), query.getOffset()).stream(),
                 query -> certificateCrudListener.countByLikeEmployee(employeeFilter.getValue(), query.getLimit(), query.getOffset())));
