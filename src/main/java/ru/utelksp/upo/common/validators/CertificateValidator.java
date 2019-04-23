@@ -14,6 +14,8 @@ import ru.utelksp.upo.repository.OrderRepository;
 import java.util.Collection;
 import java.util.function.Consumer;
 
+import static java.util.Objects.isNull;
+
 /**
  * @author Created by ZotovES on 22.04.2019
  * Валидатор сертификатов
@@ -39,7 +41,9 @@ public class CertificateValidator implements Validator<Certificate> {
         }
 
         if (hint.equals(Update.class) || hint.equals(Create.class)) {
-            errors.add("Наименование сертификата должно быть заполнено");
+            if (isNull(target.getName())) {
+                errors.add("Наименование сертификата должно быть заполнено");
+            }
         }
 
         if (!errors.isEmpty()) {

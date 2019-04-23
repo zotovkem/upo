@@ -7,7 +7,9 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.utelksp.upo.common.validators.CertificateValidator;
+import ru.utelksp.upo.common.validators.validator.hints.Create;
 import ru.utelksp.upo.common.validators.validator.hints.Delete;
+import ru.utelksp.upo.common.validators.validator.hints.Update;
 import ru.utelksp.upo.domain.Certificate;
 import ru.utelksp.upo.repository.CertificateRepository;
 import ru.utelksp.upo.service.CertificateService;
@@ -15,6 +17,8 @@ import ru.utelksp.upo.service.CertificateService;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+
+import static java.util.Objects.isNull;
 
 /**
  * @author Created by ZotovES on 22.03.2019
@@ -61,6 +65,9 @@ public class CertificateServiceImpl implements CertificateService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Certificate save(@NonNull Certificate certificate) {
+        var hint = isNull(certificate.getId()) ? Update.class : Create.class;
+        validator.validate(certificate, hint);
+
         return certificateRepository.save(certificate);
     }
 
