@@ -263,5 +263,39 @@
         .divTableBody {
             display: table-row-group;
         }
+
+        /*Для страницы печати*/
+        @media print {
+            body {
+                font-family: Arial, Helvetica, sans-serif;
+                font-size: 18px;
+                color: black;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+
+            div.menu-bar {
+                display: none !important;
+            }
+
+            .notPrintDiv {
+                display: none !important;
+            }
+
+            .printDiv {
+                display: flex !important;
+                width: 100% !important;
+            }
+
+            .PrintPreviewReport-mainLayout {
+                background-color: #FFFFFF;
+                display: flex !important;
+            }
+
+            .PrintPreviewReport-htmlContainer table.jrPage {
+                box-shadow: none !important;
+                display: flex !important;
+            }
+        }
     </style>
 </custom-style>

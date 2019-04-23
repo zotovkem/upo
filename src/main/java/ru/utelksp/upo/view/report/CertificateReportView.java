@@ -58,6 +58,7 @@ public class CertificateReportView extends VerticalLayout {
     @PostConstruct
     private void init() {
         SplitLayout mainLayout = new SplitLayout(reportContainer, menuLayout);
+        menuLayout.setClassName("notPrintDiv");
         mainLayout.setSizeFull();
         mainLayout.setSplitterPosition(80);
         add(mainLayout);
@@ -105,6 +106,7 @@ public class CertificateReportView extends VerticalLayout {
         report.setItems(certificateRepository.findWithParam(employeeId, certificateId, pcId));
         var div = new Div(report);
         div.setSizeFull();
+        div.setClassName("printDiv");
         return div;
     }
 
@@ -113,7 +115,7 @@ public class CertificateReportView extends VerticalLayout {
      */
     private void getReportBuilder(PrintPreviewReport<CertificateReportDto> report) {
         report.getReportBuilder()
-                .setMargins(20, 20, 40, 40)
+//                .setMargins(20, 20, 40, 40)
                 .setTitle(VIEW_NAME)
                 .setPrintBackgroundOnOddRows(true)
                 .setUseFullPageWidth(true)
@@ -147,7 +149,6 @@ public class CertificateReportView extends VerticalLayout {
         PrintPreviewReport<CertificateReportDto> report = new PrintPreviewReport<>();
         getReportBuilder(report);
         SerializableSupplier<List<? extends CertificateReportDto>> itemsSupplier = () -> certificateRepository.findWithParam(null, null, null);
-//        report.setItems(itemsSupplier.get());
 
         HorizontalLayout anchors = new HorizontalLayout();
 
