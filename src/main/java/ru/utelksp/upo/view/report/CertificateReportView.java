@@ -1,7 +1,11 @@
 package ru.utelksp.upo.view.report;
 
 import ar.com.fdvs.dj.domain.ExpressionHelper;
+import ar.com.fdvs.dj.domain.Style;
 import ar.com.fdvs.dj.domain.builders.ColumnBuilder;
+import ar.com.fdvs.dj.domain.constants.Border;
+import ar.com.fdvs.dj.domain.constants.HorizontalAlign;
+import ar.com.fdvs.dj.domain.constants.Transparency;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
@@ -28,6 +32,7 @@ import ru.utelksp.upo.service.EmployeeService;
 import ru.utelksp.upo.view.MainLayout;
 
 import javax.annotation.PostConstruct;
+import java.awt.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -114,9 +119,25 @@ public class CertificateReportView extends VerticalLayout {
      * Настраивает сетку отчета
      */
     private void getReportBuilder(PrintPreviewReport<CertificateReportDto> report) {
+        Style detailStyle = new Style();
+        detailStyle.setBorder(Border.THIN());
+        detailStyle.getBorder().setColor(Color.BLACK);
+        detailStyle.setStretchWithOverflow(true);
+        Style headerStyle = new Style();
+        headerStyle.setHorizontalAlign(HorizontalAlign.CENTER);
+        headerStyle.setBackgroundColor(new Color(230, 230, 230));
+        headerStyle.setBorder(Border.THIN());
+        headerStyle.setTransparency(Transparency.OPAQUE);
+        Style titleStyle = new Style();
+        titleStyle.setHorizontalAlign(HorizontalAlign.CENTER);
+        Style subtitleStyle = new Style();
+        Style amountStyle = new Style();
+        amountStyle.setHorizontalAlign(HorizontalAlign.RIGHT);
+
         report.getReportBuilder()
-//                .setMargins(20, 20, 40, 40)
+                .setDefaultStyles(titleStyle, subtitleStyle, headerStyle, detailStyle)
                 .setTitle(VIEW_NAME)
+                .setMargins(20, 0, 0, 20)
                 .setPrintBackgroundOnOddRows(true)
                 .setUseFullPageWidth(true)
                 .addColumn(ColumnBuilder.getNew()

@@ -266,9 +266,23 @@
 
         /*Для страницы печати*/
         @media print {
+            html {
+                overflow: hidden;
+            }
+
+            vaadin-vertical-layout {
+                margin: 0 0 0 0 !important;
+                padding: 0 0 0 0 !important;
+            }
+
+            vaadin-split-layout {
+                margin: 0 0 0 0 !important;
+                padding: 0 0 0 0 !important;
+            }
+
             body {
                 font-family: Arial, Helvetica, sans-serif;
-                font-size: 18px;
+                font-size: 12px;
                 color: black;
                 margin: 0 !important;
                 padding: 0 !important;
@@ -285,16 +299,9 @@
             .printDiv {
                 display: flex !important;
                 width: 100% !important;
-            }
-
-            .PrintPreviewReport-mainLayout {
-                background-color: #FFFFFF;
-                display: flex !important;
-            }
-
-            .PrintPreviewReport-htmlContainer table.jrPage {
-                box-shadow: none !important;
-                display: flex !important;
+                margin: 0 0 0 0 !important;
+                padding: 0 0 0 0 !important;
+                overflow: hidden;
             }
         }
     </style>
