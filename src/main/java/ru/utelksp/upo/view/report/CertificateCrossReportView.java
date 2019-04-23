@@ -23,6 +23,7 @@ import ru.utelksp.upo.service.ProgramService;
 import ru.utelksp.upo.view.MainLayout;
 
 import javax.annotation.PostConstruct;
+import java.util.Objects;
 
 import static java.util.Objects.nonNull;
 
@@ -84,9 +85,7 @@ public class CertificateCrossReportView extends VerticalLayout {
         tableDiv.add(firstRowLayout);
         var programs = programService.findByEmployeeId(employee.getId());
         var certificates = certificateService.findByEmployeeId(employee.getId());
-        programs.forEach(p -> {
-            firstRowLayout.add(getLinkDiv(p.getName(), p.getId()));
-        });
+        programs.forEach(p -> firstRowLayout.add(getLinkDiv(p.getName(), p.getId())));
         certificates.forEach(c -> {
             var certRowLayout = new Div();
             certRowLayout.setClassName("divTableRow");
@@ -113,6 +112,7 @@ public class CertificateCrossReportView extends VerticalLayout {
     private boolean isCross(Certificate cert, Program program) {
         return program.getOrders().stream()
                 .map(Order::getCertificate)
+                .filter(Objects::nonNull)
                 .map(Certificate::getId)
                 .anyMatch(id -> cert.getId().equals(id));
     }
