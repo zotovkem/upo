@@ -28,6 +28,8 @@ import java.util.List;
 import java.util.Map;
 
 import static ru.utelksp.upo.common.Util.getCollectMap;
+import static ru.utelksp.upo.view.component.FactoryComponent.getItemComputer;
+import static ru.utelksp.upo.view.component.FactoryComponent.getItemEmployee;
 
 /**
  * @author Created by ZotovES on 30.03.2019
@@ -71,7 +73,7 @@ public class CertificateCrudView extends VerticalLayout {
         employeeFilter.setPlaceholder("поиск по пользователю");
         employeeFilter.addValueChangeListener(e -> crud.refreshGrid());
         crud.getCrudLayout().addFilterComponent(employeeFilter);
-        crud.getGrid().addColumn(new TextRenderer<>(FactoryComponent.getCertificateItemLabelGenerator())).setHeader("Пользователь");
+        crud.getGrid().addColumn(new TextRenderer<>(FactoryComponent.getItemEmployeeOfCertificate())).setHeader("Пользователь");
         crud.setFindAllOperation(DataProvider.fromCallbacks(
                 query -> certificateCrudListener.findByLikeEmployee(employeeFilter.getValue(), query.getLimit(), query.getOffset()).stream(),
                 query -> certificateCrudListener.countByLikeEmployee(employeeFilter.getValue(), query.getLimit(), query.getOffset())));
@@ -94,13 +96,13 @@ public class CertificateCrudView extends VerticalLayout {
      * Получить провайдера для справочника компьютеров
      */
     private ComboBoxProvider getComputerProvider() {
-        return new ComboBoxProvider<>("Компьютер", computerService.findAll(), new TextRenderer<>(Computer::getName), Computer::getName);
+        return new ComboBoxProvider<>("Компьютер", computerService.findAll(), new TextRenderer<>(getItemComputer()), Computer::getName);
     }
 
     /**
      * Получить провейдера для справочника пользователей
      */
     private ComboBoxProvider getEmployeeProvider() {
-        return new ComboBoxProvider<>("Пользователь", employeeService.findAll(), new TextRenderer<>(Employee::getShortFio), Employee::getShortFio);
+        return new ComboBoxProvider<>("Пользователь", employeeService.findAll(), new TextRenderer<>(getItemEmployee()), Employee::getShortFio);
     }
 }

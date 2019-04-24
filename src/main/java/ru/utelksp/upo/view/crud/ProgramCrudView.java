@@ -28,8 +28,8 @@ import java.util.Map;
 
 import static java.util.Objects.nonNull;
 import static ru.utelksp.upo.common.Util.getCollectMap;
-import static ru.utelksp.upo.view.component.FactoryComponent.getOrderItemLabelGenerator;
-import static ru.utelksp.upo.view.component.FactoryComponent.getTypeUsingItemLabelGenerator;
+import static ru.utelksp.upo.view.component.FactoryComponent.getItemListEmployees;
+import static ru.utelksp.upo.view.component.FactoryComponent.getItemTypeUsing;
 
 
 @Route(value = "program", layout = MainLayout.class)
@@ -66,7 +66,7 @@ public class ProgramCrudView extends HorizontalLayout implements HasUrlParameter
             var grid = new CustomGrid<>(Order.class, orderCrudListener.findAll(), GRID_ORDER_COLUMNS, MAP_COLUMN_ORDER);
             grid.getGrid().getColumnByKey("orderNumber").setWidth("10%");
             grid.getGrid().getColumnByKey("orderDate").setWidth("30%");
-            grid.getGrid().addColumn(new TextRenderer<>(getOrderItemLabelGenerator())).setWidth("60%").setHeader("Пользователи");
+            grid.getGrid().addColumn(new TextRenderer<>(getItemListEmployees())).setWidth("60%").setHeader("Пользователи");
             grid.setValue(orderCrudListener.findAll());
             return grid;
         });
@@ -105,7 +105,7 @@ public class ProgramCrudView extends HorizontalLayout implements HasUrlParameter
      * Получить провайдера для справочника видов использования
      */
     private ComboBoxProvider getTypeUsingProvider() {
-        return new ComboBoxProvider<>("Вид использования", typeUsingCrudListener.findAll(), new TextRenderer<>(getTypeUsingItemLabelGenerator()), TypeUsing::getName);
+        return new ComboBoxProvider<>("Вид использования", typeUsingCrudListener.findAll(), new TextRenderer<>(getItemTypeUsing()), TypeUsing::getName);
     }
 
     /**

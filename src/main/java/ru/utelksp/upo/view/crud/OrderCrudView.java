@@ -77,7 +77,7 @@ public class OrderCrudView extends VerticalLayout {
         crud.setGridColumn(GRID_COLUMNS);
         crud.setGridCaptionColumn(MAP_COLUMN_PROP);
         crud.addAttachListener(attachEvent -> refreshCombobox(crud));
-        crud.getGrid().addColumn(new TextRenderer<>(getOrderItemLabelGenerator())).setHeader("Пользователи");
+        crud.getGrid().addColumn(new TextRenderer<>(getItemListEmployees())).setHeader("Пользователи");
         TextField employeeFilter = new TextField();
         employeeFilter.setPlaceholder("поиск по пользователям");
         employeeFilter.addValueChangeListener(e -> crud.refreshGrid());
@@ -106,13 +106,13 @@ public class OrderCrudView extends VerticalLayout {
      * Получить провайдера для справочника организаций
      */
     private ComboBoxProvider getOrganizationProvider() {
-        return new ComboBoxProvider<>("Организация", organizationService.findAll(), new TextRenderer<>(getOrganizationItemLabelGenerator()), Organization::getName);
+        return new ComboBoxProvider<>("Организация", organizationService.findAll(), new TextRenderer<>(getItemOrganization()), Organization::getName);
     }
 
     /**
      * Получить провайдера для сертификатов
      */
     private ComboBoxProvider getCertificateProvider() {
-        return new ComboBoxProvider<>("Сертификат", certificateService.findAll(), new TextRenderer<>(getCertificateItemLabelGenerator()), Certificate::getName);
+        return new ComboBoxProvider<>("Сертификат", certificateService.findAll(), new TextRenderer<>(getItemCertificate()), Certificate::getName);
     }
 }
