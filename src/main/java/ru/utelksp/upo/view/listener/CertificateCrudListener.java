@@ -2,8 +2,10 @@ package ru.utelksp.upo.view.listener;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.vaadin.crudui.crud.CrudListener;
+import org.vaadin.data.spring.OffsetBasedPageRequest;
 import ru.utelksp.upo.domain.Certificate;
 import ru.utelksp.upo.service.CertificateService;
 
@@ -52,6 +54,7 @@ public class CertificateCrudListener implements CrudListener<Certificate> {
 
     /**
      * Удалить сертификат
+     *
      * @param certificate сертификат
      */
     @Override
@@ -68,7 +71,8 @@ public class CertificateCrudListener implements CrudListener<Certificate> {
      * @return список сертификатов
      */
     public Collection<Certificate> findByLikeEmployee(String fio, int limit, int offset) {
-        return certificateService.findByLikeEmployee(PageRequest.of(offset, limit), fio.isEmpty() ? null : fio).getContent();
+        Pageable pageable = new OffsetBasedPageRequest(offset, limit);
+        return certificateService.findByLikeEmployee(pageable, fio.isEmpty() ? null : fio).getContent();
     }
 
     /**

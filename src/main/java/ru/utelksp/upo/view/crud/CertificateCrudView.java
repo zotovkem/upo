@@ -56,6 +56,7 @@ public class CertificateCrudView extends VerticalLayout {
     /**
      * Заполняет форму
      */
+    @SuppressWarnings("Duplicates")
     @PostConstruct
     public void init() {
         setSizeFull();

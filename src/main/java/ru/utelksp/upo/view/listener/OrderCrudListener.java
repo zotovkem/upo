@@ -2,8 +2,10 @@ package ru.utelksp.upo.view.listener;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.vaadin.crudui.crud.CrudListener;
+import org.vaadin.data.spring.OffsetBasedPageRequest;
 import ru.utelksp.upo.domain.Order;
 import ru.utelksp.upo.service.OrderService;
 
@@ -39,7 +41,8 @@ public class OrderCrudListener implements CrudListener<Order> {
     }
 
     public Collection<Order> findByLikeEmployee(String fio, int limit, int offset) {
-        return orderService.findByLikeEmployee(PageRequest.of(offset, limit), fio.isEmpty() ? null : fio).getContent();
+        Pageable pageable = new OffsetBasedPageRequest(offset, limit);
+        return orderService.findByLikeEmployee(pageable, fio.isEmpty() ? null : fio).getContent();
     }
 
     public int countByLikeEmployee(String fio, int limit, int offset) {
