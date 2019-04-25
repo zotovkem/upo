@@ -38,6 +38,11 @@ public class CertificateValidator implements Validator<Certificate> {
     public void validate(Certificate target, Object hint, Collection<String> errors) {
         if (hint.equals(Delete.class)) {
             orderRepository.findByCertificateId(target.getId()).forEach(getTextErrorOrder(target, errors));
+
+        }
+
+        if (!errors.isEmpty()) {
+            errors.add("Не возможно удалить запись, отредактируйте зависимые записи");
         }
 
         if (hint.equals(Update.class) || hint.equals(Create.class)) {
@@ -46,9 +51,6 @@ public class CertificateValidator implements Validator<Certificate> {
             }
         }
 
-        if (!errors.isEmpty()) {
-            errors.add("Не возможно удалить запись, отредактируйте зависимые записи");
-        }
     }
 
     /**

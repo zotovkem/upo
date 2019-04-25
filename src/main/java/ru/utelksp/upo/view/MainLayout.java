@@ -27,7 +27,7 @@ import javax.annotation.PostConstruct;
  */
 @HtmlImport("css/shared-styles.html")
 @Theme(value = Lumo.class, variant = Lumo.DARK)
-@PWA(name = "Учет Програмного обеспечения", shortName = "UPO", startPath = "login",
+@PWA(name = "Реестр програмного обеспечения", shortName = "UPO", startPath = "login",
         manifestPath = "manifest.json", offlinePath = "offline-page.html", enableInstallPrompt = false)
 @RequiredArgsConstructor
 public class MainLayout extends FlexLayout implements RouterLayout {

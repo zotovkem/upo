@@ -48,12 +48,12 @@ public class ProgramCrudView extends HorizontalLayout implements HasUrlParameter
     private static final String[] CRUD_FORM_FIELD = {"orders", "computers", "id", "name", "license", "typeUsing", "description"};
     private static final String[] CRUD_FORM_FIELD_CAPTION = {"Приказы", "Компьютеры", "Код", "Наименование", "Лицензия", "Вид использования", "Комментарии"};
     private static final List<String> GRID_COLUMNS = List.of("id", "name");
-    private static final List<String> GRID_ORDER_COLUMNS = List.of("orderNumber", "orderDate");
-    private static final List<String> GRID_COMPUTER_COLUMNS = List.of("name");
+    private static final List<String> GRID_ORDER_COLUMNS = List.of("orderNumber", "orderDate", "description");
+    private static final List<String> GRID_COMPUTER_COLUMNS = List.of("name", "description");
     private static final List<String> GRID_COLUMNS_CAPTION = List.of("Код", "Наименование");
     private static final Map<String, String> MAP_COLUMN_PROP = getCollectMap(GRID_COLUMNS, GRID_COLUMNS_CAPTION);
-    private static final Map<String, String> MAP_COLUMN_COMPUTER = Map.of("name", "Компьютеры");
-    private static final Map<String, String> MAP_COLUMN_ORDER = Map.of("orderNumber", "Приказ", "orderDate", "Дата");
+    private static final Map<String, String> MAP_COLUMN_COMPUTER = Map.of("name", "Компьютеры", "description", "Комментарий");
+    private static final Map<String, String> MAP_COLUMN_ORDER = Map.of("orderNumber", "Приказ", "orderDate", "Дата", "description", "Комментарий");
 
     private UpoGridCrud<Program> crud;
 
@@ -66,12 +66,14 @@ public class ProgramCrudView extends HorizontalLayout implements HasUrlParameter
             var grid = new CustomGrid<>(Order.class, orderCrudListener.findAll(), GRID_ORDER_COLUMNS, MAP_COLUMN_ORDER);
             grid.getGrid().getColumnByKey("orderNumber").setWidth("10%");
             grid.getGrid().getColumnByKey("orderDate").setWidth("30%");
-            grid.getGrid().addColumn(new TextRenderer<>(getItemListEmployees())).setWidth("60%").setHeader("Пользователи");
+            grid.getGrid().getColumnByKey("description").setWidth("60%");
             grid.setValue(orderCrudListener.findAll());
             return grid;
         });
         formFactory.setFieldProvider("computers", () -> {
             var grid = new CustomGrid<>(Computer.class, computerCrudListener.findAll(), GRID_COMPUTER_COLUMNS, MAP_COLUMN_COMPUTER);
+            grid.getGrid().getColumnByKey("name").setWidth("20%");
+            grid.getGrid().getColumnByKey("description").setWidth("80%");
             grid.setValue(computerCrudListener.findAll());
             return grid;
         });

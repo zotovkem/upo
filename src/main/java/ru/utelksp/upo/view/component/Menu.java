@@ -42,7 +42,7 @@ public class Menu extends FlexLayout {
         top.setDefaultVerticalComponentAlignment(Alignment.CENTER);
         top.setClassName("menu-header");
 
-        Label title = new Label("Учет ПО");
+        Label title = new Label("Реестр ПО");
 
         //Логотип
         String resolvedImage = VaadinServletService.getCurrent()
