@@ -1,15 +1,14 @@
 package ru.utelksp.upo.view.report;
 
 import ar.com.fdvs.dj.domain.ExpressionHelper;
-import ar.com.fdvs.dj.domain.Style;
 import ar.com.fdvs.dj.domain.builders.ColumnBuilder;
-import ar.com.fdvs.dj.domain.constants.Border;
-import ar.com.fdvs.dj.domain.constants.HorizontalAlign;
-import ar.com.fdvs.dj.domain.constants.Transparency;
+import ar.com.fdvs.dj.domain.constants.Font;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
-import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Anchor;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.flow.data.renderer.TemplateRenderer;
@@ -17,7 +16,6 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.UIScope;
 import lombok.RequiredArgsConstructor;
-import org.vaadin.reports.PrintPreviewReport;
 import ru.utelksp.upo.common.dto.ProgramReportDto;
 import ru.utelksp.upo.domain.Order;
 import ru.utelksp.upo.domain.dictionary.Employee;
@@ -27,9 +25,11 @@ import ru.utelksp.upo.service.OrderService;
 import ru.utelksp.upo.view.MainLayout;
 
 import javax.annotation.PostConstruct;
-import java.awt.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+
+import static java.lang.String.format;
+import static ru.utelksp.upo.view.component.FactoryComponent.*;
 
 /**
  * Форма для отчета по прогрманому обеспечению
@@ -49,6 +49,7 @@ public class ProgramReportView extends VerticalLayout {
     private VerticalLayout reportContainer = new VerticalLayout();
     private ComboBox<Employee> employeeCombobox = new ComboBox<>();
     private ComboBox<Order> orderCombobox = new ComboBox<>();
+    private Anchor anchorPdf = new Anchor();
 
     public static final String VIEW_NAME = "Отчет по ПО";
 
@@ -60,11 +61,18 @@ public class ProgramReportView extends VerticalLayout {
         mainLayout.setSplitterPosition(80);
         add(mainLayout);
 
+        Button printReportButton = new Button("Печать",
+                e -> UI.getCurrent().getPage().executeJavaScript(format("window.open(\"%s\", \"_isblank\");", anchorPdf.getHref())));
+        printReportButton.setEnabled(false);
         Button buildReportButton = new Button("Сформировать", e -> {
+            printReportButton.setEnabled(true);
             reportContainer.removeAll();
             reportContainer.add(buildSimpleReport());
         });
-
+        reportContainer.addDetachListener(e -> {
+            printReportButton.setEnabled(false);
+            reportContainer.removeAll();
+        });
         employeeCombobox.setItems(employeeService.findAll());
         employeeCombobox.setLabel("Пользователь");
         employeeCombobox.setSizeFull();
@@ -79,7 +87,7 @@ public class ProgramReportView extends VerticalLayout {
                 .withProperty("number", Order::getOrderNumber));
 
         var comboBoxLayout = new VerticalLayout(employeeCombobox, orderCombobox);
-        menuLayout.add(comboBoxLayout, buildReportButton);
+        menuLayout.add(comboBoxLayout, new HorizontalLayout(buildReportButton, printReportButton));
     }
 
     /**
@@ -89,41 +97,28 @@ public class ProgramReportView extends VerticalLayout {
         var employeeId = employeeCombobox.getOptionalValue().map(Employee::getId).orElse(null);
         var orderId = orderCombobox.getOptionalValue().map(Order::getId).orElse(null);
 
-        PrintPreviewReport<ProgramReportDto> report = new PrintPreviewReport<>();
+        ReportBuilder<ProgramReportDto> report = new ReportBuilder<>();
         getReportBuilder(report);
 
         report.setItems(programRepository.findWithParam(employeeId, orderId));
-        var div = new Div(report);
-        div.setSizeFull();
-        div.setClassName("printDiv");
-        return div;
+        anchorPdf = getAnchorPdf(report);
+        menuLayout.add(anchorPdf);
+        anchorPdf.setVisible(false);
+        return report.getHtmlComponent();
     }
 
     /**
      * Настраивает сетку отчета
      */
-    private void getReportBuilder(PrintPreviewReport<ProgramReportDto> report) {
-        Style detailStyle = new Style();
-        detailStyle.setBorder(Border.THIN());
-        detailStyle.getBorder().setColor(Color.BLACK);
-        detailStyle.setStretchWithOverflow(true);
-        Style headerStyle = new Style();
-        headerStyle.setHorizontalAlign(HorizontalAlign.CENTER);
-        headerStyle.setBackgroundColor(new Color(230, 230, 230));
-        headerStyle.setBorder(Border.THIN());
-        headerStyle.setTransparency(Transparency.OPAQUE);
-        Style titleStyle = new Style();
-        titleStyle.setHorizontalAlign(HorizontalAlign.CENTER);
-        Style subtitleStyle = new Style();
-        Style amountStyle = new Style();
-        amountStyle.setHorizontalAlign(HorizontalAlign.RIGHT);
+    private void getReportBuilder(ReportBuilder<ProgramReportDto> report) {
+        Font font = getReportFont();
 
         report.getReportBuilder()
-                .setDefaultStyles(titleStyle, subtitleStyle, headerStyle, detailStyle)
+                .setDefaultStyles(getTitleStyle(font), getSubtitleStyle(font), getHeaderStyle(font), getDetailStyle(font))
                 .setTitle(VIEW_NAME)
                 .setPrintBackgroundOnOddRows(true)
                 .setUseFullPageWidth(true)
-                .setMargins(20, 0, 0, 20)
+                .setMargins(10, 10, 20, 10)
                 .addColumn(ColumnBuilder.getNew()
                         .setCustomExpression(ExpressionHelper.getRecordsInReport())
                         .setTitle("Порядковый номер")

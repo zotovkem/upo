@@ -1,26 +1,21 @@
 package ru.utelksp.upo.view.report;
 
 import ar.com.fdvs.dj.domain.ExpressionHelper;
-import ar.com.fdvs.dj.domain.Style;
 import ar.com.fdvs.dj.domain.builders.ColumnBuilder;
-import ar.com.fdvs.dj.domain.constants.Border;
-import ar.com.fdvs.dj.domain.constants.HorizontalAlign;
-import ar.com.fdvs.dj.domain.constants.Transparency;
+import ar.com.fdvs.dj.domain.constants.Font;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.html.Anchor;
-import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.flow.data.renderer.TemplateRenderer;
-import com.vaadin.flow.function.SerializableSupplier;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.spring.annotation.UIScope;
 import lombok.RequiredArgsConstructor;
-import org.vaadin.reports.PrintPreviewReport;
 import ru.utelksp.upo.common.dto.CertificateReportDto;
 import ru.utelksp.upo.domain.Certificate;
 import ru.utelksp.upo.domain.dictionary.Computer;
@@ -32,10 +27,11 @@ import ru.utelksp.upo.service.EmployeeService;
 import ru.utelksp.upo.view.MainLayout;
 
 import javax.annotation.PostConstruct;
-import java.awt.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
+
+import static java.lang.String.format;
+import static ru.utelksp.upo.view.component.FactoryComponent.*;
 
 /**
  * Форма для отчета по сертификатам
@@ -56,6 +52,7 @@ public class CertificateReportView extends VerticalLayout {
     private ComboBox<Employee> employeeCombobox = new ComboBox<>();
     private ComboBox<Certificate> certificateCombobox = new ComboBox<>();
     private ComboBox<Computer> pcCombobox = new ComboBox<>();
+    private Anchor anchorPdf = new Anchor();
 
     public static final String VIEW_NAME = "Отчет по сертификатам";
 
@@ -67,12 +64,18 @@ public class CertificateReportView extends VerticalLayout {
         mainLayout.setSizeFull();
         mainLayout.setSplitterPosition(80);
         add(mainLayout);
-
+        Button printReportButton = new Button("Печать",
+                e -> UI.getCurrent().getPage().executeJavaScript(format("window.open(\"%s\", \"_isblank\");", anchorPdf.getHref())));
+        printReportButton.setEnabled(false);
         Button buildReportButton = new Button("Сформировать", e -> {
+            printReportButton.setEnabled(true);
             reportContainer.removeAll();
-            reportContainer.add(buildSimpleReport());
+            reportContainer.add(buildReport());
         });
-
+        reportContainer.addDetachListener(e -> {
+            printReportButton.setEnabled(false);
+            reportContainer.removeAll();
+        });
         employeeCombobox.setItems(employeeService.findAll());
         employeeCombobox.setLabel("Пользователь");
         employeeCombobox.setSizeFull();
@@ -93,51 +96,38 @@ public class CertificateReportView extends VerticalLayout {
                 .withProperty("name", Computer::getName));
 
         var comboBoxLayout = new VerticalLayout(employeeCombobox, certificateCombobox, pcCombobox);
-        menuLayout.add(comboBoxLayout, buildReportButton);
+        menuLayout.add(comboBoxLayout, new HorizontalLayout(buildReportButton, printReportButton));
     }
 
     /**
      * Формирует отчет
      */
     @SuppressWarnings("Duplicates")
-    private Component buildSimpleReport() {
+    private Component buildReport() {
         var employeeId = employeeCombobox.getOptionalValue().map(Employee::getId).orElse(null);
         var certificateId = certificateCombobox.getOptionalValue().map(Certificate::getId).orElse(null);
         var pcId = pcCombobox.getOptionalValue().map(Computer::getId).orElse(null);
 
-        PrintPreviewReport<CertificateReportDto> report = new PrintPreviewReport<>();
+        ReportBuilder<CertificateReportDto> report = new ReportBuilder<>();
         getReportBuilder(report);
 
         report.setItems(certificateRepository.findWithParam(employeeId, certificateId, pcId));
-        var div = new Div(report);
-        div.setSizeFull();
-        div.setClassName("printDiv");
-        return div;
+        anchorPdf = getAnchorPdf(report);
+        menuLayout.add(anchorPdf);
+        anchorPdf.setVisible(false);
+        return report.getHtmlComponent();
     }
 
     /**
      * Настраивает сетку отчета
      */
-    private void getReportBuilder(PrintPreviewReport<CertificateReportDto> report) {
-        Style detailStyle = new Style();
-        detailStyle.setBorder(Border.THIN());
-        detailStyle.getBorder().setColor(Color.BLACK);
-        detailStyle.setStretchWithOverflow(true);
-        Style headerStyle = new Style();
-        headerStyle.setHorizontalAlign(HorizontalAlign.CENTER);
-        headerStyle.setBackgroundColor(new Color(230, 230, 230));
-        headerStyle.setBorder(Border.THIN());
-        headerStyle.setTransparency(Transparency.OPAQUE);
-        Style titleStyle = new Style();
-        titleStyle.setHorizontalAlign(HorizontalAlign.CENTER);
-        Style subtitleStyle = new Style();
-        Style amountStyle = new Style();
-        amountStyle.setHorizontalAlign(HorizontalAlign.RIGHT);
+    private void getReportBuilder(ReportBuilder<CertificateReportDto> report) {
+        Font font = getReportFont();
 
         report.getReportBuilder()
-                .setDefaultStyles(titleStyle, subtitleStyle, headerStyle, detailStyle)
+                .setDefaultStyles(getTitleStyle(font), getSubtitleStyle(font), getHeaderStyle(font), getDetailStyle(font))
                 .setTitle(VIEW_NAME)
-                .setMargins(20, 0, 0, 20)
+                .setMargins(10, 10, 20, 10)
                 .setPrintBackgroundOnOddRows(true)
                 .setUseFullPageWidth(true)
                 .addColumn(ColumnBuilder.getNew()
@@ -161,25 +151,5 @@ public class CertificateReportView extends VerticalLayout {
                         .setColumnProperty("computer", String.class)
                         .setTitle("Место установки")
                         .build());
-    }
-
-    /**
-     * Сформировать отчет
-     */
-    private Component buildDownloadableReport() {
-        PrintPreviewReport<CertificateReportDto> report = new PrintPreviewReport<>();
-        getReportBuilder(report);
-        SerializableSupplier<List<? extends CertificateReportDto>> itemsSupplier = () -> certificateRepository.findWithParam(null, null, null);
-
-        HorizontalLayout anchors = new HorizontalLayout();
-
-        var format = PrintPreviewReport.Format.PDF;
-        Anchor anchor = new Anchor(report.getStreamResource("certificate-report." + format.name().toLowerCase(), itemsSupplier, format), format.name());
-        anchor.getElement().setAttribute("download", true);
-        anchors.add(anchor);
-
-        VerticalLayout layout = new VerticalLayout(anchors, report);
-        layout.getElement().setAttribute("theme", "spacing");
-        return layout;
     }
 }
