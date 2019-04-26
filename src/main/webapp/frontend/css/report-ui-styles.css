@@ -1,10 +1,11 @@
 .PrintPreviewReport-mainLayout {
     background-color: #f9f9f9;
+    width: 100%;
+    display: block;
 }
 
-.PrintPreviewReport-htmlContainer table.jrPage {
-    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-    width: max-content !important;
+table.jrPage {
+    width: 100% !important;
 
 }
 
@@ -15,17 +16,11 @@
 @media print {
     .PrintPreviewReport-mainLayout {
         background-color: #FFFFFF;
-        display: flex;
-        margin: 0 0 0 0;
-        padding: 0 0 0 0;
-        width: 100%;
         overflow: hidden;
     }
 
     .PrintPreviewReport-htmlContainer table.jrPage {
         box-shadow: none;
-        margin: 0 0 0 0;
-        padding: 0 0 0 0;
         overflow: hidden;
     }
 }

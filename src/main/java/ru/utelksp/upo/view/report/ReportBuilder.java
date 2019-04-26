@@ -2,7 +2,9 @@ package ru.utelksp.upo.view.report;
 
 import ar.com.fdvs.dj.domain.Style;
 import ar.com.fdvs.dj.domain.builders.DynamicReportBuilder;
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Html;
+import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.html.Div;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -24,6 +26,7 @@ import java.util.Map;
  * @author Created by ZotovES on 24.04.2019
  * Реализация класса для формирования отчетов
  */
+@StyleSheet("css/report-ui-styles.css")
 public class ReportBuilder<T> extends PrintPreviewReport<T> {
     private String imageServletPathPattern = "report-image?image={0}";
 
@@ -54,7 +57,7 @@ public class ReportBuilder<T> extends PrintPreviewReport<T> {
     /**
      * Вывести html отчет
      */
-    public void getHtmlComponent() {
+    public Component getHtmlComponent() {
         try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
             HtmlExporter exporter = new HtmlExporter();
 
@@ -77,6 +80,7 @@ public class ReportBuilder<T> extends PrintPreviewReport<T> {
 
             mainLayout.removeAll();
             mainLayout.add(htmlContainer);
+            return mainLayout;
         } catch (JRException |
                 IOException e) {
             throw new RuntimeException(e);

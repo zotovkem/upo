@@ -98,11 +98,11 @@
             <version>2.0.1</version>
         </dependency>
 
+        <!--Шрифты для отчетов -->
         <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-            <version>15.0</version>
-            <scope>compile</scope>
+            <groupId>net.sf.jasperreports</groupId>
+            <artifactId>jasperreports-fonts</artifactId>
+            <version>4.0.0</version>
         </dependency>
     </dependencies>
 
