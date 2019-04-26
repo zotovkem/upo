@@ -1,7 +1,7 @@
 package ru.utelksp.upo.common.validators;
 
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import ru.utelksp.upo.common.validators.validator.Validator;
 import ru.utelksp.upo.common.validators.validator.hints.Delete;
@@ -48,7 +48,7 @@ public class OrganizationValidator implements Validator<Organization> {
      * @param target проверяемая сущность
      * @param errors список ошибок
      */
-    @NotNull
+    @NonNull
     private Consumer<Order> getTextErrorOrder(Organization target, Collection<String> errors) {
         return order -> errors.add(String.format("Организация %s %s используется в приказе номер %s от %s",
                 target.getId(), target.getName(), order.getOrderNumber(), order.getOrderDate()));
@@ -60,7 +60,7 @@ public class OrganizationValidator implements Validator<Organization> {
      * @param target проверяемая сущность
      * @param errors список ошибок
      */
-    @NotNull
+    @NonNull
     private Consumer<Certificate> getTextErrorCertificate(Employee target, Collection<String> errors) {
         return certificate -> errors.add(String.format("Пользователь %s %s используется в сертификате %s %s",
                 target.getId(), target.getShortFio(), certificate.getId(), certificate.getName()));

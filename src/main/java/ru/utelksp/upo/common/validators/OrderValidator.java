@@ -1,7 +1,7 @@
 package ru.utelksp.upo.common.validators;
 
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import ru.utelksp.upo.common.validators.validator.Validator;
 import ru.utelksp.upo.common.validators.validator.hints.Delete;
@@ -46,7 +46,7 @@ public class OrderValidator implements Validator<Order> {
      * @param target проверяемая сущность
      * @param errors список ошибок
      */
-    @NotNull
+    @NonNull
     private Consumer<Program> getTextErrorConsumer(Order target, Collection<String> errors) {
         return program -> errors.add(String.format("Приказ %s %s используется в ПО %s %s",
                 target.getId(), target.getOrderNumber(), program.getId(), program.getName()));

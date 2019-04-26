@@ -1,7 +1,7 @@
 package ru.utelksp.upo.common.validators;
 
 import lombok.RequiredArgsConstructor;
-import org.jetbrains.annotations.NotNull;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import ru.utelksp.upo.common.validators.validator.Validator;
 import ru.utelksp.upo.common.validators.validator.hints.Delete;
@@ -50,7 +50,7 @@ public class ComputerValidator implements Validator<Computer> {
      * @param target проверяемая сущность
      * @param errors список ошибок
      */
-    @NotNull
+    @NonNull
     private Consumer<Program> getTextErrorProgram(Computer target, Collection<String> errors) {
         return program -> errors.add(String.format("Компьютер %s %s используется в ПО %s %s",
                 target.getId(), target.getName(), program.getId(), program.getName()));
@@ -62,7 +62,7 @@ public class ComputerValidator implements Validator<Computer> {
      * @param target проверяемая сущность
      * @param errors список ошибок
      */
-    @NotNull
+    @NonNull
     private Consumer<Certificate> getTextErrorCertificate(Computer target, Collection<String> errors) {
         return program -> errors.add(String.format("Компьютер %s %s используется в сертификате %s %s",
                 target.getId(), target.getName(), program.getId(), program.getName()));
