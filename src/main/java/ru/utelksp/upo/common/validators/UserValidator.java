@@ -31,8 +31,12 @@ public class UserValidator implements Validator<User> {
      */
     @Override
     public void validate(User user, Object hint, Collection<String> errors) {
-        if (hint.equals(Delete.class)) {
+        if (hint.equals(Delete.class) && userRepository.count() <= 1) {
             errors.add("Нельзя удалить единственного пользователя");
+            return;
+        }
+
+        if (hint.equals(Delete.class)) {
             return;
         }
 
