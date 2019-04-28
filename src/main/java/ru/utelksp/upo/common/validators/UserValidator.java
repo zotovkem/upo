@@ -1,15 +1,15 @@
 package ru.utelksp.upo.common.validators;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import ru.utelksp.upo.SecurityConfig;
 import ru.utelksp.upo.common.validators.validator.Validator;
+import ru.utelksp.upo.common.validators.validator.hints.Delete;
 import ru.utelksp.upo.domain.security.User;
 import ru.utelksp.upo.repository.UserRepository;
-import ru.utelksp.upo.service.UserService;
 
 import java.util.Collection;
+
+import static java.util.Objects.isNull;
 
 /**
  * @author Created by ZotovES on 08.04.2019
@@ -31,6 +31,21 @@ public class UserValidator implements Validator<User> {
      */
     @Override
     public void validate(User user, Object hint, Collection<String> errors) {
+        if (hint.equals(Delete.class)) {
+            errors.add("Нельзя удалить единственного пользователя");
+            return;
+        }
+
+        if (isNull(user.getPassword())) {
+            errors.add("Не задан пароль");
+            return;
+        }
+
+        if (isNull(user.getConfirmPassword())) {
+            errors.add("Повторите пароль");
+            return;
+        }
+
         if (user.getConfirmPassword().length() < 8) {
             errors.add("Длина пароля менее 8 символов");
         }

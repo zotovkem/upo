@@ -61,15 +61,11 @@ public class UserServiceImpl implements UserService {
     /**
      * Удаляет пользователя по идентификатору
      *
-     * @param userId идентификатор пользователя
+     * @param user пользователь
      */
     @Override
-    public void deleteById(@NonNull Long userId) throws IllegalAccessException {
-        if (userRepository.count() > 1) {
-            userRepository.deleteById(userId);
-        } else {
-            throw new IllegalAccessException("Нельзя удалить единственного пользователя");
-        }
-
+    public void deleteById(@NonNull User user) {
+        validator.validate(user, Update.class);
+        userRepository.deleteById(user.getId());
     }
 }

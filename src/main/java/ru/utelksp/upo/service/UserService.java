@@ -39,7 +39,7 @@ public interface UserService {
     /**
      * Удаляет пользователя по идентификатору
      *
-     * @param userId идентификатор пользователя
+     * @param user пользователь
      */
-    void deleteById(@NonNull Long userId) throws IllegalAccessException;
+    void deleteById(@NonNull User user) throws IllegalAccessException;
 }
