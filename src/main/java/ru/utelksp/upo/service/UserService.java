@@ -41,5 +41,5 @@ public interface UserService {
      *
      * @param user пользователь
      */
-    void deleteById(@NonNull User user) throws IllegalAccessException;
+    void delete(@NonNull User user);
 }

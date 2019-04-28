@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
      * @param user пользователь
      */
     @Override
-    public void deleteById(@NonNull User user) {
+    public void delete(@NonNull User user) {
         validator.validate(user, Update.class);
         userRepository.deleteById(user.getId());
     }
