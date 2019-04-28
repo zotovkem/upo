@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.utelksp.upo.common.exception.ValidationException;
 import ru.utelksp.upo.common.validators.validator.Validator;
+import ru.utelksp.upo.common.validators.validator.hints.Delete;
 import ru.utelksp.upo.common.validators.validator.hints.Update;
 import ru.utelksp.upo.domain.security.User;
 import ru.utelksp.upo.repository.RoleRepository;
@@ -65,7 +66,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public void delete(@NonNull User user) {
-        validator.validate(user, Update.class);
+        validator.validate(user, Delete.class);
         userRepository.deleteById(user.getId());
     }
 }
