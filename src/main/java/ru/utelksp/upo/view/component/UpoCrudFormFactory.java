@@ -1,5 +1,6 @@
 package ru.utelksp.upo.view.component;
 
+import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.textfield.TextArea;
 import org.vaadin.crudui.crud.CrudOperation;
 import org.vaadin.crudui.form.impl.form.factory.DefaultCrudFormFactory;
@@ -11,6 +12,13 @@ import javax.validation.constraints.NotNull;
  * Фабрика для генерации формы CRUD
  */
 public class UpoCrudFormFactory<T> extends DefaultCrudFormFactory<T> {
+    public UpoCrudFormFactory(Class<T> domainType, FormLayout.ResponsiveStep... responsiveSteps) {
+        super(domainType, responsiveSteps);
+        getTranslateFormFactory(this);
+        setFieldType("description", TextArea.class);
+        setDisabledProperties("id");
+    }
+
     public UpoCrudFormFactory(Class<T> domainType) {
         super(domainType);
         getTranslateFormFactory(this);

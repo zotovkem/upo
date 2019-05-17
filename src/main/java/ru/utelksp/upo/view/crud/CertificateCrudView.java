@@ -47,14 +47,14 @@ public class CertificateCrudView extends VerticalLayout {
 
     private static final String[] CRUD_FORM_FIELD = {"id", "name", "employee", "publisher",
             "keyContainerName", "dateEnd", "description", "programs"};
-    private static final String[] CRUD_FORM_FIELD_CAPTION = {"Код", "Наименование", "Пользователь", "Компьютер",
+    private static final String[] CRUD_FORM_FIELD_CAPTION = {"Код", "Наименование", "Пользователь",
             "Издатель", "Имя ключевого контейнера", "Дата окончания", "Комментарии", "Программы"};
     private static final List<String> GRID_COLUMNS = List.of("id", "name");
     private static final List<String> GRID_COLUMNS_CAPTION = List.of("Код", "Наименование");
     private static final Map<String, String> MAP_COLUMN_PROP = getCollectMap(GRID_COLUMNS, GRID_COLUMNS_CAPTION);
     public static final String VIEW_NAME = "Сертификаты";
-    private static final List<String> GRID_PROGRAM_COLUMNS = List.of("id", "name");
-    private static final Map<String, String> MAP_COLUMN_PROGRAM = Map.of("id", "Код", "name", "Наименование");
+    private static final List<String> GRID_PROGRAM_COLUMNS = List.of("name");
+    private static final Map<String, String> MAP_COLUMN_PROGRAM = Map.of("name", "Наименование");
 
     /**
      * Заполняет форму
@@ -71,8 +71,7 @@ public class CertificateCrudView extends VerticalLayout {
         formFactory.setFieldProvider("computer", getComputerProvider());
         formFactory.setFieldProvider("programs", () -> {
             var grid = new CustomGrid<>(Program.class, programService.findAll(), GRID_PROGRAM_COLUMNS, MAP_COLUMN_PROGRAM);
-            grid.getGrid().getColumnByKey("id").setWidth("20%");
-            grid.getGrid().getColumnByKey("name").setWidth("80%");
+            grid.getGrid().getColumnByKey("name");
             grid.setValue(programService.findAll());
             return grid;
         });
@@ -86,10 +85,12 @@ public class CertificateCrudView extends VerticalLayout {
         employeeFilter.setPlaceholder("поиск по пользователю");
         employeeFilter.addValueChangeListener(e -> crud.refreshGrid());
         crud.getCrudLayout().addFilterComponent(employeeFilter);
-        crud.getGrid().addColumn(new TextRenderer<>(FactoryComponent.getItemEmployeeOfCertificate())).setHeader("Пользователь");
+        crud.getGrid().addColumn(new TextRenderer<>(FactoryComponent.getItemEmployeeOfCertificate())).setHeader("Пользователь").setWidth("45%");
         crud.setFindAllOperation(DataProvider.fromCallbacks(
                 query -> certificateCrudListener.findByLikeEmployee(employeeFilter.getValue(), query.getLimit(), query.getOffset()).stream(),
                 query -> certificateCrudListener.countByLikeEmployee(employeeFilter.getValue(), query.getLimit(), query.getOffset())));
+        crud.getGrid().getColumnByKey("id").setWidth("15%");
+        crud.getGrid().getColumnByKey("name").setWidth("30%");
         add(crud);
     }
 
