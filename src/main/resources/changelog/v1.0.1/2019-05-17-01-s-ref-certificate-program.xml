@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="2019-05-17-01-s-ref-certificate-program" author="ZotovES" context="production">
+
+        <createTable tableName="s_ref_certificate_program" remarks="Таблица для связи приказов и пользователей"
+                     schemaName="upo">
+            <column name="id" type="bigint" autoIncrement="true" remarks="Уникальный идентификатор">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="certificate_id" type="bigint" remarks="Идентификатор сертификата">
+                <constraints nullable="false"/>
+            </column>
+            <column name="program_id" type="bigint" remarks="Идентификатор программы">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="s_ref_certificate_program" baseColumnNames="certificate_id"
+                                 baseTableSchemaName="upo" constraintName="s_ref_certificate_program_certificate_fk"
+                                 referencedTableName="certificate" referencedColumnNames="id"
+                                 referencedTableSchemaName="upo" onDelete="RESTRICT"/>
+        <addForeignKeyConstraint baseTableName="s_ref_certificate_program" baseColumnNames="program_id"
+                                 baseTableSchemaName="upo" constraintName="s_ref_certificate_program_program_fk"
+                                 referencedTableName="program" referencedColumnNames="id"
+                                 referencedTableSchemaName="upo" onDelete="RESTRICT"/>
+
+        <createIndex tableName="s_ref_certificate_program" indexName="s_ref_certificate_program_certificate_id">
+            <column name="certificate_id"/>
+        </createIndex>
+        <createIndex tableName="s_ref_certificate_program" indexName="s_ref_certificate_program_program_id">
+            <column name="program_id"/>
+        </createIndex>
+
+    </changeSet>
+
+</databaseChangeLog>

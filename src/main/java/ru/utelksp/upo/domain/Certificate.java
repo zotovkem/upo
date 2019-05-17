@@ -7,6 +7,7 @@ import ru.utelksp.upo.service.impl.CrudOperationListener;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Set;
 
 /**
  * @author Created by ZotovES on 22.03.2019
@@ -52,6 +53,15 @@ public class Certificate {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "computer_id", referencedColumnName = "id")
     private Computer computer;
+
+    /**
+     * Список программ
+     */
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "s_ref_certificate_program", schema = "upo",
+            joinColumns = {@JoinColumn(name = "certificate_id")},
+            inverseJoinColumns = {@JoinColumn(name = "program_id")})
+    private Set<Program> programs;
 
     /**
      * Издатель
