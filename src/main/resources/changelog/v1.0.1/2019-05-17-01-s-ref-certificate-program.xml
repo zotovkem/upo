@@ -6,7 +6,7 @@
 
     <changeSet id="2019-05-17-01-s-ref-certificate-program" author="ZotovES" context="production">
 
-        <createTable tableName="s_ref_certificate_program" remarks="Таблица для связи приказов и пользователей"
+        <createTable tableName="s_ref_certificate_program" remarks="Таблица для связи сертификатов и программ"
                      schemaName="upo">
             <column name="id" type="bigint" autoIncrement="true" remarks="Уникальный идентификатор">
                 <constraints primaryKey="true" nullable="false"/>
