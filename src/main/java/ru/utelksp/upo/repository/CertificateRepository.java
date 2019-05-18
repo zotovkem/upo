@@ -61,13 +61,6 @@ public interface CertificateRepository extends JpaRepository<Certificate, Long> 
     List<Certificate> findByComputerId(Long computerId);
 
     /**
-     * Поиск сертификатов по идентификатору пользователя
-     *
-     * @param employeeId идентификатор пользователя
-     * @return список сертификатов
-     */
-
-    /**
      * Поиск сертификатов  по идентификатору пользователя
      *
      * @param employeeId ид пользователя
@@ -75,11 +68,9 @@ public interface CertificateRepository extends JpaRepository<Certificate, Long> 
      */
     @Query(value = "" +
             "select distinct cert " +
-            "from Order ord " +
-            "inner join ord.certificate cert " +
+            "from Certificate cert " +
             "inner join cert.employee employee " +
-            "where employee.id = :employeeId "
-    )
+            "where employee.id = :employeeId ")
     List<Certificate> findByEmployeeId(@Param("employeeId") Long employeeId);
 
     /**
