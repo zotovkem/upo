@@ -3,6 +3,7 @@ package ru.utelksp.upo.common.validators;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.utelksp.upo.common.validators.validator.Validator;
+import ru.utelksp.upo.common.validators.validator.hints.Create;
 import ru.utelksp.upo.common.validators.validator.hints.Delete;
 import ru.utelksp.upo.domain.security.User;
 import ru.utelksp.upo.repository.UserRepository;
@@ -40,6 +41,10 @@ public class UserValidator implements Validator<User> {
             return;
         }
 
+        if (hint.equals(Create.class) && userRepository.findByUsername(user.getUsername()).isPresent()) {
+            errors.add("Уже существует пользователь с таким именем");
+        }
+
         if (isNull(user.getPassword())) {
             errors.add("Не задан пароль");
             return;
@@ -56,10 +61,6 @@ public class UserValidator implements Validator<User> {
 
         if (user.getConfirmPassword().length() > 32) {
             errors.add("Длина пароля более 32 символов");
-        }
-
-        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
-            errors.add("Уже существует пользователь с таким именем");
         }
 
         if (!user.getConfirmPassword().equals(user.getPassword())) {
