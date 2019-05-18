@@ -14,7 +14,6 @@ import com.vaadin.flow.spring.annotation.UIScope;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 import ru.utelksp.upo.domain.Certificate;
-import ru.utelksp.upo.domain.Order;
 import ru.utelksp.upo.domain.Program;
 import ru.utelksp.upo.domain.dictionary.Employee;
 import ru.utelksp.upo.service.CertificateService;
@@ -23,7 +22,6 @@ import ru.utelksp.upo.service.ProgramService;
 import ru.utelksp.upo.view.MainLayout;
 
 import javax.annotation.PostConstruct;
-import java.util.Objects;
 
 import static java.util.Objects.nonNull;
 
@@ -110,11 +108,9 @@ public class CertificateCrossReportView extends VerticalLayout {
      * @return результат проверки
      */
     private boolean isCross(Certificate cert, Program program) {
-        return program.getOrders().stream()
-                .map(Order::getCertificate)
-                .filter(Objects::nonNull)
-                .map(Certificate::getId)
-                .anyMatch(id -> cert.getId().equals(id));
+        return cert.getPrograms().stream()
+                .map(Program::getId)
+                .anyMatch(id -> program.getId().equals(id));
     }
 
     /**
