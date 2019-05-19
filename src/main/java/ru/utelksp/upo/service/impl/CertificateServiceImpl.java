@@ -65,7 +65,7 @@ public class CertificateServiceImpl implements CertificateService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public Certificate save(@NonNull Certificate certificate) {
-        var hint = isNull(certificate.getId()) ? Update.class : Create.class;
+        var hint = isNull(certificate.getId()) ? Create.class : Update.class;
         validator.validate(certificate, hint);
 
         return certificateRepository.save(certificate);
