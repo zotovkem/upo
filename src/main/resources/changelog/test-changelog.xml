@@ -13,5 +13,6 @@
     <include file="changelog/testdata/account_order.xml"/>
     <include file="changelog/testdata/program.xml"/>
     <include file="changelog/testdata/user.xml"/>
+    <include file="changelog/testdata/s_ref_certificate_program.xml"/>
 
 </databaseChangeLog>

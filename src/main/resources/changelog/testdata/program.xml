@@ -6,14 +6,18 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
     <changeSet id="testdata-program" author="ZotovES" context="test">
+        <sql dbms="mssql">SET IDENTITY_INSERT upo.program ON</sql>
         <insert tableName="program" schemaName="upo">
+            <column name="id" value="1"/>
             <column name="name" value="Microsoft Office"/>
             <column name="type_using_id" value="1"/>
         </insert>
         <insert tableName="program" schemaName="upo">
+            <column name="id" value="2"/>
             <column name="name" value="Autocad 9.0"/>
             <column name="type_using_id" value="2"/>
         </insert>
+        <sql dbms="mssql">SET IDENTITY_INSERT upo.program OFF</sql>
     </changeSet>
 
 </databaseChangeLog>

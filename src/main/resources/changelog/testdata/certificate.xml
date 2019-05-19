@@ -6,8 +6,9 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
     <changeSet id="testdata-certificate" author="ZotovES" context="test">
-
+        <sql dbms="mssql">SET IDENTITY_INSERT upo.certificate ON</sql>
         <insert tableName="certificate" schemaName="upo">
+            <column name="id" value="1"/>
             <column name="name" value="Сертификат 1"/>
             <column name="employee_id" value="1"/>
             <column name="date_end" value="2019-12-19"/>
@@ -15,12 +16,13 @@
         </insert>
 
         <insert tableName="certificate" schemaName="upo">
+            <column name="id" value="2"/>
             <column name="name" value="Сертификат 2"/>
             <column name="employee_id" value="2"/>
             <column name="date_end" value="2019-10-19"/>
             <column name="computer_id" value="2"/>
         </insert>
-
+        <sql dbms="mssql">SET IDENTITY_INSERT upo.certificate OFF</sql>
     </changeSet>
 
 </databaseChangeLog>

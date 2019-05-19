@@ -60,4 +60,12 @@ class CertificateRepositoryTest {
 
         assertFalse(certificates.isEmpty());
     }
+
+    @Test
+    @DisplayName("Получить сертификаты по ид программы")
+    void findByProgramIdTest() {
+        var certificates = repository.findByProgramId(1L);
+
+        assertFalse(certificates.isEmpty());
+    }
 }
