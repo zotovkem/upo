@@ -5,36 +5,35 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 import ru.utelksp.upo.common.validators.validator.Validator;
 import ru.utelksp.upo.common.validators.validator.hints.Delete;
-import ru.utelksp.upo.domain.Order;
-import ru.utelksp.upo.domain.dictionary.Organization;
-import ru.utelksp.upo.repository.OrderRepository;
+import ru.utelksp.upo.domain.Certificate;
+import ru.utelksp.upo.domain.Program;
+import ru.utelksp.upo.repository.CertificateRepository;
 
 import java.util.Collection;
 import java.util.function.Consumer;
 
 /**
- * @author Created by ZotovES on 14.04.2019
- * Валидатор организаций
+ * @author Created by ZotovES on 19.05.2019
+ * Валидация для Программ
  */
-
 @Component
 @RequiredArgsConstructor
-public class OrganizationValidator implements Validator<Organization> {
-
-    private final OrderRepository orderRepository;
+public class ProgramValidator implements Validator<Program> {
+    private CertificateRepository certificateRepository;
 
     /**
-     * Метод валидирующий сущность
+     * Валидирует сужность
      *
      * @param target сущность для валидации
      * @param hint   Объект подсказка если требуется валидация по условию
      * @param errors список ошибок
      */
     @Override
-    public void validate(Organization target, Object hint, Collection<String> errors) {
+    public void validate(Program target, Object hint, Collection<String> errors) {
         if (hint.equals(Delete.class)) {
-            orderRepository.findByOrganizationId(target.getId()).forEach(getTextErrorOrder(target, errors));
+            certificateRepository.findByProgramId(target.getId()).forEach(getTextErrorCertificate(target, errors));
         }
+
         if (!errors.isEmpty()) {
             errors.add("Не возможно удалить запись, отредактируйте зависимые записи");
         }
@@ -47,8 +46,8 @@ public class OrganizationValidator implements Validator<Organization> {
      * @param errors список ошибок
      */
     @NonNull
-    private Consumer<Order> getTextErrorOrder(Organization target, Collection<String> errors) {
-        return order -> errors.add(String.format("Организация %s %s используется в приказе номер %s от %s",
-                target.getId(), target.getName(), order.getOrderNumber(), order.getOrderDate()));
+    private Consumer<Certificate> getTextErrorCertificate(Program target, Collection<String> errors) {
+        return certificate -> errors.add(String.format("Программа %s %s используется в сертификате %s %s",
+                target.getId(), target.getName(), certificate.getId(), certificate.getName()));
     }
 }

@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
 import ru.utelksp.upo.common.dto.CertificateReportDto;
 import ru.utelksp.upo.domain.Certificate;
@@ -86,4 +87,17 @@ public interface CertificateRepository extends JpaRepository<Certificate, Long> 
             "or lower(concat(employee.lastName,' ' , employee.firstName,' ' , employee.patronymic)) like concat('%', lower(:employeeFio), '%') "
     )
     Page<Certificate> findByLikeEmployee(Pageable page, @Param("employeeFio") String employeeFio);
+
+    /**
+     * Получить список сертификато по идентификатору программы
+     *
+     * @param programId ид программы
+     * @return список сертификатов
+     */
+    @Query(value = "" +
+            "select distinct cert " +
+            "from Certificate cert " +
+            "inner join cert.programs program " +
+            "where program.id = :programId")
+    Collection<Certificate> findByProgramId(@NonNull Long programId);
 }
