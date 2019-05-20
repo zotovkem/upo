@@ -43,8 +43,9 @@ public interface CertificateRepository extends JpaRepository<Certificate, Long> 
             "select new ru.utelksp.upo.common.dto.CertificateReportDto ( " +
             " cert.id, " +
             " concat(employee.lastName,' ' , employee.firstName,' ' , employee.patronymic) , " +
-            " cert.name, cert.dateEnd, pc.name ) " +
-            "from Certificate cert " +
+            " cert.name, cert.dateEnd, pc.name, cert.keyContainerName, " +
+            " programs.name) " +
+            "from Certificate cert, IN (cert.programs) programs " +
             "left join cert.employee employee on cert.employee.id = employee.id " +
             "left join cert.computer pc on cert.computer.id = pc.id " +
             "where (:employeeId is null or employee.id = :employeeId) " +

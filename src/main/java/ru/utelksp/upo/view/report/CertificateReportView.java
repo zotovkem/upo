@@ -29,6 +29,9 @@ import ru.utelksp.upo.view.MainLayout;
 import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 import static ru.utelksp.upo.view.component.FactoryComponent.*;
@@ -102,7 +105,6 @@ public class CertificateReportView extends VerticalLayout {
     /**
      * Формирует отчет
      */
-    @SuppressWarnings("Duplicates")
     private Component buildReport() {
         var employeeId = employeeCombobox.getOptionalValue().map(Employee::getId).orElse(null);
         var certificateId = certificateCombobox.getOptionalValue().map(Certificate::getId).orElse(null);
@@ -111,11 +113,44 @@ public class CertificateReportView extends VerticalLayout {
         ReportBuilder<CertificateReportDto> report = new ReportBuilder<>();
         getReportBuilder(report);
 
-        report.setItems(certificateRepository.findWithParam(employeeId, certificateId, pcId));
+        var mapIdCertPrograms = certificateRepository.findWithParam(employeeId, certificateId, pcId).stream()
+                .collect(Collectors.toMap(getCertificate(), CertificateReportDto::getProgram, (o, o2) -> o + ", " + o2));
+
+        report.setItems(mapIdCertPrograms.entrySet().stream().map(aggregatePrograms()).collect(Collectors.toList()));
         anchorPdf = getAnchorPdf(report);
         menuLayout.add(anchorPdf);
         anchorPdf.setVisible(false);
         return report.getHtmlComponent();
+    }
+
+    /**
+     * Проставляет сгрупированные программы в сертификат.
+     *
+     * @return сертификат
+     */
+    private Function<Map.Entry<CertificateReportDto, String>, CertificateReportDto> aggregatePrograms() {
+        return c -> {
+            var cert = c.getKey();
+            cert.setProgram(c.getValue());
+            return cert;
+        };
+    }
+
+    /**
+     * Собирает сертификат без программ
+     *
+     * @return сертификат
+     */
+    private Function<CertificateReportDto, CertificateReportDto> getCertificate() {
+        return c1 -> CertificateReportDto.builder()
+                .id(c1.getId())
+                .name(c1.getName())
+                .computer(c1.getComputer())
+                .dateEnd(c1.getDateEnd())
+                .employeeFio(c1.getEmployeeFio())
+                .keyContainerName(c1.getKeyContainerName())
+                .program("")
+                .build();
     }
 
     /**
@@ -132,7 +167,9 @@ public class CertificateReportView extends VerticalLayout {
                 .setUseFullPageWidth(true)
                 .addColumn(ColumnBuilder.getNew()
                         .setCustomExpression(ExpressionHelper.getRecordsInReport())
-                        .setTitle("Порядковый номер")
+                        .setFixedWidth(true)
+//                        .setWidth()
+                        .setTitle("№ п/п")
                         .build())
                 .addColumn(ColumnBuilder.getNew()
                         .setColumnProperty("employeeFio", String.class)
@@ -150,6 +187,14 @@ public class CertificateReportView extends VerticalLayout {
                 .addColumn(ColumnBuilder.getNew()
                         .setColumnProperty("computer", String.class)
                         .setTitle("Место установки")
+                        .build())
+                .addColumn(ColumnBuilder.getNew()
+                        .setColumnProperty("keyContainerName", String.class)
+                        .setTitle("Имя контейнера")
+                        .build())
+                .addColumn(ColumnBuilder.getNew()
+                        .setColumnProperty("program", String.class)
+                        .setTitle("Программы")
                         .build());
     }
 }

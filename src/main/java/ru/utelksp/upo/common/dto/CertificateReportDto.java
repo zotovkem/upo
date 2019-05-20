@@ -39,4 +39,16 @@ public class CertificateReportDto {
      * Место установки
      */
     private String computer;
+
+    /**
+     * Имя ключевого контейнера
+     */
+    private String keyContainerName;
+
+    /**
+     * Программы
+     */
+    private String program;
+
+
 }
