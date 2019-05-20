@@ -54,7 +54,7 @@ public class CertificateCrudView extends VerticalLayout {
     private static final Map<String, String> MAP_COLUMN_PROP = getCollectMap(GRID_COLUMNS, GRID_COLUMNS_CAPTION);
     public static final String VIEW_NAME = "Сертификаты";
     private static final List<String> GRID_PROGRAM_COLUMNS = List.of("name");
-    private static final Map<String, String> MAP_COLUMN_PROGRAM = Map.of("name", "Наименование");
+    private static final Map<String, String> MAP_COLUMN_PROGRAM = Map.of("name", "Программы");
 
     /**
      * Заполняет форму
