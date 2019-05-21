@@ -4,9 +4,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 import ru.utelksp.upo.UpoApplication;
+import ru.utelksp.upo.utils.ModelSample;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
@@ -55,7 +55,7 @@ class CertificateRepositoryTest {
     @Test
     @DisplayName("Получить сертификаты по части ФИО пользователя")
     void findByLikeEmployeeTest() {
-        var page = PageRequest.of(0, 100);
+        var page = ModelSample.getPagination();
         var certificates = repository.findByLikeEmployee(page, "ива");
 
         assertFalse(certificates.isEmpty());
