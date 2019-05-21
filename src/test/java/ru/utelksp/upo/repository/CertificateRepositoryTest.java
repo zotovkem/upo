@@ -31,7 +31,7 @@ class CertificateRepositoryTest {
     @Test
     @DisplayName("Поиск сертификата по параметрам")
     void findWithParamTest() {
-        var certificates = repository.findWithParam(1L, null, 1L);
+        var certificates = repository.findWithParam(1L, null, 1L, null, null);
 
         assertFalse(certificates.isEmpty());
     }

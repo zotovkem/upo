@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import ru.utelksp.upo.common.dto.CertificateReportDto;
 import ru.utelksp.upo.domain.Certificate;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
@@ -44,14 +45,21 @@ public interface CertificateRepository extends JpaRepository<Certificate, Long> 
             " cert.id, " +
             " concat(employee.lastName,' ' , employee.firstName,' ' , employee.patronymic) , " +
             " cert.name, cert.dateEnd, pc.name, cert.keyContainerName, " +
-            " programs.name) " +
-            "from Certificate cert, IN (cert.programs) programs " +
+            " case when programs is null then '' else programs.name end ) " +
+            "from Certificate cert " +
+            "left join cert.programs programs " +
             "left join cert.employee employee on cert.employee.id = employee.id " +
             "left join cert.computer pc on cert.computer.id = pc.id " +
             "where (:employeeId is null or employee.id = :employeeId) " +
             "and (:certificateId is null or cert.id = :certificateId) " +
+            "and (:dateBegin is null or cert.dateEnd >= :dateBegin) " +
+            "and (:dateEnd is null or cert.dateEnd <= :dateEnd) " +
             "and (:pcId is null or pc.id = :pcId)")
-    List<CertificateReportDto> findWithParam(@Param("employeeId") Long employeeId, @Param("certificateId") Long certificateId, @Param("pcId") Long pcId);
+    List<CertificateReportDto> findWithParam(@Param("employeeId") Long employeeId,
+                                             @Param("certificateId") Long certificateId,
+                                             @Param("pcId") Long pcId,
+                                             @Param("dateBegin") LocalDate dateBegin,
+                                             @Param("dateEnd") LocalDate dateEnd);
 
     /**
      * Поиск сертификатов по идентификатору компьютера

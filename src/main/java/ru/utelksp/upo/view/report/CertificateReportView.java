@@ -7,6 +7,8 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.datepicker.DatePicker;
+import com.vaadin.flow.component.details.Details;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -34,6 +36,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;
+import static java.util.Objects.nonNull;
 import static ru.utelksp.upo.view.component.FactoryComponent.*;
 
 /**
@@ -56,6 +59,9 @@ public class CertificateReportView extends VerticalLayout {
     private ComboBox<Certificate> certificateCombobox = new ComboBox<>();
     private ComboBox<Computer> pcCombobox = new ComboBox<>();
     private Anchor anchorPdf = new Anchor();
+    private DatePicker dateBeginPicker = getDatePicker("Начальная дата диапазона");
+    private DatePicker dateEndPicker = getDatePicker("Конечная дата диапазона");
+
 
     public static final String VIEW_NAME = "Отчет по сертификатам";
 
@@ -98,7 +104,25 @@ public class CertificateReportView extends VerticalLayout {
         pcCombobox.setRenderer(TemplateRenderer.<Computer>of("<div>[[item.name]]</div>")
                 .withProperty("name", Computer::getName));
 
-        var comboBoxLayout = new VerticalLayout(employeeCombobox, certificateCombobox, pcCombobox);
+        dateBeginPicker.addValueChangeListener(event -> {
+            LocalDate localDate = event.getValue();
+            if (nonNull(localDate)) {
+                dateEndPicker.setMin(localDate);
+            }
+        });
+        dateEndPicker.addValueChangeListener(event -> {
+            LocalDate localDate = event.getValue();
+            if (nonNull(localDate)) {
+                dateBeginPicker.setMax(localDate);
+            }
+        });
+
+        Details betweenDate = new Details();
+        betweenDate.setSummaryText("Дата окончания действия сертификата");
+        betweenDate.setOpened(true);
+        betweenDate.addContent(dateBeginPicker, dateEndPicker);
+
+        var comboBoxLayout = new VerticalLayout(employeeCombobox, certificateCombobox, pcCombobox, betweenDate);
         menuLayout.add(comboBoxLayout, new HorizontalLayout(buildReportButton, printReportButton));
     }
 
@@ -109,11 +133,13 @@ public class CertificateReportView extends VerticalLayout {
         var employeeId = employeeCombobox.getOptionalValue().map(Employee::getId).orElse(null);
         var certificateId = certificateCombobox.getOptionalValue().map(Certificate::getId).orElse(null);
         var pcId = pcCombobox.getOptionalValue().map(Computer::getId).orElse(null);
+        var dateBegin = dateBeginPicker.getOptionalValue().orElse(null);
+        var dateEnd = dateEndPicker.getOptionalValue().orElse(null);
 
         ReportBuilder<CertificateReportDto> report = new ReportBuilder<>();
         getReportBuilder(report);
 
-        var mapIdCertPrograms = certificateRepository.findWithParam(employeeId, certificateId, pcId).stream()
+        var mapIdCertPrograms = certificateRepository.findWithParam(employeeId, certificateId, pcId, dateBegin, dateEnd).stream()
                 .collect(Collectors.toMap(getCertificate(), CertificateReportDto::getProgram, (o, o2) -> o + ", " + o2));
 
         report.setItems(mapIdCertPrograms.entrySet().stream().map(aggregatePrograms()).collect(Collectors.toList()));
@@ -168,7 +194,6 @@ public class CertificateReportView extends VerticalLayout {
                 .addColumn(ColumnBuilder.getNew()
                         .setCustomExpression(ExpressionHelper.getRecordsInReport())
                         .setFixedWidth(true)
-//                        .setWidth()
                         .setTitle("№ п/п")
                         .build())
                 .addColumn(ColumnBuilder.getNew()

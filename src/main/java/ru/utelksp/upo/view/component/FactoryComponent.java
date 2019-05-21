@@ -6,6 +6,7 @@ import ar.com.fdvs.dj.domain.constants.Font;
 import ar.com.fdvs.dj.domain.constants.HorizontalAlign;
 import ar.com.fdvs.dj.domain.constants.Transparency;
 import com.vaadin.flow.component.ItemLabelGenerator;
+import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -20,6 +21,8 @@ import ru.utelksp.upo.domain.dictionary.TypeUsing;
 import ru.utelksp.upo.view.report.ReportBuilder;
 
 import java.awt.*;
+import java.util.Arrays;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -30,6 +33,21 @@ import static ar.com.fdvs.dj.domain.constants.Font.PDF_ENCODING_CP1251_Cyrillic;
  * Фабрика вспомогательных компонентов
  */
 public class FactoryComponent {
+
+    /**
+     * Получить компонент календарь
+     *
+     * @param caption заголовок компонента
+     * @return компонент
+     */
+    public static DatePicker getDatePicker(String caption) {
+        DatePicker datePicker = new DatePicker(caption);
+        datePicker.setWidthFull();
+        datePicker.setLocale(new Locale("ru"));
+        datePicker.setI18n(getI18n());
+        return datePicker;
+    }
+
     /**
      * Получить подписи из ордера для итемов в комбобокса ордеров
      */
@@ -199,5 +217,24 @@ public class FactoryComponent {
         VerticalLayout layout = new VerticalLayout(anchors, report);
         layout.getElement().setAttribute("theme", "spacing");
         return anchor;
+    }
+
+    /**
+     * Получить локализацию для календаря
+     *
+     * @return локализация
+     */
+    private static DatePicker.DatePickerI18n getI18n() {
+        return new DatePicker.DatePickerI18n()
+                .setWeek("неделя")
+                .setCalendar("календарь")
+                .setClear("очистить")
+                .setToday("сегодня")
+                .setCancel("отмена")
+                .setFirstDayOfWeek(1)
+                .setMonthNames(Arrays.asList("январь", "февраль", "март", "апрель", "май", "июнь",
+                        "июль", "август", "сентябрь", "октябрь", "ноябрь", "декабрь"))
+                .setWeekdays(Arrays.asList("воскресенье", "понедельник", "вторник", "среда", "четверг", "пятница", "суббота"))
+                .setWeekdaysShort(Arrays.asList("вс", "пн", "вт", "ср", "чт", "пт", "сб"));
     }
 }
