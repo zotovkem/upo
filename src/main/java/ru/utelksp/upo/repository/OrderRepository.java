@@ -28,7 +28,7 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             "from Order ord " +
             "left join fetch ord.employees emp " +
             "where emp.id = :employeeId ")
-    List<Order> findByComputerId(@Param("employeeId") Long employeeId);
+    List<Order> findByEmployeeId(@Param("employeeId") Long employeeId);
 
     /**
      * Поиск приказов по идентификатору организации

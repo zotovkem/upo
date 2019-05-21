@@ -36,7 +36,7 @@ public class EmployeeValidator implements Validator<Employee> {
     @Override
     public void validate(Employee target, Object hint, Collection<String> errors) {
         if (hint.equals(Delete.class)) {
-            orderRepository.findByComputerId(target.getId()).forEach(getTextErrorOrder(target, errors));
+            orderRepository.findByEmployeeId(target.getId()).forEach(getTextErrorOrder(target, errors));
             certificateRepository.findByEmployeeId(target.getId()).forEach(getTextErrorCertificate(target, errors));
         }
         if (!errors.isEmpty()) {
