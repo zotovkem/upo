@@ -10,4 +10,5 @@
     <include file="2019-04-22-edit-roles.xml" relativeToChangelogFile="true"/>
     <include file="2019-04-22-02-order-add-column-certificate.xml" relativeToChangelogFile="true"/>
     <include file="2019-05-17-01-s-ref-certificate-program.xml" relativeToChangelogFile="true"/>
+    <include file="2019-05-21-01-drop-constrain-certificate-pc.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>
