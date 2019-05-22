@@ -15,5 +15,7 @@
     <include file="changelog/testdata/user.xml"/>
     <include file="changelog/testdata/s_ref_certificate_program.xml"/>
     <include file="changelog/testdata/s_ref_order_employee.xml"/>
+    <include file="changelog/testdata/mtm-program-order.xml"/>
+    <include file="changelog/testdata/s-ref-program-computer.xml"/>
 
 </databaseChangeLog>
