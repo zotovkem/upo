@@ -5,7 +5,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Repository;
-import ru.utelksp.upo.common.dto.ProgramAndCertificateReportDto;
 import ru.utelksp.upo.common.dto.ProgramReportDto;
 import ru.utelksp.upo.domain.Program;
 
@@ -38,26 +37,6 @@ public interface ProgramRepository extends JpaRepository<Program, Long> {
             "and (:orderId is null or ord.id = :orderId) " +
             "and (:typeUsingId is null or program.typeUsing.id = :typeUsingId)")
     List<ProgramReportDto> findWithParam(@Param("employeeId") Long employeeId, @Param("orderId") Long orderId, @Param("typeUsingId") Long typeUsingId);
-
-    /**
-     * Полуяить список ПО и Сертификатов по идентификатору пользователя
-     *
-     * @return список программ
-     */
-    @Query(value = "" +
-            "select new ru.utelksp.upo.common.dto.ProgramAndCertificateReportDto ( " +
-            " program.id, " +
-            " program.name," +
-            " cert.id," +
-            " cert.name," +
-            " cert.dateEnd )" +
-            "from Program program " +
-            "inner join program.orders ord " +
-            "inner join ord.employees emp " +
-            "inner join ord.certificate cert " +
-            "where emp.id = :employeeId " +
-            "and cert.employee.id = :employeeId")
-    List<ProgramAndCertificateReportDto> getProgramAndCertificate(@NonNull @Param("employeeId") Long employeeId);
 
     /**
      * Полуяить список ПО по идентификатору пользователя

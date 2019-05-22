@@ -1,7 +1,6 @@
 package ru.utelksp.upo.service;
 
 import org.springframework.lang.NonNull;
-import ru.utelksp.upo.common.dto.ProgramAndCertificateReportDto;
 import ru.utelksp.upo.domain.Program;
 
 import java.util.Collection;
@@ -44,14 +43,6 @@ public interface ProgramService {
      * @param id идентификатор программы
      */
     void deleteById(@NonNull Long id);
-
-    /**
-     * Полуяить список ПО и Сертификатов по идентификатору пользователя
-     *
-     * @return список программ
-     */
-    @NonNull
-    List<ProgramAndCertificateReportDto> getProgramAndCertificate(@NonNull Long employeeId);
 
     /**
      * Получить список программ по идентификатору пользователя
