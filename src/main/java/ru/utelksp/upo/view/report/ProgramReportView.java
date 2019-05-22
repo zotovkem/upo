@@ -19,9 +19,11 @@ import lombok.RequiredArgsConstructor;
 import ru.utelksp.upo.common.dto.ProgramReportDto;
 import ru.utelksp.upo.domain.Order;
 import ru.utelksp.upo.domain.dictionary.Employee;
+import ru.utelksp.upo.domain.dictionary.TypeUsing;
 import ru.utelksp.upo.repository.ProgramRepository;
 import ru.utelksp.upo.service.EmployeeService;
 import ru.utelksp.upo.service.OrderService;
+import ru.utelksp.upo.service.TypeUsingService;
 import ru.utelksp.upo.view.MainLayout;
 
 import javax.annotation.PostConstruct;
@@ -44,11 +46,13 @@ public class ProgramReportView extends VerticalLayout {
     private final ProgramRepository programRepository;
     private final EmployeeService employeeService;
     private final OrderService orderService;
+    private final TypeUsingService typeUsingService;
 
     private VerticalLayout menuLayout = new VerticalLayout();
     private VerticalLayout reportContainer = new VerticalLayout();
     private ComboBox<Employee> employeeCombobox = new ComboBox<>();
     private ComboBox<Order> orderCombobox = new ComboBox<>();
+    private ComboBox<TypeUsing> typeUsingComboBox = new ComboBox<>();
     private Anchor anchorPdf = new Anchor();
 
     public static final String VIEW_NAME = "Отчет по ПО";
@@ -85,8 +89,14 @@ public class ProgramReportView extends VerticalLayout {
         orderCombobox.setItemLabelGenerator(Order::getOrderNumber);
         orderCombobox.setRenderer(TemplateRenderer.<Order>of("<div>[[item.number]]</div>")
                 .withProperty("number", Order::getOrderNumber));
+        typeUsingComboBox.setItems(typeUsingService.findAll());
+        typeUsingComboBox.setLabel("Вид использования");
+        typeUsingComboBox.setSizeFull();
+        typeUsingComboBox.setItemLabelGenerator(TypeUsing::getName);
+        typeUsingComboBox.setRenderer(TemplateRenderer.<TypeUsing>of("<div>[[item.name]]</div>")
+                .withProperty("name", TypeUsing::getName));
 
-        var comboBoxLayout = new VerticalLayout(employeeCombobox, orderCombobox);
+        var comboBoxLayout = new VerticalLayout(employeeCombobox, orderCombobox, typeUsingComboBox);
         menuLayout.add(comboBoxLayout, new HorizontalLayout(buildReportButton, printReportButton));
     }
 
@@ -96,11 +106,12 @@ public class ProgramReportView extends VerticalLayout {
     private Component buildSimpleReport() {
         var employeeId = employeeCombobox.getOptionalValue().map(Employee::getId).orElse(null);
         var orderId = orderCombobox.getOptionalValue().map(Order::getId).orElse(null);
+        var typeUsingId = typeUsingComboBox.getOptionalValue().map(TypeUsing::getId).orElse(null);
 
         ReportBuilder<ProgramReportDto> report = new ReportBuilder<>();
         getReportBuilder(report);
 
-        report.setItems(programRepository.findWithParam(employeeId, orderId));
+        report.setItems(programRepository.findWithParam(employeeId, orderId, typeUsingId));
         anchorPdf = getAnchorPdf(report);
         menuLayout.add(anchorPdf);
         anchorPdf.setVisible(false);

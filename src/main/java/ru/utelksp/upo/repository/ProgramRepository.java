@@ -35,8 +35,9 @@ public interface ProgramRepository extends JpaRepository<Program, Long> {
             "left join program.orders ord " +
             "left join ord.employees emp " +
             "where (:employeeId is null or emp.id = :employeeId) " +
-            "and (:orderId is null or ord.id = :orderId)")
-    List<ProgramReportDto> findWithParam(Long employeeId, Long orderId);
+            "and (:orderId is null or ord.id = :orderId) " +
+            "and (:typeUsingId is null or program.typeUsing.id = :typeUsingId)")
+    List<ProgramReportDto> findWithParam(@Param("employeeId") Long employeeId, @Param("orderId") Long orderId, @Param("typeUsingId") Long typeUsingId);
 
     /**
      * Полуяить список ПО и Сертификатов по идентификатору пользователя
