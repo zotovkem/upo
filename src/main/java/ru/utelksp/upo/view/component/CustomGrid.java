@@ -3,7 +3,6 @@ package ru.utelksp.upo.view.component;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.customfield.CustomField;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import lombok.Getter;
 
 import java.util.Collection;
@@ -30,13 +29,8 @@ public class CustomGrid<T> extends CustomField<Collection<T>> {
         });
         grid.setColumnReorderingAllowed(true);
         grid.setWidth("100%");
-        grid.getColumns().get(0).setFlexGrow(1);
-        setWidth("100%");
-        VerticalLayout layout = new VerticalLayout();
-        layout.add(grid);
-        layout.setWidth("100%");
-        layout.add(grid);
-        add(layout);
+        grid.setHeight("19em");
+        add(grid);
     }
 
     /**

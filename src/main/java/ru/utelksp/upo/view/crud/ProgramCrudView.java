@@ -28,7 +28,6 @@ import java.util.Map;
 
 import static java.util.Objects.nonNull;
 import static ru.utelksp.upo.common.Util.getCollectMap;
-import static ru.utelksp.upo.view.component.FactoryComponent.getItemListEmployees;
 import static ru.utelksp.upo.view.component.FactoryComponent.getItemTypeUsing;
 
 
@@ -45,8 +44,8 @@ public class ProgramCrudView extends HorizontalLayout implements HasUrlParameter
     private final ComputerCrudListener computerCrudListener;
 
     public static final String VIEW_NAME = "Реестр ПО";
-    private static final String[] CRUD_FORM_FIELD = {"orders", "computers", "id", "name", "license", "typeUsing", "description"};
-    private static final String[] CRUD_FORM_FIELD_CAPTION = {"Приказы", "Компьютеры", "Код", "Наименование", "Лицензия", "Вид использования", "Комментарии"};
+    private static final String[] CRUD_FORM_FIELD = {"id", "name", "license", "typeUsing", "description", "orders", "computers"};
+    private static final String[] CRUD_FORM_FIELD_CAPTION = {"Код", "Наименование", "Лицензия", "Вид использования", "Комментарии", "Приказы", "Компьютеры"};
     private static final List<String> GRID_COLUMNS = List.of("id", "name");
     private static final List<String> GRID_ORDER_COLUMNS = List.of("orderNumber", "orderDate", "description");
     private static final List<String> GRID_COMPUTER_COLUMNS = List.of("name", "description");
@@ -62,11 +61,14 @@ public class ProgramCrudView extends HorizontalLayout implements HasUrlParameter
         setSizeFull();
 
         UpoCrudFormFactory<Program> formFactory = new UpoCrudFormFactory<>(Program.class);
+        formFactory.setVisibleProperties(CRUD_FORM_FIELD);
+        formFactory.setFieldCaptions(CRUD_FORM_FIELD_CAPTION);
+        formFactory.setFieldProvider("typeUsing", getTypeUsingProvider());
         formFactory.setFieldProvider("orders", () -> {
             var grid = new CustomGrid<>(Order.class, orderCrudListener.findAll(), GRID_ORDER_COLUMNS, MAP_COLUMN_ORDER);
-            grid.getGrid().getColumnByKey("orderNumber").setWidth("10%");
+            grid.getGrid().getColumnByKey("orderNumber").setWidth("20%");
             grid.getGrid().getColumnByKey("orderDate").setWidth("30%");
-            grid.getGrid().getColumnByKey("description").setWidth("60%");
+            grid.getGrid().getColumnByKey("description").setWidth("50%");
             grid.setValue(orderCrudListener.findAll());
             return grid;
         });
@@ -77,9 +79,6 @@ public class ProgramCrudView extends HorizontalLayout implements HasUrlParameter
             grid.setValue(computerCrudListener.findAll());
             return grid;
         });
-        formFactory.setVisibleProperties(CRUD_FORM_FIELD);
-        formFactory.setFieldCaptions(CRUD_FORM_FIELD_CAPTION);
-        formFactory.setFieldProvider("typeUsing", getTypeUsingProvider());
 
         var splitLayout = new UpoHorizontalSplitCrudLayout();
         splitLayout.getMainLayout().setSplitterPosition(30);
