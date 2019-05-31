@@ -68,14 +68,14 @@ public class ProgramCrudView extends HorizontalLayout implements HasUrlParameter
             var grid = new CustomGrid<>(Order.class, orderCrudListener.findAll(), GRID_ORDER_COLUMNS, MAP_COLUMN_ORDER);
             grid.getGrid().getColumnByKey("orderNumber").setWidth("20%");
             grid.getGrid().getColumnByKey("orderDate").setWidth("30%");
-            grid.getGrid().getColumnByKey("description").setWidth("50%");
+            grid.getGrid().getColumnByKey("description").setWidth("45%");
             grid.setValue(orderCrudListener.findAll());
             return grid;
         });
         formFactory.setFieldProvider("computers", () -> {
             var grid = new CustomGrid<>(Computer.class, computerCrudListener.findAll(), GRID_COMPUTER_COLUMNS, MAP_COLUMN_COMPUTER);
             grid.getGrid().getColumnByKey("name").setWidth("20%");
-            grid.getGrid().getColumnByKey("description").setWidth("80%");
+            grid.getGrid().getColumnByKey("description").setWidth("75%");
             grid.setValue(computerCrudListener.findAll());
             return grid;
         });

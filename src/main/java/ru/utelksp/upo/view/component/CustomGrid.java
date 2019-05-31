@@ -23,12 +23,9 @@ public class CustomGrid<T> extends CustomField<Collection<T>> {
         grid.setItems(defaultValue);
         grid.setSelectionMode(Grid.SelectionMode.MULTI);
         grid.setColumns(columns.toArray(String[]::new));
-        grid.getColumns().forEach(column -> {
-            column.setWidth("100%");
-            column.setHeader(mapColumn.get(column.getKey()));
-        });
+        grid.getColumns().forEach(column -> column.setHeader(mapColumn.get(column.getKey())));
         grid.setColumnReorderingAllowed(true);
-        grid.setWidth("100%");
+        grid.setSizeFull();
         grid.setHeight("19em");
         add(grid);
     }
