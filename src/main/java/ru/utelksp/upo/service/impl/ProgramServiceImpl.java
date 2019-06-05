@@ -1,6 +1,7 @@
 package ru.utelksp.upo.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import ru.utelksp.upo.domain.Program;
@@ -28,7 +29,7 @@ public class ProgramServiceImpl implements ProgramService {
     @NonNull
     @Override
     public Collection<Program> findAll() {
-        return programRepository.findAll();
+        return programRepository.findAll(Sort.by("name"));
     }
 
     /**

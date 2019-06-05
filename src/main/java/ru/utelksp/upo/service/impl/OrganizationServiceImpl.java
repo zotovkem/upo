@@ -1,6 +1,7 @@
 package ru.utelksp.upo.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,7 +32,7 @@ public class OrganizationServiceImpl implements OrganizationService {
     @NonNull
     @Override
     public Collection<Organization> findAll() {
-        return organizationRepository.findAll();
+        return organizationRepository.findAll(Sort.by("name"));
     }
 
     /**

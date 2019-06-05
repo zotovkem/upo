@@ -1,6 +1,7 @@
 package ru.utelksp.upo.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,7 +33,7 @@ public class ComputerServiceImpl implements ComputerService {
     @Override
     @Transactional(readOnly = true)
     public Collection<Computer> findAll() {
-        return computerRepository.findAll();
+        return computerRepository.findAll(Sort.by("name"));
     }
 
     /**
