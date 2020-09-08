@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="2019-03-22-02-add-table-order" author="ZotovES" context="production">
+
+        <createTable tableName="account_order" remarks="Приказы" schemaName="upo">
+            <column name="id" type="bigint" autoIncrement="true" remarks="Уникальный идентификатор">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="order_number" type="varchar(20)" remarks="Номер приказа"/>
+            <column name="order_date" type="date" remarks="Дата приказа"/>
+            <column name="organization_id" type="bigint" remarks="Идентификатор организации">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(4000)" remarks="Описание"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="account_order" baseColumnNames="organization_id"
+                                 baseTableSchemaName="upo"
+                                 constraintName="account_order_s_organization_fk"
+                                 referencedTableName="s_organization" referencedColumnNames="id"
+                                 referencedTableSchemaName="upo" onDelete="RESTRICT"/>
+
+        <createIndex tableName="account_order" indexName="account_order_organization_id_idx">
+            <column name="organization_id"/>
+        </createIndex>
+
+    </changeSet>
+
+</databaseChangeLog>

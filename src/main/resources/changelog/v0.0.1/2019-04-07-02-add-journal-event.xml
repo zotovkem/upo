@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="2019-04-07-02-add-journal-event" author="ZotovES" context="production">
+
+        <createTable tableName="journal_event" remarks="Журнал событий приложений" schemaName="upo">
+            <column name="id" type="bigint" autoIncrement="true" remarks="Уникальный идентификатор">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)" remarks="Наименование события"/>
+            <column name="date_event" type="date" remarks="Дата события"/>
+            <column name="time_event" type="time" remarks="Время события"/>
+            <column name="user_id" type="bigint" remarks="Идентификатор пользователя"/>
+            <column name="type_event_id" type="bigint" remarks="Идентификатор типа события"/>
+            <column name="description" type="varchar(4000)" remarks="Описание события"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="journal_event" baseColumnNames="type_event_id"
+                                 baseTableSchemaName="upo"
+                                 constraintName="journal_s_type_event_fk"
+                                 referencedTableName="s_type_event" referencedColumnNames="id"
+                                 referencedTableSchemaName="upo"/>
+
+        <createIndex tableName="journal_event" indexName="journal_event_type_event_id_idx">
+            <column name="type_event_id"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseTableName="journal_event" baseColumnNames="user_id"
+                                 baseTableSchemaName="upo"
+                                 constraintName="journal_user_fk"
+                                 referencedTableName="upo_user" referencedColumnNames="id"
+                                 referencedTableSchemaName="upo"/>
+
+        <createIndex tableName="journal_event" indexName="journal_user_id_idx">
+            <column name="user_id"/>
+        </createIndex>
+
+    </changeSet>
+
+</databaseChangeLog>

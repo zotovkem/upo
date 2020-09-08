@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="2019-04-07-03-add-s-type-event" author="ZotovES" context="production">
+        <!--Отключаем сиквенсы в mssql-->
+        <sql dbms="mssql">SET IDENTITY_INSERT upo.s_type_event ON</sql>
+        <insert tableName="s_type_event" schemaName="upo">
+            <column name="id" value="1"/>
+            <column name="name" value="Добавлена запись"/>
+        </insert>
+        <insert tableName="s_type_event" schemaName="upo">
+            <column name="id" value="2"/>
+            <column name="name" value="Удалена запись"/>
+        </insert>
+        <insert tableName="s_type_event" schemaName="upo">
+            <column name="id" value="3"/>
+            <column name="name" value="Отредактирована запись"/>
+        </insert>
+        <insert tableName="s_type_event" schemaName="upo">
+            <column name="id" value="4"/>
+            <column name="name" value="Попытка входа в приложение"/>
+        </insert>
+        <insert tableName="s_type_event" schemaName="upo">
+            <column name="id" value="5"/>
+            <column name="name" value="Пользователь авторизован"/>
+        </insert>
+        <insert tableName="s_type_event" schemaName="upo">
+            <column name="id" value="6"/>
+            <column name="name" value="Ошибка"/>
+        </insert>
+        <insert tableName="s_type_event" schemaName="upo">
+            <column name="id" value="7"/>
+            <column name="name" value="Пользователь разлогинен"/>
+        </insert>
+        <!--Включаем обратно сиквенсы в mssql-->
+        <sql dbms="mssql">SET IDENTITY_INSERT upo.s_type_event OFF</sql>
+    </changeSet>
+
+</databaseChangeLog>

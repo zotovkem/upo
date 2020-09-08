@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="2019-03-23-01-add-table-program" author="ZotovES" context="production">
+
+        <createTable tableName="program" remarks="Программное обеспечение" schemaName="upo">
+            <column name="id" type="bigint" autoIncrement="true" remarks="Уникальный идентификатор">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)" remarks="Наименование"/>
+            <column name="type_using_id" type="bigint" remarks="Идентификатор вида использования">
+                <constraints nullable="false"/>
+            </column>
+            <column name="description" type="varchar(4000)" remarks="Описание"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="program" baseColumnNames="type_using_id"
+                                 baseTableSchemaName="upo"
+                                 constraintName="program_type_using_fk"
+                                 referencedTableName="s_type_using" referencedColumnNames="id"
+                                 referencedTableSchemaName="upo"/>
+
+        <createIndex tableName="program" indexName="program_type_using_id_idx">
+            <column name="type_using_id"/>
+        </createIndex>
+
+    </changeSet>
+
+</databaseChangeLog>

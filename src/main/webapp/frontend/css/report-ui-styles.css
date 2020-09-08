@@ -1,0 +1,26 @@
+.PrintPreviewReport-mainLayout {
+    background-color: #f9f9f9;
+    width: 100%;
+    display: block;
+}
+
+table.jrPage {
+    width: 100% !important;
+
+}
+
+.PrintPreviewReport-htmlContainer table.jrPage td span {
+    font-size: 12px !important;
+}
+
+@media print {
+    .PrintPreviewReport-mainLayout {
+        background-color: #FFFFFF;
+        overflow: hidden;
+    }
+
+    .PrintPreviewReport-htmlContainer table.jrPage {
+        box-shadow: none;
+        overflow: hidden;
+    }
+}

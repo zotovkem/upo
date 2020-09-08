@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="2019-04-05-01-add-table-s-ref-order-employee" author="ZotovES" context="production">
+
+        <createTable tableName="s_ref_order_employee" remarks="Таблица для связи приказов и пользователей"
+                     schemaName="upo">
+            <column name="id" type="bigint" autoIncrement="true" remarks="Уникальный идентификатор">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="order_id" type="bigint" remarks="Идентификатор приказа">
+                <constraints nullable="false"/>
+            </column>
+            <column name="employee_id" type="bigint" remarks="Идентификатор пользователя">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="s_ref_order_employee" baseColumnNames="order_id"
+                                 baseTableSchemaName="upo" constraintName="s_ref_order_employee_order_fk"
+                                 referencedTableName="account_order" referencedColumnNames="id"
+                                 referencedTableSchemaName="upo" onDelete="RESTRICT"/>
+        <addForeignKeyConstraint baseTableName="s_ref_order_employee" baseColumnNames="employee_id"
+                                 baseTableSchemaName="upo" constraintName="s_ref_order_employee_employee_fk"
+                                 referencedTableName="s_employee" referencedColumnNames="id"
+                                 referencedTableSchemaName="upo" onDelete="RESTRICT"/>
+
+        <createIndex tableName="s_ref_order_employee" indexName="s_ref_order_employee_order_id_ind">
+            <column name="order_id"/>
+        </createIndex>
+        <createIndex tableName="s_ref_order_employee" indexName="s_ref_order_employee_employee_id_ind">
+            <column name="employee_id"/>
+        </createIndex>
+
+    </changeSet>
+
+</databaseChangeLog>

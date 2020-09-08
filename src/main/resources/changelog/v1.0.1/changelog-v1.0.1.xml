@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <include file="2019-04-21-01-add-license.xml" relativeToChangelogFile="true"/>
+    <include file="2019-04-21-02-add-fields-certificate.xml" relativeToChangelogFile="true"/>
+    <include file="2019-04-22-edit-roles.xml" relativeToChangelogFile="true"/>
+    <include file="2019-04-22-02-order-add-column-certificate.xml" relativeToChangelogFile="true"/>
+    <include file="2019-05-17-01-s-ref-certificate-program.xml" relativeToChangelogFile="true"/>
+    <include file="2019-05-21-01-drop-constrain-certificate-pc.xml" relativeToChangelogFile="true"/>
+</databaseChangeLog>

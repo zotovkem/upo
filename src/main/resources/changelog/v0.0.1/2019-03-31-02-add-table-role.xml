@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="2019-03-31-add-table-role" author="ZotovES" context="production">
+
+        <createTable tableName="role" remarks="Роли" schemaName="upo">
+            <column name="id" type="bigint" autoIncrement="true" remarks="Уникальный идентификатор">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(32)" remarks="Имя пользователя">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <insert tableName="role">
+            <column name="name" value="admin"/>
+        </insert>
+        <insert tableName="role">
+            <column name="name" value="user"/>
+        </insert>
+
+    </changeSet>
+
+</databaseChangeLog>

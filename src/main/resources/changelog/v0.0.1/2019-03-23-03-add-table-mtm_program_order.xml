@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="2019-03-23-03-add-table-mtm_program_order" author="ZotovES" context="production">
+
+        <createTable tableName="mtm_program_order" remarks="Таблица для связи ПО и приказа" schemaName="upo">
+            <column name="id" type="bigint" autoIncrement="true" remarks="Уникальный идентификатор">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="program_id" type="bigint" remarks="Идентификатор ПО">
+                <constraints nullable="false"/>
+            </column>
+            <column name="order_id" type="bigint" remarks="Идентификатор приказа">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="mtm_program_order" baseColumnNames="program_id"
+                                 baseTableSchemaName="upo" constraintName="mtm_program_order_program_fk"
+                                 referencedTableName="program" referencedColumnNames="id"
+                                 referencedTableSchemaName="upo" onDelete="RESTRICT"/>
+        <addForeignKeyConstraint baseTableName="mtm_program_order" baseColumnNames="order_id"
+                                 baseTableSchemaName="upo" constraintName="mtm_program_order_order_fk"
+                                 referencedTableName="account_order" referencedColumnNames="id"
+                                 referencedTableSchemaName="upo" onDelete="RESTRICT"/>
+
+        <createIndex tableName="mtm_program_order" indexName="mtm_program_order_program_id_ind">
+            <column name="program_id"/>
+        </createIndex>
+        <createIndex tableName="mtm_program_order" indexName="mtm_program_order_order_ind">
+            <column name="order_id"/>
+        </createIndex>
+
+    </changeSet>
+
+</databaseChangeLog>

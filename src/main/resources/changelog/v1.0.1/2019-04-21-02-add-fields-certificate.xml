@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet id="2019-04-21-02-add-fields-certificate" author="ZotovES" context="production">
+        <addColumn tableName="certificate" schemaName="upo">
+            <column name="publisher" type="varchar(255)" remarks="Издатель"/>
+            <column name="key_container_name" type="varchar(255)" remarks="Имя ключевого контейнера"/>
+            <column name="time_end" type="varchar(5)" remarks="Время окончания действия сертификата"/>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>
